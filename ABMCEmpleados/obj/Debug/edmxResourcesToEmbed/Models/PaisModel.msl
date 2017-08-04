@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="EmpDBModelStoreContainer" CdmEntityContainer="EmpDBEntities">
+    <EntitySetMapping Name="ciudades">
+      <EntityTypeMapping TypeName="EmpDBModel.ciudades">
+        <MappingFragment StoreEntitySet="ciudades">
+          <ScalarProperty Name="ciu_codigo" ColumnName="ciu_codigo" />
+          <ScalarProperty Name="ciu_pro_codigo" ColumnName="ciu_pro_codigo" />
+          <ScalarProperty Name="ciu_pro_pai_codigo" ColumnName="ciu_pro_pai_codigo" />
+          <ScalarProperty Name="ciu_nombre" ColumnName="ciu_nombre" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="paises">
+      <EntityTypeMapping TypeName="EmpDBModel.paises">
+        <MappingFragment StoreEntitySet="paises">
+          <ScalarProperty Name="pai_codigo" ColumnName="pai_codigo" />
+          <ScalarProperty Name="pai_nombre" ColumnName="pai_nombre" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="provincias">
+      <EntityTypeMapping TypeName="EmpDBModel.provincias">
+        <MappingFragment StoreEntitySet="provincias">
+          <ScalarProperty Name="pro_codigo" ColumnName="pro_codigo" />
+          <ScalarProperty Name="pro_pai_codigo" ColumnName="pro_pai_codigo" />
+          <ScalarProperty Name="pro_nombre" ColumnName="pro_nombre" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>

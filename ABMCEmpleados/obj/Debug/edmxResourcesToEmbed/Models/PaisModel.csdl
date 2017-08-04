@@ -1,0 +1,73 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="EmpDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="ciudades">
+    <Key>
+      <PropertyRef Name="ciu_codigo" />
+      <PropertyRef Name="ciu_pro_codigo" />
+      <PropertyRef Name="ciu_pro_pai_codigo" />
+    </Key>
+    <Property Name="ciu_codigo" Type="String" MaxLength="3" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="ciu_pro_codigo" Type="String" MaxLength="3" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="ciu_pro_pai_codigo" Type="String" MaxLength="3" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="ciu_nombre" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+    <NavigationProperty Name="provincias" Relationship="Self.FK_pais_ciu_pro_codigo" FromRole="ciudades" ToRole="provincias" />
+  </EntityType>
+  <EntityType Name="paises">
+    <Key>
+      <PropertyRef Name="pai_codigo" />
+    </Key>
+    <Property Name="pai_codigo" Type="String" MaxLength="3" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="pai_nombre" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+    <NavigationProperty Name="provincias" Relationship="Self.FK_pais_pro_pai_codigo" FromRole="paises" ToRole="provincias" />
+  </EntityType>
+  <EntityType Name="provincias">
+    <Key>
+      <PropertyRef Name="pro_codigo" />
+      <PropertyRef Name="pro_pai_codigo" />
+    </Key>
+    <Property Name="pro_codigo" Type="String" MaxLength="3" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="pro_pai_codigo" Type="String" MaxLength="3" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="pro_nombre" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+    <NavigationProperty Name="ciudades" Relationship="Self.FK_pais_ciu_pro_codigo" FromRole="provincias" ToRole="ciudades" />
+    <NavigationProperty Name="paises" Relationship="Self.FK_pais_pro_pai_codigo" FromRole="provincias" ToRole="paises" />
+  </EntityType>
+  <Association Name="FK_pais_ciu_pro_codigo">
+    <End Role="provincias" Type="Self.provincias" Multiplicity="1" />
+    <End Role="ciudades" Type="Self.ciudades" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="provincias">
+        <PropertyRef Name="pro_codigo" />
+        <PropertyRef Name="pro_pai_codigo" />
+      </Principal>
+      <Dependent Role="ciudades">
+        <PropertyRef Name="ciu_pro_codigo" />
+        <PropertyRef Name="ciu_pro_pai_codigo" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_pais_pro_pai_codigo">
+    <End Role="paises" Type="Self.paises" Multiplicity="1" />
+    <End Role="provincias" Type="Self.provincias" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="paises">
+        <PropertyRef Name="pai_codigo" />
+      </Principal>
+      <Dependent Role="provincias">
+        <PropertyRef Name="pro_pai_codigo" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="EmpDBEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="ciudades" EntityType="Self.ciudades" />
+    <EntitySet Name="paises" EntityType="Self.paises" />
+    <EntitySet Name="provincias" EntityType="Self.provincias" />
+    <AssociationSet Name="FK_pais_ciu_pro_codigo" Association="Self.FK_pais_ciu_pro_codigo">
+      <End Role="provincias" EntitySet="provincias" />
+      <End Role="ciudades" EntitySet="ciudades" />
+    </AssociationSet>
+    <AssociationSet Name="FK_pais_pro_pai_codigo" Association="Self.FK_pais_pro_pai_codigo">
+      <End Role="paises" EntitySet="paises" />
+      <End Role="provincias" EntitySet="provincias" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

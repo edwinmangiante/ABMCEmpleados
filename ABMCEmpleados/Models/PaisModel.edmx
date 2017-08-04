@@ -1,0 +1,205 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="EmpDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="ciudades">
+          <Key>
+            <PropertyRef Name="ciu_codigo" />
+            <PropertyRef Name="ciu_pro_codigo" />
+            <PropertyRef Name="ciu_pro_pai_codigo" />
+          </Key>
+          <Property Name="ciu_codigo" Type="varchar" MaxLength="3" Nullable="false" />
+          <Property Name="ciu_pro_codigo" Type="varchar" MaxLength="3" Nullable="false" />
+          <Property Name="ciu_pro_pai_codigo" Type="varchar" MaxLength="3" Nullable="false" />
+          <Property Name="ciu_nombre" Type="varchar" MaxLength="100" Nullable="false" />
+        </EntityType>
+        <EntityType Name="paises">
+          <Key>
+            <PropertyRef Name="pai_codigo" />
+          </Key>
+          <Property Name="pai_codigo" Type="varchar" MaxLength="3" Nullable="false" />
+          <Property Name="pai_nombre" Type="varchar" MaxLength="100" Nullable="false" />
+        </EntityType>
+        <EntityType Name="provincias">
+          <Key>
+            <PropertyRef Name="pro_codigo" />
+            <PropertyRef Name="pro_pai_codigo" />
+          </Key>
+          <Property Name="pro_codigo" Type="varchar" MaxLength="3" Nullable="false" />
+          <Property Name="pro_pai_codigo" Type="varchar" MaxLength="3" Nullable="false" />
+          <Property Name="pro_nombre" Type="varchar" MaxLength="100" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_pais_ciu_pro_codigo">
+          <End Role="provincias" Type="Self.provincias" Multiplicity="1" />
+          <End Role="ciudades" Type="Self.ciudades" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="provincias">
+              <PropertyRef Name="pro_codigo" />
+              <PropertyRef Name="pro_pai_codigo" />
+            </Principal>
+            <Dependent Role="ciudades">
+              <PropertyRef Name="ciu_pro_codigo" />
+              <PropertyRef Name="ciu_pro_pai_codigo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_pais_pro_pai_codigo">
+          <End Role="paises" Type="Self.paises" Multiplicity="1" />
+          <End Role="provincias" Type="Self.provincias" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="paises">
+              <PropertyRef Name="pai_codigo" />
+            </Principal>
+            <Dependent Role="provincias">
+              <PropertyRef Name="pro_pai_codigo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="EmpDBModelStoreContainer">
+          <EntitySet Name="ciudades" EntityType="Self.ciudades" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="paises" EntityType="Self.paises" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="provincias" EntityType="Self.provincias" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_pais_ciu_pro_codigo" Association="Self.FK_pais_ciu_pro_codigo">
+            <End Role="provincias" EntitySet="provincias" />
+            <End Role="ciudades" EntitySet="ciudades" />
+          </AssociationSet>
+          <AssociationSet Name="FK_pais_pro_pai_codigo" Association="Self.FK_pais_pro_pai_codigo">
+            <End Role="paises" EntitySet="paises" />
+            <End Role="provincias" EntitySet="provincias" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="EmpDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="ciudades">
+          <Key>
+            <PropertyRef Name="ciu_codigo" />
+            <PropertyRef Name="ciu_pro_codigo" />
+            <PropertyRef Name="ciu_pro_pai_codigo" />
+          </Key>
+          <Property Name="ciu_codigo" Type="String" MaxLength="3" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="ciu_pro_codigo" Type="String" MaxLength="3" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="ciu_pro_pai_codigo" Type="String" MaxLength="3" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="ciu_nombre" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="provincias" Relationship="Self.FK_pais_ciu_pro_codigo" FromRole="ciudades" ToRole="provincias" />
+        </EntityType>
+        <EntityType Name="paises">
+          <Key>
+            <PropertyRef Name="pai_codigo" />
+          </Key>
+          <Property Name="pai_codigo" Type="String" MaxLength="3" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="pai_nombre" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="provincias" Relationship="Self.FK_pais_pro_pai_codigo" FromRole="paises" ToRole="provincias" />
+        </EntityType>
+        <EntityType Name="provincias">
+          <Key>
+            <PropertyRef Name="pro_codigo" />
+            <PropertyRef Name="pro_pai_codigo" />
+          </Key>
+          <Property Name="pro_codigo" Type="String" MaxLength="3" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="pro_pai_codigo" Type="String" MaxLength="3" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="pro_nombre" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="ciudades" Relationship="Self.FK_pais_ciu_pro_codigo" FromRole="provincias" ToRole="ciudades" />
+          <NavigationProperty Name="paises" Relationship="Self.FK_pais_pro_pai_codigo" FromRole="provincias" ToRole="paises" />
+        </EntityType>
+        <Association Name="FK_pais_ciu_pro_codigo">
+          <End Role="provincias" Type="Self.provincias" Multiplicity="1" />
+          <End Role="ciudades" Type="Self.ciudades" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="provincias">
+              <PropertyRef Name="pro_codigo" />
+              <PropertyRef Name="pro_pai_codigo" />
+            </Principal>
+            <Dependent Role="ciudades">
+              <PropertyRef Name="ciu_pro_codigo" />
+              <PropertyRef Name="ciu_pro_pai_codigo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_pais_pro_pai_codigo">
+          <End Role="paises" Type="Self.paises" Multiplicity="1" />
+          <End Role="provincias" Type="Self.provincias" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="paises">
+              <PropertyRef Name="pai_codigo" />
+            </Principal>
+            <Dependent Role="provincias">
+              <PropertyRef Name="pro_pai_codigo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="EmpDBEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="ciudades" EntityType="Self.ciudades" />
+          <EntitySet Name="paises" EntityType="Self.paises" />
+          <EntitySet Name="provincias" EntityType="Self.provincias" />
+          <AssociationSet Name="FK_pais_ciu_pro_codigo" Association="Self.FK_pais_ciu_pro_codigo">
+            <End Role="provincias" EntitySet="provincias" />
+            <End Role="ciudades" EntitySet="ciudades" />
+          </AssociationSet>
+          <AssociationSet Name="FK_pais_pro_pai_codigo" Association="Self.FK_pais_pro_pai_codigo">
+            <End Role="paises" EntitySet="paises" />
+            <End Role="provincias" EntitySet="provincias" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="EmpDBModelStoreContainer" CdmEntityContainer="EmpDBEntities">
+          <EntitySetMapping Name="ciudades">
+            <EntityTypeMapping TypeName="EmpDBModel.ciudades">
+              <MappingFragment StoreEntitySet="ciudades">
+                <ScalarProperty Name="ciu_codigo" ColumnName="ciu_codigo" />
+                <ScalarProperty Name="ciu_pro_codigo" ColumnName="ciu_pro_codigo" />
+                <ScalarProperty Name="ciu_pro_pai_codigo" ColumnName="ciu_pro_pai_codigo" />
+                <ScalarProperty Name="ciu_nombre" ColumnName="ciu_nombre" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="paises">
+            <EntityTypeMapping TypeName="EmpDBModel.paises">
+              <MappingFragment StoreEntitySet="paises">
+                <ScalarProperty Name="pai_codigo" ColumnName="pai_codigo" />
+                <ScalarProperty Name="pai_nombre" ColumnName="pai_nombre" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="provincias">
+            <EntityTypeMapping TypeName="EmpDBModel.provincias">
+              <MappingFragment StoreEntitySet="provincias">
+                <ScalarProperty Name="pro_codigo" ColumnName="pro_codigo" />
+                <ScalarProperty Name="pro_pai_codigo" ColumnName="pro_pai_codigo" />
+                <ScalarProperty Name="pro_nombre" ColumnName="pro_nombre" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Ninguno" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

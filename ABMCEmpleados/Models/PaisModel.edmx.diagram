@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="63d151775ee145d99830e08c84e1f9e1" Name="Diagram1">
+        <EntityTypeShape EntityType="EmpDBModel.ciudades" Width="1.5" PointX="6.125" PointY="1" IsExpanded="true" />
+        <EntityTypeShape EntityType="EmpDBModel.paises" Width="1.5" PointX="0.625" PointY="1.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="EmpDBModel.provincias" Width="1.5" PointX="3.375" PointY="1.125" IsExpanded="true" />
+        <AssociationConnector Association="EmpDBModel.FK_pais_ciu_pro_codigo" ManuallyRouted="false" />
+        <AssociationConnector Association="EmpDBModel.FK_pais_pro_pai_codigo" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
