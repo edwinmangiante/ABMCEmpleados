@@ -12,18 +12,13 @@ namespace ABMCEmpleados.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class paises
+    public partial class Ciudad
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public paises()
-        {
-            this.provincias = new HashSet<provincias>();
-        }
+        public string ciu_codigo { get; set; }
+        public string ciu_pro_codigo { get; set; }
+        public string ciu_pro_pai_codigo { get; set; }
+        public string ciu_nombre { get; set; }
     
-        public string pai_codigo { get; set; }
-        public string pai_nombre { get; set; }
-    
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<provincias> provincias { get; set; }
+        public virtual Provincia Provincia { get; set; }
     }
 }

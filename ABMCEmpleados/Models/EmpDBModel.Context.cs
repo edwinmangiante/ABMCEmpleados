@@ -15,8 +15,7 @@ namespace ABMCEmpleados.Models
     
     public partial class EmpDBEntities : DbContext
     {
-        public EmpDBEntities()
-            : base("name=EmpDBEntities")
+        public EmpDBEntities() : base("name=EmpDBEntities")
         {
         }
     
@@ -25,8 +24,8 @@ namespace ABMCEmpleados.Models
             throw new UnintentionalCodeFirstException();
         }
     
-        public virtual DbSet<ciudades> ciudades { get; set; }
-        public virtual DbSet<paises> paises { get; set; }
-        public virtual DbSet<provincias> provincias { get; set; }
+        public virtual DbSet<Ciudad> Ciudades { get; set; }
+        public virtual DbSet<Pais> Paises { get; set; }
+        public virtual DbSet<Provincia> Provincias { get; set; }
     }
 }

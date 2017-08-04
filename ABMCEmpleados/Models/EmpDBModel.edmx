@@ -5,7 +5,7 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
       <Schema Namespace="EmpDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
-        <EntityType Name="ciudades">
+        <EntityType Name="Ciudad">
           <Key>
             <PropertyRef Name="ciu_codigo" />
             <PropertyRef Name="ciu_pro_codigo" />
@@ -16,14 +16,14 @@
           <Property Name="ciu_pro_pai_codigo" Type="varchar" MaxLength="3" Nullable="false" />
           <Property Name="ciu_nombre" Type="varchar" MaxLength="100" Nullable="false" />
         </EntityType>
-        <EntityType Name="paises">
+        <EntityType Name="Pais">
           <Key>
             <PropertyRef Name="pai_codigo" />
           </Key>
           <Property Name="pai_codigo" Type="varchar" MaxLength="3" Nullable="false" />
           <Property Name="pai_nombre" Type="varchar" MaxLength="100" Nullable="false" />
         </EntityType>
-        <EntityType Name="provincias">
+        <EntityType Name="Provincia">
           <Key>
             <PropertyRef Name="pro_codigo" />
             <PropertyRef Name="pro_pai_codigo" />
@@ -33,42 +33,42 @@
           <Property Name="pro_nombre" Type="varchar" MaxLength="100" Nullable="false" />
         </EntityType>
         <Association Name="FK_pais_ciu_pro_codigo">
-          <End Role="provincias" Type="Self.provincias" Multiplicity="1" />
-          <End Role="ciudades" Type="Self.ciudades" Multiplicity="*" />
+          <End Role="Provincia" Type="Self.Provincia" Multiplicity="1" />
+          <End Role="Ciudad" Type="Self.Ciudad" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="provincias">
+            <Principal Role="Provincia">
               <PropertyRef Name="pro_codigo" />
               <PropertyRef Name="pro_pai_codigo" />
             </Principal>
-            <Dependent Role="ciudades">
+            <Dependent Role="Ciudad">
               <PropertyRef Name="ciu_pro_codigo" />
               <PropertyRef Name="ciu_pro_pai_codigo" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_pais_pro_pai_codigo">
-          <End Role="paises" Type="Self.paises" Multiplicity="1" />
-          <End Role="provincias" Type="Self.provincias" Multiplicity="*" />
+          <End Role="Pais" Type="Self.Pais" Multiplicity="1" />
+          <End Role="Provincia" Type="Self.Provincia" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="paises">
+            <Principal Role="Pais">
               <PropertyRef Name="pai_codigo" />
             </Principal>
-            <Dependent Role="provincias">
+            <Dependent Role="Provincia">
               <PropertyRef Name="pro_pai_codigo" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
         <EntityContainer Name="EmpDBModelStoreContainer">
-          <EntitySet Name="ciudades" EntityType="Self.ciudades" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="paises" EntityType="Self.paises" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="provincias" EntityType="Self.provincias" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Ciudad" EntityType="Self.Ciudad" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Pais" EntityType="Self.Pais" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Provincia" EntityType="Self.Provincia" Schema="dbo" store:Type="Tables" />
           <AssociationSet Name="FK_pais_ciu_pro_codigo" Association="Self.FK_pais_ciu_pro_codigo">
-            <End Role="provincias" EntitySet="provincias" />
-            <End Role="ciudades" EntitySet="ciudades" />
+            <End Role="Provincia" EntitySet="Provincia" />
+            <End Role="Ciudad" EntitySet="Ciudad" />
           </AssociationSet>
           <AssociationSet Name="FK_pais_pro_pai_codigo" Association="Self.FK_pais_pro_pai_codigo">
-            <End Role="paises" EntitySet="paises" />
-            <End Role="provincias" EntitySet="provincias" />
+            <End Role="Pais" EntitySet="Pais" />
+            <End Role="Provincia" EntitySet="Provincia" />
           </AssociationSet>
         </EntityContainer>
       </Schema>
@@ -76,7 +76,7 @@
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="EmpDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
-        <EntityType Name="ciudades">
+        <EntityType Name="Ciudad">
           <Key>
             <PropertyRef Name="ciu_codigo" />
             <PropertyRef Name="ciu_pro_codigo" />
@@ -86,17 +86,17 @@
           <Property Name="ciu_pro_codigo" Type="String" MaxLength="3" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="ciu_pro_pai_codigo" Type="String" MaxLength="3" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="ciu_nombre" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
-          <NavigationProperty Name="provincias" Relationship="Self.FK_pais_ciu_pro_codigo" FromRole="ciudades" ToRole="provincias" />
+          <NavigationProperty Name="Provincia" Relationship="Self.FK_pais_ciu_pro_codigo" FromRole="Ciudad" ToRole="Provincia" />
         </EntityType>
-        <EntityType Name="paises">
+        <EntityType Name="Pais">
           <Key>
             <PropertyRef Name="pai_codigo" />
           </Key>
           <Property Name="pai_codigo" Type="String" MaxLength="3" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="pai_nombre" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
-          <NavigationProperty Name="provincias" Relationship="Self.FK_pais_pro_pai_codigo" FromRole="paises" ToRole="provincias" />
+          <NavigationProperty Name="Provincia" Relationship="Self.FK_pais_pro_pai_codigo" FromRole="Pais" ToRole="Provincia" />
         </EntityType>
-        <EntityType Name="provincias">
+        <EntityType Name="Provincia">
           <Key>
             <PropertyRef Name="pro_codigo" />
             <PropertyRef Name="pro_pai_codigo" />
@@ -104,46 +104,46 @@
           <Property Name="pro_codigo" Type="String" MaxLength="3" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="pro_pai_codigo" Type="String" MaxLength="3" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="pro_nombre" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
-          <NavigationProperty Name="ciudades" Relationship="Self.FK_pais_ciu_pro_codigo" FromRole="provincias" ToRole="ciudades" />
-          <NavigationProperty Name="paises" Relationship="Self.FK_pais_pro_pai_codigo" FromRole="provincias" ToRole="paises" />
+          <NavigationProperty Name="Ciudad" Relationship="Self.FK_pais_ciu_pro_codigo" FromRole="Provincia" ToRole="Ciudad" />
+          <NavigationProperty Name="Pais" Relationship="Self.FK_pais_pro_pai_codigo" FromRole="Provincia" ToRole="Pais" />
         </EntityType>
         <Association Name="FK_pais_ciu_pro_codigo">
-          <End Role="provincias" Type="Self.provincias" Multiplicity="1" />
-          <End Role="ciudades" Type="Self.ciudades" Multiplicity="*" />
+          <End Role="Provincia" Type="Self.Provincia" Multiplicity="1" />
+          <End Role="Ciudad" Type="Self.Ciudad" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="provincias">
+            <Principal Role="Provincia">
               <PropertyRef Name="pro_codigo" />
               <PropertyRef Name="pro_pai_codigo" />
             </Principal>
-            <Dependent Role="ciudades">
+            <Dependent Role="Ciudad">
               <PropertyRef Name="ciu_pro_codigo" />
               <PropertyRef Name="ciu_pro_pai_codigo" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_pais_pro_pai_codigo">
-          <End Role="paises" Type="Self.paises" Multiplicity="1" />
-          <End Role="provincias" Type="Self.provincias" Multiplicity="*" />
+          <End Role="Pais" Type="Self.Pais" Multiplicity="1" />
+          <End Role="Provincia" Type="Self.Provincia" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="paises">
+            <Principal Role="Pais">
               <PropertyRef Name="pai_codigo" />
             </Principal>
-            <Dependent Role="provincias">
+            <Dependent Role="Provincia">
               <PropertyRef Name="pro_pai_codigo" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
         <EntityContainer Name="EmpDBEntities" annotation:LazyLoadingEnabled="true">
-          <EntitySet Name="ciudades" EntityType="Self.ciudades" />
-          <EntitySet Name="paises" EntityType="Self.paises" />
-          <EntitySet Name="provincias" EntityType="Self.provincias" />
+          <EntitySet Name="Ciudad" EntityType="Self.Ciudad" />
+          <EntitySet Name="Pais" EntityType="Self.Pais" />
+          <EntitySet Name="Provincia" EntityType="Self.Provincia" />
           <AssociationSet Name="FK_pais_ciu_pro_codigo" Association="Self.FK_pais_ciu_pro_codigo">
-            <End Role="provincias" EntitySet="provincias" />
-            <End Role="ciudades" EntitySet="ciudades" />
+            <End Role="Provincia" EntitySet="Provincia" />
+            <End Role="Ciudad" EntitySet="Ciudad" />
           </AssociationSet>
           <AssociationSet Name="FK_pais_pro_pai_codigo" Association="Self.FK_pais_pro_pai_codigo">
-            <End Role="paises" EntitySet="paises" />
-            <End Role="provincias" EntitySet="provincias" />
+            <End Role="Pais" EntitySet="Pais" />
+            <End Role="Provincia" EntitySet="Provincia" />
           </AssociationSet>
         </EntityContainer>
       </Schema>
@@ -152,9 +152,9 @@
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
         <EntityContainerMapping StorageEntityContainer="EmpDBModelStoreContainer" CdmEntityContainer="EmpDBEntities">
-          <EntitySetMapping Name="ciudades">
-            <EntityTypeMapping TypeName="EmpDBModel.ciudades">
-              <MappingFragment StoreEntitySet="ciudades">
+          <EntitySetMapping Name="Ciudad">
+            <EntityTypeMapping TypeName="EmpDBModel.Ciudad">
+              <MappingFragment StoreEntitySet="Ciudad">
                 <ScalarProperty Name="ciu_codigo" ColumnName="ciu_codigo" />
                 <ScalarProperty Name="ciu_pro_codigo" ColumnName="ciu_pro_codigo" />
                 <ScalarProperty Name="ciu_pro_pai_codigo" ColumnName="ciu_pro_pai_codigo" />
@@ -162,17 +162,17 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="paises">
-            <EntityTypeMapping TypeName="EmpDBModel.paises">
-              <MappingFragment StoreEntitySet="paises">
+          <EntitySetMapping Name="Pais">
+            <EntityTypeMapping TypeName="EmpDBModel.Pais">
+              <MappingFragment StoreEntitySet="Pais">
                 <ScalarProperty Name="pai_codigo" ColumnName="pai_codigo" />
                 <ScalarProperty Name="pai_nombre" ColumnName="pai_nombre" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="provincias">
-            <EntityTypeMapping TypeName="EmpDBModel.provincias">
-              <MappingFragment StoreEntitySet="provincias">
+          <EntitySetMapping Name="Provincia">
+            <EntityTypeMapping TypeName="EmpDBModel.Provincia">
+              <MappingFragment StoreEntitySet="Provincia">
                 <ScalarProperty Name="pro_codigo" ColumnName="pro_codigo" />
                 <ScalarProperty Name="pro_pai_codigo" ColumnName="pro_pai_codigo" />
                 <ScalarProperty Name="pro_nombre" ColumnName="pro_nombre" />

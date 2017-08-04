@@ -156,29 +156,29 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Models\ciudades.cs">
-      <DependentUpon>PaisModel.tt</DependentUpon>
+    <Compile Include="Models\Ciudad.cs">
+      <DependentUpon>EmpDBModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\paises.cs">
-      <DependentUpon>PaisModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\PaisModel.Context.cs">
+    <Compile Include="Models\EmpDBModel.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>PaisModel.Context.tt</DependentUpon>
+      <DependentUpon>EmpDBModel.Context.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\PaisModel.cs">
+    <Compile Include="Models\EmpDBModel.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>PaisModel.tt</DependentUpon>
+      <DependentUpon>EmpDBModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\PaisModel.Designer.cs">
+    <Compile Include="Models\EmpDBModel.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>PaisModel.edmx</DependentUpon>
+      <DependentUpon>EmpDBModel.edmx</DependentUpon>
     </Compile>
-    <Compile Include="Models\provincias.cs">
-      <DependentUpon>PaisModel.tt</DependentUpon>
+    <Compile Include="Models\Pais.cs">
+      <DependentUpon>EmpDBModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Provincia.cs">
+      <DependentUpon>EmpDBModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -189,15 +189,15 @@
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
-    <Content Include="Models\PaisModel.Context.tt">
+    <Content Include="Models\EmpDBModel.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>PaisModel.Context.cs</LastGenOutput>
-      <DependentUpon>PaisModel.edmx</DependentUpon>
+      <DependentUpon>EmpDBModel.edmx</DependentUpon>
+      <LastGenOutput>EmpDBModel.Context.cs</LastGenOutput>
     </Content>
-    <Content Include="Models\PaisModel.tt">
+    <Content Include="Models\EmpDBModel.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>PaisModel.edmx</DependentUpon>
-      <LastGenOutput>PaisModel.cs</LastGenOutput>
+      <DependentUpon>EmpDBModel.edmx</DependentUpon>
+      <LastGenOutput>EmpDBModel.cs</LastGenOutput>
     </Content>
     <Content Include="Scripts\angular-mocks.js" />
     <Content Include="Scripts\angular.js" />
@@ -207,14 +207,14 @@
     <Content Include="ApplicationInsights.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <EntityDeploy Include="Models\PaisModel.edmx">
-      <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>PaisModel.Designer.cs</LastGenOutput>
-    </EntityDeploy>
-    <Content Include="Models\PaisModel.edmx.diagram">
-      <DependentUpon>PaisModel.edmx</DependentUpon>
-    </Content>
     <Content Include="Scripts\angular.min.js.map" />
+    <EntityDeploy Include="Models\EmpDBModel.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>EmpDBModel.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <Content Include="Models\EmpDBModel.edmx.diagram">
+      <DependentUpon>EmpDBModel.edmx</DependentUpon>
+    </Content>
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
