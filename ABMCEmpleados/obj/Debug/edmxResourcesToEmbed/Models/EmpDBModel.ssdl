@@ -1,0 +1,69 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="EmpDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="Ciudad">
+    <Key>
+      <PropertyRef Name="ciu_codigo" />
+      <PropertyRef Name="ciu_pro_codigo" />
+      <PropertyRef Name="ciu_pro_pai_codigo" />
+    </Key>
+    <Property Name="ciu_codigo" Type="varchar" MaxLength="3" Nullable="false" />
+    <Property Name="ciu_pro_codigo" Type="varchar" MaxLength="3" Nullable="false" />
+    <Property Name="ciu_pro_pai_codigo" Type="varchar" MaxLength="3" Nullable="false" />
+    <Property Name="ciu_nombre" Type="varchar" MaxLength="100" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Pais">
+    <Key>
+      <PropertyRef Name="pai_codigo" />
+    </Key>
+    <Property Name="pai_codigo" Type="varchar" MaxLength="3" Nullable="false" />
+    <Property Name="pai_nombre" Type="varchar" MaxLength="100" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Provincia">
+    <Key>
+      <PropertyRef Name="pro_codigo" />
+      <PropertyRef Name="pro_pai_codigo" />
+    </Key>
+    <Property Name="pro_codigo" Type="varchar" MaxLength="3" Nullable="false" />
+    <Property Name="pro_pai_codigo" Type="varchar" MaxLength="3" Nullable="false" />
+    <Property Name="pro_nombre" Type="varchar" MaxLength="100" Nullable="false" />
+  </EntityType>
+  <Association Name="FK_pais_ciu_pro_codigo">
+    <End Role="Provincia" Type="Self.Provincia" Multiplicity="1" />
+    <End Role="Ciudad" Type="Self.Ciudad" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Provincia">
+        <PropertyRef Name="pro_codigo" />
+        <PropertyRef Name="pro_pai_codigo" />
+      </Principal>
+      <Dependent Role="Ciudad">
+        <PropertyRef Name="ciu_pro_codigo" />
+        <PropertyRef Name="ciu_pro_pai_codigo" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_pais_pro_pai_codigo">
+    <End Role="Pais" Type="Self.Pais" Multiplicity="1" />
+    <End Role="Provincia" Type="Self.Provincia" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Pais">
+        <PropertyRef Name="pai_codigo" />
+      </Principal>
+      <Dependent Role="Provincia">
+        <PropertyRef Name="pro_pai_codigo" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="EmpDBModelStoreContainer">
+    <EntitySet Name="Ciudad" EntityType="Self.Ciudad" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Pais" EntityType="Self.Pais" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Provincia" EntityType="Self.Provincia" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK_pais_ciu_pro_codigo" Association="Self.FK_pais_ciu_pro_codigo">
+      <End Role="Provincia" EntitySet="Provincia" />
+      <End Role="Ciudad" EntitySet="Ciudad" />
+    </AssociationSet>
+    <AssociationSet Name="FK_pais_pro_pai_codigo" Association="Self.FK_pais_pro_pai_codigo">
+      <End Role="Pais" EntitySet="Pais" />
+      <End Role="Provincia" EntitySet="Provincia" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

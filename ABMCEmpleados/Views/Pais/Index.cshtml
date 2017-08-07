@@ -1,1 +1,92 @@
-﻿
+﻿<script type="text/javascript" src="~/Scripts/CRUDPais.js"></script>
+
+@{
+    ViewBag.Title = "Países";
+}
+
+<h2>Países:</h2>
+
+<div>
+    @using (Html.BeginForm("Index", "Pais", FormMethod.Get))
+    {
+        @Html.TextBox("search", null, new { @class = "form-control", style = "float:left;width:300px;", placeholder = "Nombre" })
+        <div class="botonesSC">
+            <input id="searchButton" type="submit" name="submit" value="" title="Buscar" class="squareImg lupita" />
+            <p>
+                <button type="button" class="btn add" style="background-color:transparent;" title="Agregar" data-toggle="modal" data-target="#myModal" onclick="clearTextBox();">
+                    <img src="~/Content/Images/add.svg" title="Agregar" style="width:24px;height:24px;" />
+                </button>
+            </p>
+        </div>
+    }
+</div>
+
+<div ng-app="myApp">
+    <div ng-controller="myCtrl" ng-init="GetAll()" class="divList">
+        <table cellpadding="12" class="table table-bordered table-hover">
+            <tr>
+                <td class="tableHeader" style="width: 77px;">
+                    <b>Acción</b>
+                </td>
+                <td class="tableHeader" >
+                    <b>Código</b>
+                </td>
+                <td class="tableHeader" >
+                    <b>Nombre</b>
+                </td>
+            </tr>
+            <tr ng-repeat="Pais in paises">
+                <td style="text-align:center;">
+                    <a href="#" ng-click="Get(Pais)">
+                        <img src='@Url.Content("~/Content/Images/edit.svg")' style="width:24px;height:24px;" />
+                    </a>
+                    |
+                    <a href='#' ng-click="Delete(Pais)">
+                        <img src='@Url.Content("~/Content/Images/delete.svg")' style="width:24px;height:24px;" />
+                    </a>
+                </td>
+                <td>
+                    {{Pais.pai_codigo}}
+                </td>
+                <td>
+                    {{Pais.pai_nombre}}
+                </td>
+            </tr>
+        </table>
+
+        <!--Arranca el Modal para hacer todo en index.cshtml-->
+        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dissmiss="modal" onclick="dismissModal();">x</button>
+                        <h4 class="modal-title" id="myModalLabel">País</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-horizontal" role="form">
+                            <div class="form-group">
+                                <label class="control-label col-md-2">Código:</label>
+                                <div class="col-md-10">
+                                    <input type="text" class="form-control" id="inputCodigo" placeholder="Código" ng-model="CodigoPais">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-md-2">Nombre:</label>
+                                <div class="col-md-10">
+                                    <input type="text" class="form-control" id="inputNombre" placeholder="Nombre" ng-model="NombrePais">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <input type="button" id="btnSave" class="btn btn-primary" value="Agregar" ng-click="Add()" />
+                        <button type="button" class="btn btn-default" data-dissmiss="modal" onclick="dismissModal();">Cerrar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--Fin Modal-->
+
+    </div>
+    <!--Html.Hidden("DeleteEmp")-->
+</div>

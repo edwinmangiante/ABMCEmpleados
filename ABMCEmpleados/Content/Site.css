@@ -17,8 +17,45 @@
 }
 
 /* Set width on the form input elements since they're 100% wide by default */
-input,
+/*input,
 select,
 textarea {
-    max-width: 280px;
+    max-width: 300px;
+}*/
+
+#searchButton {
+    background: white url(/Content/Images/search.png) left no-repeat;
+    padding-left: 17px;
+    border: none;
+}
+
+#searchButton {
+    background: white url(/Content/Images/search.png) right no-repeat;
+    padding-right: 17px;
+    border: none;
+}
+
+.tableHeader {
+    text-align: center;
+    background-color: #428bca;
+    color: white;
+}
+
+.pagination-container {
+    width: 100%;
+    text-align: center;
+}
+
+.squareImg {
+    width: 24px;
+    height: 24px;
+}
+
+.lupita {
+    margin-top: 5px;
+}
+
+.add {
+    margin-left: 44px;
+    margin-top: -52px;
 }
