@@ -2,7 +2,7 @@
 app.controller("myCtrl", function ($scope, $http) {
     //debugger;
     $scope.Add = function () {
-        var Action = document.getElementById("btnSave").getAttribute("value");
+        var Action = $("#btnSave").val();
         if (Action == "Agregar") {
             $scope.Pais = {};
             $scope.Pais.pai_codigo = $scope.CodigoPais;
@@ -32,7 +32,7 @@ app.controller("myCtrl", function ($scope, $http) {
                 $scope.GetAll();
                 $scope.CodigoPais = "";
                 $scope.NombrePais = "";
-                document.getElementById("btnSave").setAttribute("value", "Agregar");
+                $("#btnSave").attr("value", "Agregar");
             })
         }
     };
@@ -68,7 +68,7 @@ app.controller("myCtrl", function ($scope, $http) {
         $scope.CodigoPais = Pais.pai_codigo;
         $('#inputCodigo').prop('readonly', true);
         $scope.NombrePais = Pais.pai_nombre;
-        document.getElementById("btnSave").setAttribute("value", "Actualizar");
+        $("#btnSave").attr("value", "Actualizar");
         $('#myModal').modal('show');
     }
 })
@@ -84,5 +84,5 @@ function clearTextBox() {
     $('#inputCodigo').val("");
     $('#inputCodigo').prop('readonly', false);
     $('#inputNombre').val("");
-    document.getElementById("btnSave").setAttribute("value", "Agregar");
+    $("#btnSave").attr("value", "Agregar");
 }
