@@ -67,13 +67,15 @@
                             <div class="form-group">
                                 <label class="control-label col-md-2">Código:</label>
                                 <div class="col-md-10">
-                                    <input type="text" class="form-control" id="inputCodigo" placeholder="Código" ng-model="CodigoPais">
+                                    <input type="text" class="form-control" id="inputCodigo" placeholder="Código" 
+                                           ng-model="CodigoPais" ng-required="true" ng-maxlength="3">
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label class="control-label col-md-2">Nombre:</label>
                                 <div class="col-md-10">
-                                    <input type="text" class="form-control" id="inputNombre" placeholder="Nombre" ng-model="NombrePais">
+                                    <input type="text" class="form-control" id="inputNombre" placeholder="Nombre" 
+                                           ng-model="NombrePais" ng-required="true">
                                 </div>
                             </div>
                         </div>

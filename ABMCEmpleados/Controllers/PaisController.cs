@@ -29,6 +29,30 @@ namespace ABMCEmpleados.Controllers
             }
         }
 
+        /// <summary>
+        /// Obtiene un país por código.
+        /// </summary>
+        /// <returns></returns>
+        public JsonResult GetByKey(string codigoPais)
+        {
+            //return Json(new { success = true }, JsonRequestBehavior.AllowGet);
+            if (!string.IsNullOrWhiteSpace(codigoPais))
+            {
+                using (EmpDBEntities obj = new EmpDBEntities())
+                {
+                    obj.Configuration.LazyLoadingEnabled = false;
+                    IQueryable<Pais> paises = obj.Paises.AsQueryable();
+                    Pais pais = paises.Where(x => x.pai_codigo == codigoPais).FirstOrDefault();
+                    if (pais != null && !string.IsNullOrWhiteSpace(pais.pai_codigo))
+                        return Json(new { existe = true }, JsonRequestBehavior.AllowGet);
+                    else
+                        return Json(new { existe = false }, JsonRequestBehavior.AllowGet);
+                }
+            }
+            else
+                return Json(new { existe = false }, JsonRequestBehavior.AllowGet);
+        }
+
         /// <summary>  
         /// Insert New Pais  
         /// </summary>  

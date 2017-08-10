@@ -24,8 +24,8 @@ namespace ABMCEmpleados.Models
             throw new UnintentionalCodeFirstException();
         }
     
-        public virtual DbSet<Ciudad> Ciudades { get; set; }
-        public virtual DbSet<Pais> Paises { get; set; }
-        public virtual DbSet<Provincia> Provincias { get; set; }
+        public DbSet<Ciudad> Ciudades { get; set; }
+        public DbSet<Pais> Paises { get; set; }
+        public DbSet<Provincia> Provincias { get; set; }
     }
 }
