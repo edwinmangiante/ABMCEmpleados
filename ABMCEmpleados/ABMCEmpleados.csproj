@@ -231,6 +231,7 @@
       <DependentUpon>EmpDBModel.edmx</DependentUpon>
     </Content>
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
+    <Content Include="Scripts\CRUDCiudad.js" />
     <Content Include="Scripts\CRUDPais.js" />
     <Content Include="Scripts\CRUDProvincia.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />

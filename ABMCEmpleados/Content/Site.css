@@ -41,6 +41,12 @@ textarea {
     margin-right: 20px;
 }
 
+#ddlPaisC {
+    float: right;
+    margin-top: -53px;
+    margin-right: 210px;
+}
+
 .tableHeader {
     text-align: center;
     background-color: #428bca;

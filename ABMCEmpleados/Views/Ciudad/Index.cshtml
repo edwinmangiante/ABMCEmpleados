@@ -1,1 +1,127 @@
-﻿
+﻿<script type="text/javascript" src="~/Scripts/CRUDCiudad.js"></script>
+
+@{
+    ViewBag.Title = "Ciudades";
+}
+
+<h2>Ciudades:</h2>
+
+<div ng-app="myApp">
+    <div ng-controller="myCtrl" class="divList">
+        @using (Html.BeginForm("Index", "Ciudad", FormMethod.Get))
+        {
+            @Html.TextBox("search", null, new { @class = "form-control", style = "float:left;width:300px;", placeholder = "Nombre" })
+            <div class="botonesSC">
+                <input id="searchButton" type="submit" name="submit" value="" title="Buscar" class="squareImg lupita" />
+                <p style="margin-bottom:0px;">
+                    <button type="button" class="btn add" style="background-color:transparent;" title="Agregar" data-toggle="modal" data-target="#myModal" ng-click="ClearTextBox()">
+                        <img src="~/Content/Images/add.svg" title="Agregar" style="width:24px;height:24px;" />
+                    </button>
+                </p>
+
+                <div id="ddlPaisC">
+                    <select id="dropPais" class="form-control" ng-init="currentPais = paises[0]" ng-model="currentPais"
+                            ng-options="c.pai_codigo as c.pai_nombre for c in paises" ng-change="GetAllByPais(currentPais)"></select>
+                </div>
+
+                <div id="ddlPais">
+                    <select id="dropProvincia" class="form-control" ng-init="currentProvincia = provincias[0]" ng-model="currentProvincia"
+                            ng-options="c.pro_codigo as c.pro_nombre for c in provincias" ng-change="GetAllByPaisAndProvincia(currentPais,currentProvincia)"></select>
+                </div>
+            </div>
+        }
+
+        <table cellpadding="12" class="table table-bordered table-hover">
+            <tr>
+                <td class="tableHeader" style="width: 77px;">
+                    <b>Acción</b>
+                </td>
+                <td style="display:none">
+                    <b>País</b>
+                </td>
+                <td style="display:none">
+                    <b>Provincia</b>
+                </td>
+                <td class="tableHeader">
+                    <b>Código</b>
+                </td>
+                <td class="tableHeader">
+                    <b>Nombre</b>
+                </td>
+            </tr>
+            <tr ng-repeat="Ciudad in ciudades">
+                <td style="text-align:center;">
+                    <a href="#" ng-click="Get(Ciudad)">
+                        <img src='@Url.Content("~/Content/Images/edit.svg")' style="width:24px;height:24px;" />
+                    </a>
+                    |
+                    <a href='#' ng-click="Delete(Ciudad)">
+                        <img src='@Url.Content("~/Content/Images/delete.svg")' style="width:24px;height:24px;" />
+                    </a>
+                </td>
+                <td style="display:none" id="tdPais">
+                    {{Ciudad.ciu_pro_pai_codigo}}
+                </td>
+                <td style="display:none" id="tdProvincia">
+                    {{Ciudad.ciu_pro_codigo}}
+                </td>
+                <td>
+                    {{Ciudad.ciu_codigo}}
+                </td>
+                <td>
+                    {{Ciudad.ciu_nombre}}
+                </td>
+            </tr>
+        </table>
+
+        <!--Arranca el Modal para hacer todo en index.cshtml-->
+        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dissmiss="modal" onclick="dismissModal();">x</button>
+                        <h4 class="modal-title" id="myModalLabel">Ciudad</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-horizontal" role="form">
+                            <div class="form-group">
+                                <label class="control-label col-md-2">País:</label>
+                                <div class="col-md-10">
+                                    <input type="text" class="form-control" id="inputPais" placeholder="País"
+                                           ng-model="CodigoPais" ng-required="true" ng-maxlength="3" maxlength="3">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-md-2">Provincia:</label>
+                                <div class="col-md-10">
+                                    <input type="text" class="form-control" id="inputProvincia" placeholder="Provincia"
+                                           ng-model="CodigoProvincia" ng-required="true" ng-maxlength="3" maxlength="3">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-md-2">Código:</label>
+                                <div class="col-md-10">
+                                    <input type="text" class="form-control" id="inputCodigo" placeholder="Código"
+                                           ng-model="CodigoCiudad" ng-required="true" ng-maxlength="3" maxlength="3">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-md-2">Nombre:</label>
+                                <div class="col-md-10">
+                                    <input type="text" class="form-control" id="inputNombre" placeholder="Nombre"
+                                           ng-model="NombreCiudad" ng-required="true">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <input type="button" id="btnSave" class="btn btn-primary" value="Agregar" ng-click="Add()" />
+                        <button type="button" class="btn btn-default" data-dissmiss="modal" onclick="dismissModal();">Cerrar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--Fin Modal-->
+
+    </div>
+</div>
