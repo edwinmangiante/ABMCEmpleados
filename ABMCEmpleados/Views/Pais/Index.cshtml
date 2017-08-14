@@ -6,32 +6,30 @@
 
 <h2>Países:</h2>
 
-<div>
-    @using (Html.BeginForm("Index", "Pais", FormMethod.Get))
-    {
-        @Html.TextBox("search", null, new { @class = "form-control", style = "float:left;width:300px;", placeholder = "Nombre" })
-        <div class="botonesSC">
-            <input id="searchButton" type="submit" name="submit" value="" title="Buscar" class="squareImg lupita" />
-            <p>
-                <button type="button" class="btn add" style="background-color:transparent;" title="Agregar" data-toggle="modal" data-target="#myModal" onclick="clearTextBox();">
-                    <img src="~/Content/Images/add.svg" title="Agregar" style="width:24px;height:24px;" />
-                </button>
-            </p>
-        </div>
-    }
-</div>
-
 <div ng-app="myApp">
     <div ng-controller="myCtrl" ng-init="GetAll()" class="divList">
+        @using (Html.BeginForm("Index", "Pais", FormMethod.Get))
+        {
+            @Html.TextBox("search", null, new { @class = "form-control", style = "float:left;width:300px;", placeholder = "Nombre" })
+            <div class="botonesSC">
+                <input id="searchButton" type="submit" name="submit" value="" title="Buscar" class="squareImg lupita" />
+                <p>
+                    <button type="button" class="btn add" style="background-color:transparent;" title="Agregar" data-toggle="modal" data-target="#myModal" ng-click="ClearTextBox()">
+                        <img src="~/Content/Images/add.svg" title="Agregar" style="width:24px;height:24px;" />
+                    </button>
+                </p>
+            </div>
+        }
+
         <table cellpadding="12" class="table table-bordered table-hover">
             <tr>
                 <td class="tableHeader" style="width: 77px;">
                     <b>Acción</b>
                 </td>
-                <td class="tableHeader" >
+                <td class="tableHeader">
                     <b>Código</b>
                 </td>
-                <td class="tableHeader" >
+                <td class="tableHeader">
                     <b>Nombre</b>
                 </td>
             </tr>
@@ -67,14 +65,14 @@
                             <div class="form-group">
                                 <label class="control-label col-md-2">Código:</label>
                                 <div class="col-md-10">
-                                    <input type="text" class="form-control" id="inputCodigo" placeholder="Código" 
+                                    <input type="text" class="form-control" id="inputCodigo" placeholder="Código"
                                            ng-model="CodigoPais" ng-required="true" ng-maxlength="3">
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label class="control-label col-md-2">Nombre:</label>
                                 <div class="col-md-10">
-                                    <input type="text" class="form-control" id="inputNombre" placeholder="Nombre" 
+                                    <input type="text" class="form-control" id="inputNombre" placeholder="Nombre"
                                            ng-model="NombrePais" ng-required="true">
                                 </div>
                             </div>

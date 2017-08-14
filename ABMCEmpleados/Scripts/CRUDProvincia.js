@@ -160,6 +160,21 @@ app.controller("myCtrl", function ($scope, $http) {
         $("#btnSave").attr("value", "Actualizar");
         $('#myModal').modal('show');
     }
+
+    //limpia los textbox.
+    $scope.ClearTextBox = function () {
+        //debugger;
+        var codigoPais = $('#tdPais').text();
+        $('#inputPais').val(codigoPais.trim());
+        $('#inputPais').prop('readonly', true);
+        $scope.CodigoPais = codigoPais.trim();
+        $('#inputCodigo').val("");
+        $('#inputCodigo').prop('readonly', false);
+        $scope.CodigoProvincia = "";
+        $('#inputNombre').val("");
+        $scope.NombreProvincia = "";
+        $("#btnSave").attr("value", "Agregar");
+    }
 })
 
 //función para validar que los campos esten completos
@@ -184,15 +199,4 @@ function Validate() {
 //esconde el modal cuando se hace click en el botón cerrar o en la cruz.
 function dismissModal() {
     $('#myModal').modal('hide');
-}
-
-//limpia los textbox.
-function clearTextBox(codigoPais) {
-    $('#inputPais').val("");
-    $('#inputPais').val(codigoPais.trim());
-    $('#inputPais').prop('readonly', true);
-    $('#inputCodigo').val("");
-    $('#inputCodigo').prop('readonly', false);
-    $('#inputNombre').val("");
-    $("#btnSave").attr("value", "Agregar");
 }

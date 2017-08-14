@@ -122,7 +122,19 @@ app.controller("myCtrl", function ($scope, $http) {
         $scope.NombrePais = Pais.pai_nombre;
         $("#btnSave").attr("value", "Actualizar");
         $('#myModal').modal('show');
-    }
+    };
+
+    //limpia los textbox.
+    $scope.ClearTextBox = function () {
+        //console.log("llegue!!");
+        //debugger;
+        $('#inputCodigo').val("");
+        $('#inputCodigo').prop('readonly', false);
+        $scope.CodigoPais = "";
+        $('#inputNombre').val("");
+        $scope.NombrePais = "";
+        $("#btnSave").attr("value", "Agregar");
+    };
 })
 
 //función para validar que los campos esten completos
@@ -144,13 +156,4 @@ function Validate() {
 //esconde el modal cuando se hace click en el botón cerrar o en la cruz.
 function dismissModal() {
     $('#myModal').modal('hide');
-}
-
-//limpia los textbox.
-function clearTextBox() {
-    //console.log("llegue!!");
-    $('#inputCodigo').val("");
-    $('#inputCodigo').prop('readonly', false);
-    $('#inputNombre').val("");
-    $("#btnSave").attr("value", "Agregar");
 }
