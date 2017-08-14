@@ -31,48 +31,52 @@
             </div>
         }
 
-        <table cellpadding="12" class="table table-bordered table-hover">
-            <tr>
-                <td class="tableHeader" style="width: 77px;">
-                    <b>Acción</b>
-                </td>
-                <td style="display:none">
-                    <b>País</b>
-                </td>
-                <td style="display:none">
-                    <b>Provincia</b>
-                </td>
-                <td class="tableHeader">
-                    <b>Código</b>
-                </td>
-                <td class="tableHeader">
-                    <b>Nombre</b>
-                </td>
-            </tr>
-            <tr ng-repeat="Ciudad in ciudades">
-                <td style="text-align:center;">
-                    <a href="#" ng-click="Get(Ciudad)">
-                        <img src='@Url.Content("~/Content/Images/edit.svg")' style="width:24px;height:24px;" />
-                    </a>
-                    |
-                    <a href='#' ng-click="Delete(Ciudad)">
-                        <img src='@Url.Content("~/Content/Images/delete.svg")' style="width:24px;height:24px;" />
-                    </a>
-                </td>
-                <td style="display:none" id="tdPais">
-                    {{Ciudad.ciu_pro_pai_codigo}}
-                </td>
-                <td style="display:none" id="tdProvincia">
-                    {{Ciudad.ciu_pro_codigo}}
-                </td>
-                <td>
-                    {{Ciudad.ciu_codigo}}
-                </td>
-                <td>
-                    {{Ciudad.ciu_nombre}}
-                </td>
-            </tr>
-        </table>
+        <div class="table-responsive table-Item">
+            <table cellpadding="12" class="table table-bordered table-hover">
+                <tr>
+                    <td class="tableHeader" style="width: 77px;">
+                        <b>Acción</b>
+                    </td>
+                    <td style="display:none">
+                        <b>País</b>
+                    </td>
+                    <td style="display:none">
+                        <b>Provincia</b>
+                    </td>
+                    <td class="tableHeader">
+                        <b>Código</b>
+                    </td>
+                    <td class="tableHeader">
+                        <b>Nombre</b>
+                    </td>
+                </tr>
+                <tr ng-repeat="Ciudad in ciudades">
+                    <td style="text-align:center;">
+                        <a href="#" ng-click="Get(Ciudad)">
+                            <img src='@Url.Content("~/Content/Images/edit.svg")' style="width:24px;height:24px;" />
+                        </a>
+                        |
+                        <a href='#' ng-click="Delete(Ciudad)">
+                            <img src='@Url.Content("~/Content/Images/delete.svg")' style="width:24px;height:24px;" />
+                        </a>
+                    </td>
+                    <td style="display:none" id="tdPais">
+                        {{Ciudad.ciu_pro_pai_codigo}}
+                    </td>
+                    <td style="display:none" id="tdProvincia">
+                        {{Ciudad.ciu_pro_codigo}}
+                    </td>
+                    <td>
+                        {{Ciudad.ciu_codigo}}
+                    </td>
+                    <td>
+                        {{Ciudad.ciu_nombre}}
+                    </td>
+                </tr>
+            </table>
+
+            <!--Paginador-->
+        </div>
 
         <!--Arranca el Modal para hacer todo en index.cshtml-->
         <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">

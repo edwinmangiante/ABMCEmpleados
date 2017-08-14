@@ -189,11 +189,11 @@ app.controller("myCtrl", function ($scope, $http) {
     //limpia los textbox.
     $scope.ClearTextBox = function () {
         //debugger;
-        var codigoPais = $('#tdPais').text();
+        var codigoPais = $scope.currentPais;
         $('#inputPais').val(codigoPais.trim());
         $('#inputPais').prop('readonly', true);
         $scope.CodigoPais = codigoPais.trim();
-        var codigoProvincia = $('#tdProvincia').text();
+        var codigoProvincia = $scope.currentProvincia;
         $('#inputProvincia').val(codigoProvincia.trim());
         $('#inputProvincia').prop('readonly', true);
         $scope.CodigoProvincia = codigoProvincia.trim();
