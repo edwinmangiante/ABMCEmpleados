@@ -39,12 +39,14 @@ textarea {
     float: right;
     margin-top: -53px;
     margin-right: 20px;
+    width: 250px;
 }
 
 #ddlPaisC {
     float: right;
     margin-top: -53px;
-    margin-right: 210px;
+    margin-right: 275px;
+    width: 250px;
 }
 
 .tableHeader {
