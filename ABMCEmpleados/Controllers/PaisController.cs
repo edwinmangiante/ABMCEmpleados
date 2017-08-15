@@ -19,17 +19,20 @@ namespace ABMCEmpleados.Controllers
         /// Obtiene todos los Países cargados en la BD
         /// </summary>
         /// <returns></returns>
-        public JsonResult GetAll()
+        public JsonResult GetAll(string filterNombre)
         {
-            string sortOrder = Request.QueryString["sortOrder"];
+            /*string sortOrder = Request.QueryString["sortOrder"];
             ViewBag.SortingCodigo = String.IsNullOrEmpty(sortOrder) ? "codigoDes" : "";
-            ViewBag.SortingNombre = sortOrder == "nombre" ? "nombreDes" : "nombre";
+            ViewBag.SortingNombre = sortOrder == "nombre" ? "nombreDes" : "nombre";*/
 
             using (EmpDBEntities obj = new EmpDBEntities())
             {
                 obj.Configuration.LazyLoadingEnabled = false;
                 IQueryable<Pais> paises = obj.Paises.OrderBy(x => x.pai_codigo).AsQueryable();
-                switch (sortOrder)
+                if (!string.IsNullOrWhiteSpace(filterNombre))
+                    paises = paises.Where(x => x.pai_nombre.Contains(filterNombre)).OrderBy(x => x.pai_codigo);
+
+                /*switch (sortOrder)
                 {
                     case "codigoDes":
                         paises = paises.OrderByDescending(x => x.pai_codigo);
@@ -43,7 +46,7 @@ namespace ABMCEmpleados.Controllers
                     default:
                         paises = paises.OrderBy(x => x.pai_codigo);
                         break;
-                }
+                }*/
                 return Json(paises.ToList(), JsonRequestBehavior.AllowGet);
             }
         }

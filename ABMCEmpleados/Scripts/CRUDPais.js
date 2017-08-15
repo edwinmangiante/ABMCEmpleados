@@ -93,9 +93,11 @@ app.controller("myCtrl", function ($scope, $http) {
 
     $scope.GetAll = function () {
         //debugger;
+        var search = $scope.searchNombre;
         $http({
             method: "GET",
-            url: "/Pais/GetAll"
+            url: "/Pais/GetAll",
+            params: ({ filterNombre: search })
         }).then(function (response) {
             //console.log(response);
             $scope.paises = response.data;
