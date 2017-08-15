@@ -1,5 +1,6 @@
 ﻿var app = angular.module("myApp", []);
 app.controller("myCtrl", function ($scope, $http) {
+    $scope.loading = true;
     //debugger;
     $http({
         method: 'GET',
@@ -10,6 +11,7 @@ app.controller("myCtrl", function ($scope, $http) {
         $scope.currentPais = $scope.paises[0].pai_codigo;
         $scope.GetAllByPais($scope.paises[0].pai_codigo);
     }).catch(function (reason) {
+        $scope.loading = false;
         console.log(reason);
         alert("Ocurrió un error al intentar obtener los países.");
     })
@@ -26,6 +28,7 @@ app.controller("myCtrl", function ($scope, $http) {
             $scope.currentProvincia = $scope.provincias[0].pro_codigo;
             $scope.GetAllByPaisAndProvincia($scope.provincias[0].pro_pai_codigo, $scope.provincias[0].pro_codigo);
         }).catch(function (reason) {
+            $scope.loading = false;
             console.log(reason);
             alert("Ocurrió un error al intentar obtener las provincias.");
         })
@@ -70,6 +73,7 @@ app.controller("myCtrl", function ($scope, $http) {
                                 $('#myModal').modal('hide');
                             })
                         } else {
+                            $scope.loading = false;
                             alert("El código de la ciudad ingresado ya existe.");
                         }
                     },
@@ -78,6 +82,7 @@ app.controller("myCtrl", function ($scope, $http) {
                         console.log(status);
                         console.log(error);
                         a = xhr.responseText;
+                        $scope.loading = false;
                         alert("Ocurrió un error al intentar verificar el código de ciudad.");
                     }
                 })
@@ -115,6 +120,7 @@ app.controller("myCtrl", function ($scope, $http) {
                                 $('#myModal').modal('hide');
                             })
                         } else {
+                            $scope.loading = false;
                             alert("El código de ciudad ingresado no existe.");
                         }
                     },
@@ -123,6 +129,7 @@ app.controller("myCtrl", function ($scope, $http) {
                         console.log(status);
                         console.log(error);
                         a = xhr.responseText;
+                        $scope.loading = false;
                         alert("Ocurrió un error al intentar verificar el código de ciudad.");
                     }
                 })
@@ -138,8 +145,10 @@ app.controller("myCtrl", function ($scope, $http) {
         }).then(function (response) {
             //console.log(response);
             $scope.ciudades = response.data;
+            $scope.loading = false;
         }).catch(function (reason) {
             console.log(reason);
+            $scope.loading = false;
             alert("Ocurrió un error al intentar obtener las ciudades.");
         })
     };
@@ -153,8 +162,10 @@ app.controller("myCtrl", function ($scope, $http) {
         }).then(function (response) {
             //console.log(response);
             $scope.ciudades = response.data;
+            $scope.loading = false;
         }).catch(function (reason) {
             console.log(reason);
+            $scope.loading = false;
             alert("Ocurrió un error al intentar obtener las ciudades por país y provincia.");
         })
     };
@@ -184,6 +195,7 @@ app.controller("myCtrl", function ($scope, $http) {
         $scope.NombreCiudad = Ciudad.ciu_nombre;
         $("#btnSave").attr("value", "Actualizar");
         $('#myModal').modal('show');
+        $scope.loading = false;
     }
 
     //limpia los textbox.
@@ -203,6 +215,7 @@ app.controller("myCtrl", function ($scope, $http) {
         $('#inputNombre').val("");
         $scope.NombreCiudad = "";
         $("#btnSave").attr("value", "Agregar");
+        $scope.loading = false;
     }
 })
 

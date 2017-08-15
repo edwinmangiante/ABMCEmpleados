@@ -1,5 +1,6 @@
 ﻿var app = angular.module("myApp", []);
 app.controller("myCtrl", function ($scope, $http) {
+    $scope.loading = true;
     //debugger;
     $http({
         method: 'GET',
@@ -10,6 +11,7 @@ app.controller("myCtrl", function ($scope, $http) {
         $scope.currentPais = $scope.paises[0].pai_codigo;
         $scope.GetAllByPais($scope.paises[0].pai_codigo);
     }).catch(function (reason) {
+        $scope.loading = false;
         console.log(reason);
         alert("Ocurrió un error al intentar obtener los países.");
     })
@@ -51,10 +53,12 @@ app.controller("myCtrl", function ($scope, $http) {
                                 $('#myModal').modal('hide');
                             })
                         } else {
+                            $scope.loading = false;
                             alert("El código de provincia ingresado ya existe.");
                         }
                     },
                     error: function (xhr, status, error) {
+                        $scope.loading = false;
                         console.log(xhr);
                         console.log(status);
                         console.log(error);
@@ -92,10 +96,12 @@ app.controller("myCtrl", function ($scope, $http) {
                                 $('#myModal').modal('hide');
                             })
                         } else {
+                            $scope.loading = false;
                             alert("El código de provincia ingresado no existe.");
                         }
                     },
                     error: function (xhr, status, error) {
+                        $scope.loading = false;
                         console.log(xhr);
                         console.log(status);
                         console.log(error);
@@ -114,8 +120,10 @@ app.controller("myCtrl", function ($scope, $http) {
             url: "/Provincia/GetAll"
         }).then(function (response) {
             //console.log(response);
+            $scope.loading = false;
             $scope.provincias = response.data;
         }).catch(function (reason) {
+            $scope.loading = false;
             console.log(reason);
             alert("Ocurrió un error al intentar obtener las provincias.");
         })
@@ -130,8 +138,10 @@ app.controller("myCtrl", function ($scope, $http) {
         }).then(function (response) {
             //console.log(response);
             $scope.provincias = response.data;
+            $scope.loading = false;
         }).catch(function (reason) {
             console.log(reason);
+            $scope.loading = false;
             alert("Ocurrió un error al intentar obtener las provincias por país.");
         })
     };
@@ -159,6 +169,7 @@ app.controller("myCtrl", function ($scope, $http) {
         $scope.NombreProvincia = Provincia.pro_nombre;
         $("#btnSave").attr("value", "Actualizar");
         $('#myModal').modal('show');
+        $scope.loading = false;
     }
 
     //limpia los textbox.
@@ -174,6 +185,7 @@ app.controller("myCtrl", function ($scope, $http) {
         $('#inputNombre').val("");
         $scope.NombreProvincia = "";
         $("#btnSave").attr("value", "Agregar");
+        $scope.loading = false;
     }
 })
 
