@@ -18,13 +18,13 @@ app.controller("myCtrl", function ($scope, $http) {
 
     //debugger;
     $scope.Add = function () {
-        var isValid = Validate();
+        var isValid = $scope.Validate();
 
         if (isValid == true) {
             var Action = $("#btnSave").val();
             if (Action == "Agregar") {
-                var pro_pai_codigo = $('#inputPais').val().trim();
-                var pro_codigo = $('#inputCodigo').val().trim();
+                var pro_pai_codigo = $scope.CodigoPais.toUpperCase();
+                var pro_codigo = $scope.CodigoProvincia.toUpperCase();
                 $.ajax({
                     type: "GET",
                     url: "/Provincia/GetByKey",
@@ -32,12 +32,11 @@ app.controller("myCtrl", function ($scope, $http) {
                     dataType: "json",
                     data: ({ codigoPais: pro_pai_codigo, codigoProvincia: pro_codigo }),
                     success: function (data) {
-                        debugger;
+                        //debugger;
                         if (data.existe == false) {
                             $scope.Provincia = {};
-                            console.log($('#inputPais').val());
-                            $scope.Provincia.pro_pai_codigo = $scope.currentPais;
-                            $scope.Provincia.pro_codigo = $scope.CodigoProvincia;
+                            $scope.Provincia.pro_pai_codigo = $scope.CodigoPais.toUpperCase();
+                            $scope.Provincia.pro_codigo = $scope.CodigoProvincia.toUpperCase();
                             $scope.Provincia.pro_nombre = $scope.NombreProvincia;
                             $http({
                                 method: "POST",
@@ -67,8 +66,8 @@ app.controller("myCtrl", function ($scope, $http) {
                     }
                 })
             } else {
-                var pro_pai_codigo = $('#inputPais').val().trim();
-                var pro_codigo = $('#inputCodigo').val().trim();
+                var pro_pai_codigo = $scope.CodigoPais.toUpperCase();
+                var pro_codigo = $scope.CodigoProvincia.toUpperCase();
                 $.ajax({
                     type: "GET",
                     url: "/Provincia/GetByKey",
@@ -78,8 +77,8 @@ app.controller("myCtrl", function ($scope, $http) {
                     success: function (data) {
                         if (data.existe == true) {
                             $scope.Provincia = {};
-                            $scope.Provincia.pro_pai_codigo = $scope.currentPais;
-                            $scope.Provincia.pro_codigo = $scope.CodigoProvincia;
+                            $scope.Provincia.pro_pai_codigo = $scope.CodigoPais.toUpperCase();
+                            $scope.Provincia.pro_codigo = $scope.CodigoProvincia.toUpperCase();
                             $scope.Provincia.pro_nombre = $scope.NombreProvincia;
                             $http({
                                 method: "POST",
@@ -135,7 +134,7 @@ app.controller("myCtrl", function ($scope, $http) {
         $http({
             method: "GET",
             url: "/Provincia/GetAllByPais",
-            params: ({ codigoPais: pai_codigo, filterNombre: search })
+            params: ({ codigoPais: pai_codigo.toUpperCase(), filterNombre: search })
         }).then(function (response) {
             //console.log(response);
             $scope.provincias = response.data;
@@ -163,9 +162,9 @@ app.controller("myCtrl", function ($scope, $http) {
     };
 
     $scope.Get = function (Provincia) {
-        $scope.CodigoPais = Provincia.pro_pai_codigo;
+        $scope.CodigoPais = Provincia.pro_pai_codigo.toUpperCase();
         $('#inputPais').prop('readonly', true);
-        $scope.CodigoProvincia = Provincia.pro_codigo;
+        $scope.CodigoProvincia = Provincia.pro_codigo.toUpperCase();
         $('#inputCodigo').prop('readonly', true);
         $scope.NombreProvincia = Provincia.pro_nombre;
         $("#btnSave").attr("value", "Actualizar");
@@ -173,10 +172,29 @@ app.controller("myCtrl", function ($scope, $http) {
         $scope.loading = false;
     }
 
+    //función para validar que los campos esten completos
+    $scope.Validate = function () {
+        var isValid = true;
+        if ($('#inputPais').val().trim() == "" || $scope.CodigoPais == "") {
+            alert("Debe completar el código del país de la provincia.");
+            isValid = false;
+        }
+        if ($('#inputCodigo').val().trim() == "" || $scope.CodigoProvincia == "") {
+            alert("Debe completar el código de provincia.");
+            isValid = false;
+        }
+        if ($('#inputNombre').val().trim() == "" || $scope.NombreProvincia == "") {
+            alert("Debe completar el nombre del provincia.");
+            isValid = false;
+        }
+
+        return isValid;
+    }
+
     //limpia los textbox.
     $scope.ClearTextBox = function () {
         //debugger;
-        var codigoPais = $scope.currentPais;
+        var codigoPais = $scope.currentPais.toUpperCase();
         $('#inputPais').val(codigoPais.trim());
         $('#inputPais').prop('readonly', true);
         $scope.CodigoPais = codigoPais.trim();
@@ -187,35 +205,16 @@ app.controller("myCtrl", function ($scope, $http) {
         $scope.NombreProvincia = "";
         $("#btnSave").attr("value", "Agregar");
         $scope.loading = false;
-    }
+    };
 
     //Ordena ASC y DESC
     $scope.Sort = function (keyname) {
         $scope.sortKey = keyname;
         $scope.reverse = !$scope.reverse;
+    };
+
+    //esconde el modal cuando se hace click en el botón cerrar o en la cruz.
+    $scope.DismissModal = function () {
+        $('#myModal').modal('hide');
     }
 })
-
-//función para validar que los campos esten completos
-function Validate() {
-    var isValid = true;
-    if ($('#inputPais').val().trim() == "") {
-        alert("Debe completar el código del país de la provincia.");
-        isValid = false;
-    }
-    if ($('#inputCodigo').val().trim() == "") {
-        alert("Debe completar el código de provincia.");
-        isValid = false;
-    }
-    if ($('#inputNombre').val().trim() == "") {
-        alert("Debe completar el nombre del provincia.");
-        isValid = false;
-    }
-
-    return isValid;
-}
-
-//esconde el modal cuando se hace click en el botón cerrar o en la cruz.
-function dismissModal() {
-    $('#myModal').modal('hide');
-}

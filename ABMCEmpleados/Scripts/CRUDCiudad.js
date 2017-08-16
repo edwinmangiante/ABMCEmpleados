@@ -36,14 +36,14 @@ app.controller("myCtrl", function ($scope, $http) {
 
     //debugger;
     $scope.Add = function () {
-        var isValid = Validate();
+        var isValid = $scope.Validate();
 
         if (isValid == true) {
             var Action = $("#btnSave").val();
             if (Action == "Agregar") {
-                var ciu_pro_pai_codigo = $('#inputPais').val().trim();
-                var ciu_pro_codigo = $('#inputProvincia').val().trim();
-                var ciu_codigo = $('#inputCodigo').val().trim();
+                var ciu_pro_pai_codigo = $scope.CodigoPais.toUpperCase();
+                var ciu_pro_codigo = $scope.CodigoProvincia.toUpperCase();
+                var ciu_codigo = $scope.CodigoCiudad.toUpperCase();
                 $.ajax({
                     type: "GET",
                     url: "/Ciudad/GetByKey",
@@ -54,9 +54,9 @@ app.controller("myCtrl", function ($scope, $http) {
                         if (data.existe == false) {
                             $scope.Ciudad = {};
                             //console.log($('#inputPais').val());
-                            $scope.Ciudad.ciu_pro_pai_codigo = $scope.currentPais;
-                            $scope.Ciudad.ciu_pro_codigo = $scope.currentProvincia;
-                            $scope.Ciudad.ciu_codigo = $scope.CodigoCiudad;
+                            $scope.Ciudad.ciu_pro_pai_codigo = $scope.CodigoPais.toUpperCase();
+                            $scope.Ciudad.ciu_pro_codigo = $scope.CodigoProvincia.toUpperCase();
+                            $scope.Ciudad.ciu_codigo = $scope.CodigoCiudad.toUpperCase();
                             $scope.Ciudad.ciu_nombre = $scope.NombreCiudad;
                             $http({
                                 method: "POST",
@@ -87,9 +87,9 @@ app.controller("myCtrl", function ($scope, $http) {
                     }
                 })
             } else {
-                var ciu_pro_pai_codigo = $('#inputPais').val().trim();
-                var ciu_pro_codigo = $('#inputProvincia').val().trim();
-                var ciu_codigo = $('#inputCodigo').val().trim();
+                var ciu_pro_pai_codigo = $scope.CodigoPais.toUpperCase();
+                var ciu_pro_codigo = $scope.CodigoProvincia.toUpperCase();
+                var ciu_codigo = $scope.CodigoCiudad.toUpperCase();
                 $.ajax({
                     type: "GET",
                     url: "/Ciudad/GetByKey",
@@ -100,9 +100,9 @@ app.controller("myCtrl", function ($scope, $http) {
                         if (data.existe == true) {
                             $scope.Ciudad = {};
                             //console.log($('#inputPais').val());
-                            $scope.Ciudad.ciu_pro_pai_codigo = $scope.currentPais;
-                            $scope.Ciudad.ciu_pro_codigo = $scope.currentProvincia;
-                            $scope.Ciudad.ciu_codigo = $scope.CodigoCiudad;
+                            $scope.Ciudad.ciu_pro_pai_codigo = $scope.CodigoPais.toUpperCase();
+                            $scope.Ciudad.ciu_pro_codigo = $scope.CodigoProvincia.toUpperCase();
+                            $scope.Ciudad.ciu_codigo = $scope.CodigoCiudad.toUpperCase();
                             $scope.Ciudad.ciu_nombre = $scope.NombreCiudad;
                             $http({
                                 method: "POST",
@@ -187,16 +187,39 @@ app.controller("myCtrl", function ($scope, $http) {
     };
 
     $scope.Get = function (Ciudad) {
-        $scope.CodigoPais = Ciudad.ciu_pro_pai_codigo;
+        $scope.CodigoPais = Ciudad.ciu_pro_pai_codigo.toUpperCase();
         $('#inputPais').prop('readonly', true);
-        $scope.CodigoProvincia = Ciudad.ciu_pro_codigo;
+        $scope.CodigoProvincia = Ciudad.ciu_pro_codigo.toUpperCase();
         $('#inputProvincia').prop('readonly', true);
-        $scope.CodigoCiudad = Ciudad.ciu_codigo;
+        $scope.CodigoCiudad = Ciudad.ciu_codigo.toUpperCase();
         $('#inputCodigo').prop('readonly', true);
         $scope.NombreCiudad = Ciudad.ciu_nombre;
         $("#btnSave").attr("value", "Actualizar");
         $('#myModal').modal('show');
         $scope.loading = false;
+    };
+
+    //función para validar que los campos esten completos
+    $scope.Validate = function () {
+        var isValid = true;
+        if ($('#inputPais').val().trim() == "" || $scope.CodigoPais == "") {
+            alert("Debe completar el código del país al que pertenece la ciudad.");
+            isValid = false;
+        }
+        if ($('#inputProvincia').val().trim() == "" || $scope.CodigoProvincia == "") {
+            alert("Debe completar el código de la provincia a la que pertenece la ciudad.");
+            isValid = false;
+        }
+        if ($('#inputCodigo').val().trim() == "" || $scope.CodigoCiudad == "") {
+            alert("Debe completar el código de la ciudad.");
+            isValid = false;
+        }
+        if ($('#inputNombre').val().trim() == "" || $scope.NombreCiudad == "") {
+            alert("Debe completar el nombre de la ciudad.");
+            isValid = false;
+        }
+
+        return isValid;
     }
 
     //limpia los textbox.
@@ -217,39 +240,16 @@ app.controller("myCtrl", function ($scope, $http) {
         $scope.NombreCiudad = "";
         $("#btnSave").attr("value", "Agregar");
         $scope.loading = false;
-    }
+    };
 
     //Ordena ASC y DESC
     $scope.Sort = function (keyname) {
         $scope.sortKey = keyname;
         $scope.reverse = !$scope.reverse;
-    }
+    };
+
+    //esconde el modal cuando se hace click en el botón cerrar o en la cruz.
+    $scope.DismissModal = function () {
+        $('#myModal').modal('hide');
+    };
 })
-
-//función para validar que los campos esten completos
-function Validate() {
-    var isValid = true;
-    if ($('#inputPais').val().trim() == "") {
-        alert("Debe completar el código del país al que pertenece la ciudad.");
-        isValid = false;
-    }
-    if ($('#inputProvincia').val().trim() == "") {
-        alert("Debe completar el código de la provincia a la que pertenece la ciudad.");
-        isValid = false;
-    }
-    if ($('#inputCodigo').val().trim() == "") {
-        alert("Debe completar el código de la ciudad.");
-        isValid = false;
-    }
-    if ($('#inputNombre').val().trim() == "") {
-        alert("Debe completar el nombre de la ciudad.");
-        isValid = false;
-    }
-
-    return isValid;
-}
-
-//esconde el modal cuando se hace click en el botón cerrar o en la cruz.
-function dismissModal() {
-    $('#myModal').modal('hide');
-}

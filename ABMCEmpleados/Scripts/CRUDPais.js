@@ -3,12 +3,12 @@ app.controller("myCtrl", function ($scope, $http) {
     $scope.loading = true;
     //debugger;
     $scope.Add = function () {
-        var isValid = Validate();
+        var isValid = $scope.Validate();
 
         if (isValid == true) {
             var Action = $("#btnSave").val();
             if (Action == "Agregar") {
-                var pai_codigo = $('#inputCodigo').val().trim();
+                var pai_codigo = $scope.CodigoPais.toUpperCase();
                 $.ajax({
                     type: "GET",
                     url: "/Pais/GetByKey",
@@ -18,7 +18,7 @@ app.controller("myCtrl", function ($scope, $http) {
                     success: function (data) {
                         if (data.existe == false) {
                             $scope.Pais = {};
-                            $scope.Pais.pai_codigo = $scope.CodigoPais;
+                            $scope.Pais.pai_codigo = $scope.CodigoPais.toUpperCase();
                             $scope.Pais.pai_nombre = $scope.NombrePais;
                             $http({
                                 method: "POST",
@@ -47,7 +47,7 @@ app.controller("myCtrl", function ($scope, $http) {
                     }
                 })
             } else {
-                var pai_codigo = $('#inputCodigo').val().trim();
+                var pai_codigo = $scope.CodigoPais.toUpperCase();
                 $.ajax({
                     type: "GET",
                     url: "/Pais/GetByKey",
@@ -58,7 +58,7 @@ app.controller("myCtrl", function ($scope, $http) {
                         if (data.existe == true) {
                             console.log("verdadero");
                             $scope.Pais = {};
-                            $scope.Pais.pai_codigo = $scope.CodigoPais;
+                            $scope.Pais.pai_codigo = $scope.CodigoPais.toUpperCase();
                             $scope.Pais.pai_nombre = $scope.NombrePais;
                             $http({
                                 method: "POST",
@@ -126,13 +126,30 @@ app.controller("myCtrl", function ($scope, $http) {
 
     $scope.Get = function (Pais) {
         //console.log(Pais);
-        $scope.CodigoPais = Pais.pai_codigo;
+        $scope.CodigoPais = Pais.pai_codigo.toUpperCase();
         $('#inputCodigo').prop('readonly', true);
         $scope.NombrePais = Pais.pai_nombre;
         $("#btnSave").attr("value", "Actualizar");
         $('#myModal').modal('show');
         $scope.loading = false;
     };
+
+    //función para validar que los campos esten completos
+    $scope.Validate = function () {
+        //debugger;
+        var isValid = true;
+        var a = "";
+        if ($('#inputCodigo').val().trim() == "" || $scope.CodigoPais == '') {
+            alert("Debe completar el código de país.");
+            isValid = false;
+        }
+        if ($('#inputNombre').val().trim() == "" || $scope.NombrePais == '') {
+            alert("Debe completar el nombre del país.");
+            isValid = false;
+        }
+
+        return isValid;
+    }
 
     //limpia los textbox.
     $scope.ClearTextBox = function () {
@@ -151,26 +168,10 @@ app.controller("myCtrl", function ($scope, $http) {
     $scope.Sort = function (keyname) {
         $scope.sortKey = keyname;
         $scope.reverse = !$scope.reverse;
+    };
+
+    //esconde el modal cuando se hace click en el botón cerrar o en la cruz.
+    $scope.DismissModal = function () {
+        $('#myModal').modal('hide');
     }
 })
-
-//función para validar que los campos esten completos
-function Validate() {
-    var isValid = true;
-    var a = "";
-    if ($('#inputCodigo').val().trim() == "") {
-        alert("Debe completar el código de país.");
-        isValid = false;
-    }
-    if ($('#inputNombre').val().trim() == "") {
-        alert("Debe completar el nombre del país.");
-        isValid = false;
-    }
-
-    return isValid;
-}
-
-//esconde el modal cuando se hace click en el botón cerrar o en la cruz.
-function dismissModal() {
-    $('#myModal').modal('hide');
-}
