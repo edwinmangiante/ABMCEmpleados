@@ -28,9 +28,9 @@ namespace ABMCEmpleados.Controllers
             using (EmpDBEntities obj = new EmpDBEntities())
             {
                 obj.Configuration.LazyLoadingEnabled = false;
-                IQueryable<Pais> paises = obj.Paises.OrderBy(x => x.pai_codigo).AsQueryable();
+                IQueryable<Pais> paises = obj.Paises.AsQueryable();
                 if (!string.IsNullOrWhiteSpace(filterNombre))
-                    paises = paises.Where(x => x.pai_nombre.Contains(filterNombre)).OrderBy(x => x.pai_codigo);
+                    paises = paises.Where(x => x.pai_nombre.Contains(filterNombre));
 
                 /*switch (sortOrder)
                 {
@@ -47,7 +47,7 @@ namespace ABMCEmpleados.Controllers
                         paises = paises.OrderBy(x => x.pai_codigo);
                         break;
                 }*/
-                return Json(paises.ToList(), JsonRequestBehavior.AllowGet);
+                return Json(paises.OrderBy(x => x.pai_codigo).ToList(), JsonRequestBehavior.AllowGet);
             }
         }
 

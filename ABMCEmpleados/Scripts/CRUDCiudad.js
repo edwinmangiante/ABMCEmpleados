@@ -155,10 +155,11 @@ app.controller("myCtrl", function ($scope, $http) {
 
     $scope.GetAllByPaisAndProvincia = function (pai_codigo, pro_codigo) {
         //debugger;
+        var search = $scope.searchNombre;
         $http({
             method: "GET",
             url: "/Ciudad/GetAllByPaisAndProvincia",
-            params: ({ codigoPais: pai_codigo, codigoProvincia: pro_codigo })
+            params: ({ codigoPais: pai_codigo, codigoProvincia: pro_codigo, filterNombre: search })
         }).then(function (response) {
             //console.log(response);
             $scope.ciudades = response.data;

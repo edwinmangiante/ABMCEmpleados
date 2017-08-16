@@ -64,14 +64,16 @@ namespace ABMCEmpleados.Controllers
         /// Obtiene todas las Provincias por País
         /// </summary>
         /// <returns></returns>
-        public JsonResult GetAllByPaisAndProvincia(string codigoPais, string codigoProvincia)
+        public JsonResult GetAllByPaisAndProvincia(string codigoPais, string codigoProvincia, string filterNombre)
         {
             if (!string.IsNullOrEmpty(codigoPais) && !string.IsNullOrEmpty(codigoProvincia))
                 using (EmpDBEntities obj = new EmpDBEntities())
                 {
                     obj.Configuration.LazyLoadingEnabled = false;
-                    List<Ciudad> ciudades = obj.Ciudades.Where(x => x.ciu_pro_pai_codigo == codigoPais && x.ciu_pro_codigo == codigoProvincia).OrderBy(x => x.ciu_pro_pai_codigo).ThenBy(x => x.ciu_pro_codigo).ThenBy(x => x.ciu_codigo).ToList();
-                    return Json(ciudades, JsonRequestBehavior.AllowGet);
+                    IQueryable<Ciudad> ciudades = obj.Ciudades.Where(x => x.ciu_pro_pai_codigo == codigoPais && x.ciu_pro_codigo == codigoProvincia).AsQueryable();
+                    if (!string.IsNullOrWhiteSpace(filterNombre))
+                        ciudades = ciudades.Where(x => x.ciu_nombre.Contains(filterNombre));
+                    return Json(ciudades.OrderBy(x => x.ciu_pro_pai_codigo).ThenBy(x => x.ciu_pro_codigo).ThenBy(x => x.ciu_codigo).ToList(), JsonRequestBehavior.AllowGet);
                 }
             else
                 return Json(null, JsonRequestBehavior.AllowGet);

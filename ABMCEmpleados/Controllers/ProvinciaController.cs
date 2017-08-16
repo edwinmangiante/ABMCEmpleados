@@ -47,14 +47,16 @@ namespace ABMCEmpleados.Controllers
         /// Obtiene todas las Provincias por País
         /// </summary>
         /// <returns></returns>
-        public JsonResult GetAllByPais(string codigoPais)
+        public JsonResult GetAllByPais(string codigoPais, string filterNombre)
         {
             if (!string.IsNullOrEmpty(codigoPais))
                 using (EmpDBEntities obj = new EmpDBEntities())
                 {
                     obj.Configuration.LazyLoadingEnabled = false;
-                    List<Provincia> provincias = obj.Provincias.Where(x => x.pro_pai_codigo == codigoPais).OrderBy(x => x.pro_pai_codigo).ThenBy(x => x.pro_codigo).ToList();
-                    return Json(provincias, JsonRequestBehavior.AllowGet);
+                    IQueryable<Provincia> provincias = obj.Provincias.Where(x => x.pro_pai_codigo == codigoPais).AsQueryable();
+                    if (!string.IsNullOrWhiteSpace(filterNombre))
+                        provincias = provincias.Where(x => x.pro_nombre.Contains(filterNombre));
+                    return Json(provincias.OrderBy(x => x.pro_pai_codigo).ThenBy(x => x.pro_codigo).ToList(), JsonRequestBehavior.AllowGet);
                 }
             else
                 return Json(null, JsonRequestBehavior.AllowGet);
