@@ -33,24 +33,30 @@
         <div class="table-responsive table-Item">
             <div id="divLoading" data-ng-show="loading"></div>
             <table cellpadding="12" class="table table-bordered table-hover">
-                <tr>
-                    <th class="tableHeader" style="width: 77px;">
-                        <b>Acción</b>
-                    </th>
-                    <th style="display:none">
-                        <b>País</b>
-                    </th>
-                    <th style="display:none">
-                        <b>Provincia</b>
-                    </th>
-                    <th class="tableHeader" style="width: 200px;">
-                        <b>Código</b>
-                    </th>
-                    <th class="tableHeader">
-                        <b>Nombre</b>
-                    </th>
-                </tr>
-                <tr ng-repeat="Ciudad in ciudades">
+                <thead>
+                    <tr>
+                        <th class="tableHeader" style="width: 77px;">
+                            <b>Acción</b>
+                        </th>
+                        <th style="display:none">
+                            <b>País</b>
+                        </th>
+                        <th style="display:none">
+                            <b>Provincia</b>
+                        </th>
+                        <th ng-click="Sort('ciu_codigo')" class="tableHeader" style="width: 200px;">
+                            <b>Código</b>
+                            <span class="sortorder descending" ng-hide="(sortKey=='ciu_codigo' && reverse==true)"></span>
+                            <span class="sortorder" ng-hide="(sortKey=='ciu_codigo' && reverse==false)"></span>
+                        </th>
+                        <th ng-click="Sort('ciu_nombre')" class="tableHeader">
+                            <b>Nombre</b>
+                            <span class="sortorder descending" ng-hide="(sortKey=='ciu_nombre' && reverse==true)"></span>
+                            <span class="sortorder" ng-hide="(sortKey=='ciu_nombre' && reverse==false)"></span>
+                        </th>
+                    </tr>
+                </thead>
+                <tr ng-repeat="Ciudad in ciudades | orderBy: sortKey:reverse">
                     <td style="text-align:center;">
                         <a href="#" ng-click="Get(Ciudad)">
                             <img src='@Url.Content("~/Content/Images/edit.svg")' style="width:24px;height:24px;" />

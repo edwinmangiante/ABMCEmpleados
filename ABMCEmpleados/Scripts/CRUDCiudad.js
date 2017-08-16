@@ -218,6 +218,12 @@ app.controller("myCtrl", function ($scope, $http) {
         $("#btnSave").attr("value", "Agregar");
         $scope.loading = false;
     }
+
+    //Ordena ASC y DESC
+    $scope.Sort = function (keyname) {
+        $scope.sortKey = keyname;
+        $scope.reverse = !$scope.reverse;
+    }
 })
 
 //función para validar que los campos esten completos

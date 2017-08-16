@@ -21,10 +21,6 @@ namespace ABMCEmpleados.Controllers
         /// <returns></returns>
         public JsonResult GetAll(string filterNombre)
         {
-            /*string sortOrder = Request.QueryString["sortOrder"];
-            ViewBag.SortingCodigo = String.IsNullOrEmpty(sortOrder) ? "codigoDes" : "";
-            ViewBag.SortingNombre = sortOrder == "nombre" ? "nombreDes" : "nombre";*/
-
             using (EmpDBEntities obj = new EmpDBEntities())
             {
                 obj.Configuration.LazyLoadingEnabled = false;
@@ -32,22 +28,7 @@ namespace ABMCEmpleados.Controllers
                 if (!string.IsNullOrWhiteSpace(filterNombre))
                     paises = paises.Where(x => x.pai_nombre.Contains(filterNombre));
 
-                /*switch (sortOrder)
-                {
-                    case "codigoDes":
-                        paises = paises.OrderByDescending(x => x.pai_codigo);
-                        break;
-                    case "nombreDes":
-                        paises = paises.OrderByDescending(x => x.pai_nombre);
-                        break;
-                    case "nombre":
-                        paises = paises.OrderBy(x => x.pai_nombre);
-                        break;
-                    default:
-                        paises = paises.OrderBy(x => x.pai_codigo);
-                        break;
-                }*/
-                return Json(paises.OrderBy(x => x.pai_codigo).ToList(), JsonRequestBehavior.AllowGet);
+                return Json(paises.ToList(), JsonRequestBehavior.AllowGet);
             }
         }
 

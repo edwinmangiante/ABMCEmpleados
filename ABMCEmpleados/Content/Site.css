@@ -89,3 +89,11 @@ textarea {
     opacity: 0.4;
     filter: alpha(opacity=40); /* For IE8 and earlier */
 }
+
+.sortorder:after {
+    content: '\25b2';
+}
+
+.sortorder.descending:after {
+    content: '\25bc';
+}
