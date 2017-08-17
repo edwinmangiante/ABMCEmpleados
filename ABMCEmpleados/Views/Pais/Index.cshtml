@@ -30,34 +30,54 @@
                         </th>
                         <th ng-click="Sort('pai_codigo')" class="tableHeader" style="width: 200px;">
                             <b>Código</b>
-                            <span class="sortorder descending" ng-hide="(sortKey=='pai_codigo' && reverse==true)"></span>
-                            <span class="sortorder" ng-hide="(sortKey=='pai_codigo' && reverse==false)"></span>
+                            <span class="glyphicon sort-icon" ng-show="sortKey=='pai_codigo'" 
+                                  ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
                         </th>
                         <th ng-click="Sort('pai_nombre')"  class="tableHeader">
                             <b>Nombre</b>
-                            <span class="sortorder descending" ng-hide="(sortKey=='pai_nombre' && reverse==true)"></span>
-                            <span class="sortorder" ng-hide="(sortKey=='pai_nombre' && reverse==false)"></span>
+                            <span class="glyphicon sort-icon" ng-show="sortKey=='pai_nombre'"
+                                  ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
                         </th>
                     </tr>
                 </thead>
-                <tr ng-repeat="Pais in paises | orderBy: sortKey:reverse">
-                    <td style="text-align:center;">
-                        <a href="#" ng-click="Get(Pais)">
-                            <img src='@Url.Content("~/Content/Images/edit.svg")' style="width:24px;height:24px;" />
-                        </a>
-                        |
-                        <a href='#' ng-click="Delete(Pais)">
-                            <img src='@Url.Content("~/Content/Images/delete.svg")' style="width:24px;height:24px;" />
-                        </a>
-                    </td>
-                    <td style="text-align:center;">
-                        {{Pais.pai_codigo}}
-                    </td>
-                    <td>
-                        {{Pais.pai_nombre}}
-                    </td>
-                </tr>
+                <tbody>
+                    <tr ng-repeat="Pais in paises | orderBy: sortKey:reverse">
+                        <td style="text-align:center;">
+                            <a href="#" ng-click="Get(Pais)">
+                                <img src='@Url.Content("~/Content/Images/edit.svg")' style="width:24px;height:24px;" />
+                            </a>
+                            |
+                            <a href='#' ng-click="Delete(Pais)">
+                                <img src='@Url.Content("~/Content/Images/delete.svg")' style="width:24px;height:24px;" />
+                            </a>
+                        </td>
+                        <td style="text-align:center;">
+                            {{Pais.pai_codigo}}
+                        </td>
+                        <td>
+                            {{Pais.pai_nombre}}
+                        </td>
+                    </tr>
+                </tbody>
             </table>
+            <!--Paginador-->
+            <!--<div class="row">
+                <div style="text-align:center;">
+                    <ul class="pagination">
+                        <li ng-class="{'active': item === criteria.page}" ng-repeat='item in paging.pagearray'>
+
+                            <a ng-if="item == 'Prev'" ng-click="Prev()">Prev</a>
+
+                            <a ng-if="(!(item == 'Prev' || item == 'Next' ||  item == '..' || item == '...'))"
+                               ng-click="criteria.page = item;">{{item}}</a>
+
+                            <a ng-if="(item == '..' || item == '...')">{{item}}</a>
+
+                            <a ng-if="item == 'Next'" ng-click="Next()">Next</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
 
             <!--Paginador-->
         </div>

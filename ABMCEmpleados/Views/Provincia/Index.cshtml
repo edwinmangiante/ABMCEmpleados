@@ -38,13 +38,13 @@
                         </th>
                         <th ng-click="Sort('pro_codigo')" class="tableHeader" style="width: 200px;">
                             <b>Código</b>
-                            <span class="sortorder descending" ng-hide="(sortKey=='pro_codigo' && reverse==true)"></span>
-                            <span class="sortorder" ng-hide="(sortKey=='pro_codigo' && reverse==false)"></span>
+                            <span class="glyphicon sort-icon" ng-show="sortKey=='pro_codigo'"
+                                  ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
                         </th>
                         <th ng-click="Sort('pro_nombre')" class="tableHeader">
                             <b>Nombre</b>
-                            <span class="sortorder descending" ng-hide="(sortKey=='pro_nombre' && reverse==true)"></span>
-                            <span class="sortorder" ng-hide="(sortKey=='pro_nombre' && reverse==false)"></span>
+                            <span class="glyphicon sort-icon" ng-show="sortKey=='pro_nombre'"
+                                  ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
                         </th>
                     </tr>
                 </thead>

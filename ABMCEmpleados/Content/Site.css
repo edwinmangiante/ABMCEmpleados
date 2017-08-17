@@ -90,6 +90,7 @@ textarea {
     filter: alpha(opacity=40); /* For IE8 and earlier */
 }
 
+/*Ordenador*/
 .sortorder:after {
     content: '\25b2';
 }
