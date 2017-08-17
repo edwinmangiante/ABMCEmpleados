@@ -82,19 +82,35 @@ namespace ABMCEmpleados.Controllers
         public string Delete(Pais Pais)
         {
             if (Pais != null)
-                using (EmpDBEntities Obj = new EmpDBEntities())
-                {
-                    var Pais_ = Obj.Entry(Pais);
-                    if (Pais_.State == System.Data.Entity.EntityState.Detached)
+                if (VerificaProvinciaXPais(Pais))
+                    using (EmpDBEntities Obj = new EmpDBEntities())
                     {
-                        Obj.Paises.Attach(Pais);
-                        Obj.Paises.Remove(Pais);
+                        var Pais_ = Obj.Entry(Pais);
+                        if (Pais_.State == System.Data.Entity.EntityState.Detached)
+                        {
+                            Obj.Paises.Attach(Pais);
+                            Obj.Paises.Remove(Pais);
+                        }
+                        Obj.SaveChanges();
+                        return "Se eliminó el país satisfactoriamente.";
                     }
-                    Obj.SaveChanges();
-                    return "Se eliminó el país satisfactoriamente.";
-                }
+                else
+                    return "El país que quiere eliminar posee al menos una provincia cargada. Elimine la/s provincia/s y luego elimine el país.";
             else
                 return "No se pudo eliminar el país, intente nuevamente.";
+        }
+
+        private bool VerificaProvinciaXPais(Pais pais)
+        {
+            using (EmpDBEntities Obj = new EmpDBEntities())
+            {
+                List<Provincia> provincias = Obj.Provincias.Where(x => x.pro_pai_codigo == pais.pai_codigo).ToList();
+
+                if (provincias != null && provincias.Count > 0)
+                    return false;
+                else
+                    return true;
+            }
         }
 
         /// <summary>  

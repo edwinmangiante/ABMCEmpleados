@@ -56,31 +56,40 @@
                         </th>
                     </tr>
                 </thead>
-                <tr ng-repeat="Ciudad in ciudades | orderBy: sortKey:reverse">
-                    <td style="text-align:center;">
-                        <a href="#" ng-click="Get(Ciudad)">
-                            <img src='@Url.Content("~/Content/Images/edit.svg")' style="width:24px;height:24px;" />
-                        </a>
-                        |
-                        <a href='#' ng-click="Delete(Ciudad)">
-                            <img src='@Url.Content("~/Content/Images/delete.svg")' style="width:24px;height:24px;" />
-                        </a>
-                    </td>
-                    <td style="display:none" id="tdPais">
-                        {{Ciudad.ciu_pro_pai_codigo}}
-                    </td>
-                    <td style="display:none" id="tdProvincia">
-                        {{Ciudad.ciu_pro_codigo}}
-                    </td>
-                    <td style="text-align:center;">
-                        {{Ciudad.ciu_codigo}}
-                    </td>
-                    <td>
-                        {{Ciudad.ciu_nombre}}
-                    </td>
-                </tr>
+                <tbody>
+                    <tr dir-paginate="Ciudad in ciudades | orderBy: sortKey:reverse | itemsPerPage:15">
+                        <td style="text-align:center;">
+                            <a href="#" ng-click="Get(Ciudad)">
+                                <img src='@Url.Content("~/Content/Images/edit.svg")' style="width:24px;height:24px;" />
+                            </a>
+                            |
+                            <a href='#' ng-click="Delete(Ciudad)">
+                                <img src='@Url.Content("~/Content/Images/delete.svg")' style="width:24px;height:24px;" />
+                            </a>
+                        </td>
+                        <td style="display:none" id="tdPais">
+                            {{Ciudad.ciu_pro_pai_codigo}}
+                        </td>
+                        <td style="display:none" id="tdProvincia">
+                            {{Ciudad.ciu_pro_codigo}}
+                        </td>
+                        <td style="text-align:center;">
+                            {{Ciudad.ciu_codigo}}
+                        </td>
+                        <td>
+                            {{Ciudad.ciu_nombre}}
+                        </td>
+                    </tr>
+                </tbody>
             </table>
 
+            <!--Paginador-->
+            <div style="text-align:center;">
+                <dir-pagination-controls max-size="5"
+                                         direction-links="true"
+                                         boundary-links="true">
+                </dir-pagination-controls>
+            </div>
             <!--Paginador-->
         </div>
 

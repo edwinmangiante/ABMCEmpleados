@@ -112,19 +112,35 @@ namespace ABMCEmpleados.Controllers
         public string Delete(Provincia Provincia)
         {
             if (Provincia != null)
-                using (EmpDBEntities Obj = new EmpDBEntities())
-                {
-                    var Provincia_ = Obj.Entry(Provincia);
-                    if (Provincia_.State == System.Data.Entity.EntityState.Detached)
+                if (VerificaCiudadXProvincia(Provincia))
+                    using (EmpDBEntities Obj = new EmpDBEntities())
                     {
-                        Obj.Provincias.Attach(Provincia);
-                        Obj.Provincias.Remove(Provincia);
+                        var Provincia_ = Obj.Entry(Provincia);
+                        if (Provincia_.State == System.Data.Entity.EntityState.Detached)
+                        {
+                            Obj.Provincias.Attach(Provincia);
+                            Obj.Provincias.Remove(Provincia);
+                        }
+                        Obj.SaveChanges();
+                        return "Se eliminó la provincia satisfactoriamente.";
                     }
-                    Obj.SaveChanges();
-                    return "Se eliminó la provincia satisfactoriamente.";
-                }
+                else
+                    return "La provincia que quiere eliminar posee al menos una ciudad cargada. Elimine la/s ciudad/es y luego elimine la provincia.";
             else
                 return "No se pudo eliminar la provincia, intente nuevamente.";
+        }
+
+        private bool VerificaCiudadXProvincia(Provincia provincia)
+        {
+            using (EmpDBEntities Obj = new EmpDBEntities())
+            {
+                List<Ciudad> ciudades = Obj.Ciudades.Where(x => x.ciu_pro_pai_codigo == provincia.pro_pai_codigo && x.ciu_pro_codigo == provincia.pro_codigo).ToList();
+
+                if (ciudades != null && ciudades.Count > 0)
+                    return false;
+                else
+                    return true;
+            }
         }
 
         /// <summary>  

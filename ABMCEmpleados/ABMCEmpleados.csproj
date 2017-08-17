@@ -235,6 +235,7 @@
     <Content Include="Scripts\CRUDCiudad.js" />
     <Content Include="Scripts\CRUDPais.js" />
     <Content Include="Scripts\CRUDProvincia.js" />
+    <Content Include="Scripts\dirPagination.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />

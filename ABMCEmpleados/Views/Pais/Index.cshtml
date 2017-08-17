@@ -41,7 +41,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="Pais in paises | orderBy: sortKey:reverse">
+                    <tr dir-paginate="Pais in paises | orderBy: sortKey:reverse | itemsPerPage:5">
                         <td style="text-align:center;">
                             <a href="#" ng-click="Get(Pais)">
                                 <img src='@Url.Content("~/Content/Images/edit.svg")' style="width:24px;height:24px;" />
@@ -60,25 +60,14 @@
                     </tr>
                 </tbody>
             </table>
+            
             <!--Paginador-->
-            <!--<div class="row">
-                <div style="text-align:center;">
-                    <ul class="pagination">
-                        <li ng-class="{'active': item === criteria.page}" ng-repeat='item in paging.pagearray'>
-
-                            <a ng-if="item == 'Prev'" ng-click="Prev()">Prev</a>
-
-                            <a ng-if="(!(item == 'Prev' || item == 'Next' ||  item == '..' || item == '...'))"
-                               ng-click="criteria.page = item;">{{item}}</a>
-
-                            <a ng-if="(item == '..' || item == '...')">{{item}}</a>
-
-                            <a ng-if="item == 'Next'" ng-click="Next()">Next</a>
-                        </li>
-                    </ul>
-                </div>
+            <div style="text-align:center;">
+                <dir-pagination-controls max-size="5"
+                                         direction-links="true"
+                                         boundary-links="true">
+                </dir-pagination-controls>
             </div>
-
             <!--Paginador-->
         </div>
 
