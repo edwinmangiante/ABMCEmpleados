@@ -37,14 +37,14 @@ textarea {
 
 #ddlPais {
     float: right;
-    margin-top: -50px;
+    margin-top: -46px;
     margin-right: 20px;
     width: 250px;
 }
 
 #ddlPaisC {
     float: right;
-    margin-top: -50px;
+    margin-top: -46px;
     margin-right: 275px;
     width: 250px;
 }
@@ -60,10 +60,9 @@ textarea {
     text-align: center;
 }
 
-.squareImg {
-    width: 24px;
-    height: 24px;
-    margin-top: -5px;
+.buttons {
+    margin-top: -2px;
+    background-color: transparent;
 }
 
 .lupita {

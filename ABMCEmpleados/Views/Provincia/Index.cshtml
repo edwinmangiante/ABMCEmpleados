@@ -10,15 +10,15 @@
     <div ng-controller="myCtrl" class="divList">
         <input ng-model="searchNombre" type="text" class="form-control" style="float:left;width:300px;" placeholder="Nombre" />
         <div class="botonesSC">
-            <button type="button" class="btn squareImg" style="background-color:transparent;" title="Buscar" ng-click="GetAllByPais(currentPais)">
-                <img src="~/Content/Images/search.svg" title="Buscar" style="width:24px;height:24px;" />
-            </button>
             <p>
-                <button type="button" class="btn add" style="background-color:transparent;" title="Agregar" data-toggle="modal" data-target="#myModal" ng-click="ClearTextBox()">
+                <button type="button" class="btn buttons" title="Buscar" ng-click="GetAllByPais(currentPais)">
+                    <img src="~/Content/Images/search.svg" title="Buscar" style="width:24px;height:24px;" />
+                </button>
+                <button type="button" class="btn buttons" title="Agregar" data-toggle="modal" data-target="#myModal" ng-click="ClearTextBox()">
                     <img src="~/Content/Images/add.svg" title="Agregar" style="width:24px;height:24px;" />
                 </button>
-                <button type="button" class="btn export" title="Exportar" ng-click="Export()">
-                    <img src="~/Content/Images/excel.png" title="Agregar" style="width:24px;height:24px;" />
+                <button type="button" class="btn buttons" title="Exportar" ng-click="Export()">
+                    <img src="~/Content/Images/excel.png" title="Exportar" style="width:24px;height:24px;" />
                 </button>
             </p>
 
@@ -28,7 +28,7 @@
             </div>
         </div>
 
-        <div class="table-responsive table-Item">
+        <div class="table-responsive table-Item" style="margin-top: 20px;">
             <div id="divLoading" data-ng-show="loading"></div>
             <table cellpadding="12" class="table table-bordered table-hover">
                 <thead>
