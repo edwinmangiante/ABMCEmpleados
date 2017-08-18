@@ -6,8 +6,9 @@ using System.Web.Mvc;
 
 namespace ABMCEmpleados.Controllers
 {
-    public class HomeController : Controller
+    public class EmpleadoController : Controller
     {
+        // GET: Empleado
         public ActionResult Index()
         {
             return View();
