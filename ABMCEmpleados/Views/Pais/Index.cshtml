@@ -8,19 +8,17 @@
 
 <div ng-app="myApp">
     <div ng-controller="myCtrl" ng-init="GetAll()" class="divList">
-        <input ng-model="searchNombre" type="text" class="form-control" style="float:left;width:300px;" placeholder="Nombre" />
+        <input ng-model="searchNombre" type="text" class="form-control searchInput" placeholder="Nombre" />
         <div class="botonesSC">
-            <p>
-                <button type="button" class="btn buttons" title="Buscar" ng-click="GetAll()">
-                    <img src="~/Content/Images/search.svg" title="Buscar" style="width:24px;height:24px;" />
-                </button>
-                <button type="button" class="btn buttons" title="Agregar" data-toggle="modal" data-target="#myModal" ng-click="ClearTextBox()">
-                    <img src="~/Content/Images/add.svg" title="Agregar" style="width:24px;height:24px;" />
-                </button>
-                <button type="button" class="btn buttons" title="Exportar" ng-click="Export()">
-                    <img src="~/Content/Images/excel.png" title="Exportar" style="width:24px;height:24px;" />
-                </button>
-            </p>
+            <button type="button" class="btn buttons" title="Buscar" ng-click="GetAll()">
+                <img src="~/Content/Images/search.svg" title="Buscar" style="width:24px;height:24px;" />
+            </button>
+            <button type="button" class="btn buttons" title="Agregar" data-toggle="modal" data-target="#myModal" ng-click="ClearTextBox()">
+                <img src="~/Content/Images/add.svg" title="Agregar" style="width:24px;height:24px;" />
+            </button>
+            <button type="button" class="btn buttons" title="Exportar" ng-click="Export()">
+                <img src="~/Content/Images/excel.png" title="Exportar" style="width:24px;height:24px;" />
+            </button>
         </div>
 
         <div class="table-responsive table-Item" style="margin-top: 20px;">
@@ -31,19 +29,19 @@
                         <th class="tableHeader" style="width: 77px;">
                             <b>Acción</b>
                         </th>
-                        <th ng-click="Sort('pai_codigo')" class="tableHeader" style="width: 200px;">
+                        <th ng-click="Sort('pai_codigo')" class="tableHeader codigo">
                             <b>Código</b>
-                            <span class="glyphicon sort-icon" ng-show="sortKey=='pai_codigo'" 
+                            <span class="glyphicon sort-icon" ng-show="sortKey=='pai_codigo'"
                                   ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
                         </th>
-                        <th ng-click="Sort('pai_nombre')"  class="tableHeader">
+                        <th ng-click="Sort('pai_nombre')" class="tableHeader">
                             <b>Nombre</b>
                             <span class="glyphicon sort-icon" ng-show="sortKey=='pai_nombre'"
                                   ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
                         </th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody class="fuenteBody">
                     <tr dir-paginate="Pais in paises | orderBy: sortKey:reverse | itemsPerPage:5">
                         <td style="text-align:center;">
                             <a href="#" ng-click="Get(Pais)">
@@ -63,17 +61,16 @@
                     </tr>
                 </tbody>
             </table>
-            
-            <!--Paginador-->
-            <div style="text-align:center;">
-                <dir-pagination-controls max-size="5"
-                                         direction-links="true"
-                                         boundary-links="true">
-                </dir-pagination-controls>
-            </div>
-            <!--Paginador-->
         </div>
 
+        <!--Paginador-->
+        <div style="text-align:center;">
+            <dir-pagination-controls max-size="5"
+                                     direction-links="true"
+                                     boundary-links="true">
+            </dir-pagination-controls>
+        </div>
+        <!--Paginador-->
         <!--Arranca el Modal para hacer todo en index.cshtml-->
         <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
             <div class="modal-dialog">

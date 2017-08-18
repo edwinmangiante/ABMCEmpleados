@@ -35,16 +35,26 @@ textarea {
     border: none;
 }
 
+.searchInput {
+    float: left;
+    width: 300px;
+}
+
 #ddlPais {
     float: right;
-    margin-top: -46px;
     margin-right: 20px;
     width: 250px;
 }
 
-#ddlPaisC {
+.ddlProvinciaC {
     float: right;
-    margin-top: -46px;
+    margin-right: 20px;
+    margin-top: -36px;
+    width: 250px;
+}
+
+.ddlPaisC {
+    float: right;
     margin-right: 275px;
     width: 250px;
 }
@@ -53,6 +63,10 @@ textarea {
     text-align: center;
     background-color: #428bca;
     color: white;
+}
+
+.codigo {
+    width:200px;
 }
 
 .pagination-container {
@@ -102,4 +116,63 @@ textarea {
 
 .sortorder.descending:after {
     content: '\25bc';
+}
+
+@media (max-width: 1199px) {
+    .ddlProvinciaC {
+        float: left;
+        width: 300px;
+        margin-top: 7px;
+        margin-bottom: 7px;
+    }
+
+    .ddlPaisC {
+        float: left;
+        width: 300px;
+        margin-top: 7px;
+        margin-bottom: 7px;
+    }
+}
+
+@media (max-width: 991px) {
+    #ddlPais {
+        float: left;
+        width: 300px;
+        margin-top: 7px;
+        margin-bottom: 7px;
+    }
+}
+
+@media (max-width: 600px) {
+    .codigo { width: 65px; }
+}
+
+@media (max-width: 520px) {
+    .searchInput {
+        float: left;
+        width: 100%;
+        margin-bottom: 10px;
+    }
+
+    .botonesSC {
+        text-align:center;
+    }
+
+    #ddlPais {
+        width: 100%;
+    }
+
+    .ddlProvinciaC {
+        width: 100%;
+    }
+
+    .ddlPaisC {
+        width: 100%;
+    }
+}
+
+@media (max-width: 380px) {
+    .fuenteBody {
+        font-size: 13px;
+    }
 }
