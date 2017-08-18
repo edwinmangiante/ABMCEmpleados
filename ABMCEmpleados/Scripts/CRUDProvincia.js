@@ -170,7 +170,16 @@ app.controller("myCtrl", function ($scope, $http) {
         $("#btnSave").attr("value", "Actualizar");
         $('#myModal').modal('show');
         $scope.loading = false;
-    }
+    };
+
+    //exporta los elemetos que se estan mostrando en la grilla a excel.
+    $scope.Export = function () {
+        if ($scope.provincias != null && $scope.provincias.length > 0) {
+            alasql('SELECT * INTO XLSX("provincias.xlsx",{headers:true}) FROM ?', [$scope.provincias]);
+        } else {
+            alert('No hay registros para exportar a excel');
+        }
+    };
 
     //función para validar que los campos esten completos
     $scope.Validate = function () {
@@ -189,7 +198,7 @@ app.controller("myCtrl", function ($scope, $http) {
         }
 
         return isValid;
-    }
+    };
 
     //limpia los textbox.
     $scope.ClearTextBox = function () {
@@ -216,5 +225,5 @@ app.controller("myCtrl", function ($scope, $http) {
     //esconde el modal cuando se hace click en el botón cerrar o en la cruz.
     $scope.DismissModal = function () {
         $('#myModal').modal('hide');
-    }
+    };
 })

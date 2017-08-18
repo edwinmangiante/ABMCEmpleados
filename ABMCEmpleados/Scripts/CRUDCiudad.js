@@ -199,6 +199,15 @@ app.controller("myCtrl", function ($scope, $http) {
         $scope.loading = false;
     };
 
+    //exporta los elemetos que se estan mostrando en la grilla a excel.
+    $scope.Export = function () {
+        if ($scope.ciudades != null && $scope.ciudades.length > 0) {
+            alasql('SELECT * INTO XLSX("ciudades.xlsx",{headers:true}) FROM ?', [$scope.ciudades]);
+        } else {
+            alert('No hay registros para exportar a excel');
+        }
+    };
+
     //función para validar que los campos esten completos
     $scope.Validate = function () {
         var isValid = true;

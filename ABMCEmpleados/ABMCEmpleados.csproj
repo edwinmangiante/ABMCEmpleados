@@ -187,7 +187,7 @@
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\Images\add.png" />
     <Content Include="Content\Images\add.svg" />
-    <Content Include="Content\Images\ajax-loader.png" />
+    <Content Include="Content\Images\ajax-loader.gif" />
     <Content Include="Content\Images\back.png" />
     <Content Include="Content\Images\back.svg" />
     <Content Include="Content\Images\calendar.png" />
@@ -198,6 +198,7 @@
     <Content Include="Content\Images\details.svg" />
     <Content Include="Content\Images\edit.png" />
     <Content Include="Content\Images\edit.svg" />
+    <Content Include="Content\Images\excel.png" />
     <Content Include="Content\Images\favicon.svg" />
     <Content Include="Content\Images\search.png" />
     <Content Include="Content\Images\search.svg" />
@@ -215,6 +216,7 @@
       <DependentUpon>EmpDBModel.edmx</DependentUpon>
       <LastGenOutput>EmpDBModel.cs</LastGenOutput>
     </Content>
+    <Content Include="Scripts\alasql.min.js" />
     <Content Include="Scripts\angular-mocks.js" />
     <Content Include="Scripts\angular.js" />
     <Content Include="Scripts\angular.min.js" />
@@ -246,6 +248,7 @@
     <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
+    <Content Include="Scripts\xlsx.core.min.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>

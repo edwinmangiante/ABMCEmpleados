@@ -134,6 +134,15 @@ app.controller("myCtrl", function ($scope, $http) {
         $scope.loading = false;
     };
 
+    //exporta los elemetos que se estan mostrando en la grilla a excel.
+    $scope.Export = function () {
+        if ($scope.paises != null && $scope.paises.length > 0) {
+            alasql('SELECT * INTO XLSX("paises.xlsx",{headers:true}) FROM ?', [$scope.paises]);
+        } else {
+            alert('No hay registros para exportar a excel');
+        }
+    };
+
     //función para validar que los campos esten completos
     $scope.Validate = function () {
         //debugger;
@@ -149,7 +158,7 @@ app.controller("myCtrl", function ($scope, $http) {
         }
 
         return isValid;
-    }
+    };
 
     //limpia los textbox.
     $scope.ClearTextBox = function () {
