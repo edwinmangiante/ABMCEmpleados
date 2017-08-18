@@ -125,7 +125,6 @@ app.controller("myCtrl", function ($scope, $http) {
     };
 
     $scope.Get = function (Pais) {
-        //console.log(Pais);
         $scope.CodigoPais = Pais.pai_codigo.toUpperCase();
         $('#inputCodigo').prop('readonly', true);
         $scope.NombrePais = Pais.pai_nombre;
@@ -162,7 +161,6 @@ app.controller("myCtrl", function ($scope, $http) {
 
     //limpia los textbox.
     $scope.ClearTextBox = function () {
-        //console.log("llegue!!");
         //debugger;
         $('#inputCodigo').val("");
         $('#inputCodigo').prop('readonly', false);

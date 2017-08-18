@@ -16,9 +16,9 @@ namespace ABMCEmpleados.Controllers
         }
 
         /// <summary>
-        /// Obtiene todas las Provincias cargadas en la BD
+        /// Obtiene todas las provincias cargadas en la BD.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>JsonResult</returns>
         public JsonResult GetAll()
         {
             using (EmpDBEntities obj = new EmpDBEntities())
@@ -30,9 +30,9 @@ namespace ABMCEmpleados.Controllers
         }
 
         /// <summary>
-        /// Obtiene todos los Países cargados en la BD
+        /// Obtiene todos los países cargados en la BD.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>JsonResultv</returns>
         public JsonResult GetPaises()
         {
             using (EmpDBEntities obj = new EmpDBEntities())
@@ -44,9 +44,12 @@ namespace ABMCEmpleados.Controllers
         }
 
         /// <summary>
-        /// Obtiene todas las Provincias por País
+        /// Obtiene todas las provincias por país cargadas en la BD,
+        /// si el parámetro no viene vacío se compara contra la columna pro_nombre.
         /// </summary>
-        /// <returns></returns>
+        /// <param name="codigoPais">El código de país.</param>
+        /// <param name="filterNombre">Palabra o letra para comparar con la columna nombre dentro de la lista.</param>
+        /// <returns>JsonResult</returns>
         public JsonResult GetAllByPais(string codigoPais, string filterNombre)
         {
             if (!string.IsNullOrEmpty(codigoPais))
@@ -65,10 +68,11 @@ namespace ABMCEmpleados.Controllers
         /// <summary>
         /// Obtiene una provincia por clave primaria.
         /// </summary>
-        /// <returns></returns>
+        /// <param name="codigoPais">El código del país que se quiere obtener.</param>
+        /// <param name="codigoProvincia">El código de la provincia que se quiere obtener.</param>
+        /// <returns>JsonResult</returns>
         public JsonResult GetByKey(string codigoPais, string codigoProvincia)
         {
-            //return Json(new { success = true }, JsonRequestBehavior.AllowGet);
             if (!string.IsNullOrWhiteSpace(codigoPais) && !string.IsNullOrWhiteSpace(codigoProvincia))
             {
                 using (EmpDBEntities obj = new EmpDBEntities())
@@ -87,10 +91,10 @@ namespace ABMCEmpleados.Controllers
         }
 
         /// <summary>  
-        /// Insert New Provincia  
+        /// Crea una provincia  
         /// </summary>  
-        /// <param name="Provincia"></param>  
-        /// <returns></returns>  
+        /// <param name="Provincia">El objeto provincia a crear.</param>  
+        /// <returns>string</returns>  
         public string Insert(Provincia Provincia)
         {
             if (Provincia != null)
@@ -105,10 +109,10 @@ namespace ABMCEmpleados.Controllers
         }
 
         /// <summary>  
-        /// Delete Provincia
+        /// Elimina una provincia  
         /// </summary>  
-        /// <param name="Provincia"></param>  
-        /// <returns></returns>  
+        /// <param name="Provincia">El objeto provincia a eliminar.</param>  
+        /// <returns>string</returns>  
         public string Delete(Provincia Provincia)
         {
             if (Provincia != null)
@@ -130,24 +134,11 @@ namespace ABMCEmpleados.Controllers
                 return "No se pudo eliminar la provincia, intente nuevamente.";
         }
 
-        private bool VerificaCiudadXProvincia(Provincia provincia)
-        {
-            using (EmpDBEntities Obj = new EmpDBEntities())
-            {
-                List<Ciudad> ciudades = Obj.Ciudades.Where(x => x.ciu_pro_pai_codigo == provincia.pro_pai_codigo && x.ciu_pro_codigo == provincia.pro_codigo).ToList();
-
-                if (ciudades != null && ciudades.Count > 0)
-                    return false;
-                else
-                    return true;
-            }
-        }
-
         /// <summary>  
-        /// Update Provincia  
+        /// Edita una provincia  
         /// </summary>  
-        /// <param name="Provincia"></param>  
-        /// <returns></returns>  
+        /// <param name="Provincia">El objeto provincia a editar.</param>  
+        /// <returns>string</returns>  
         public string Update(Provincia Provincia)
         {
             if (Provincia != null)
@@ -161,6 +152,18 @@ namespace ABMCEmpleados.Controllers
                 }
             else
                 return "No se pudo actualizar la provincia, intente nuevamente.";
+        }
+
+        private bool VerificaCiudadXProvincia(Provincia provincia)
+        {
+            using (EmpDBEntities Obj = new EmpDBEntities())
+            {
+                List<Ciudad> ciudades = Obj.Ciudades.Where(x => x.ciu_pro_pai_codigo == provincia.pro_pai_codigo && x.ciu_pro_codigo == provincia.pro_codigo).ToList();
+                if (ciudades != null && ciudades.Count > 0)
+                    return false;
+                else
+                    return true;
+            }
         }
     }
 }

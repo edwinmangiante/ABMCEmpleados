@@ -6,7 +6,6 @@ app.controller("myCtrl", function ($scope, $http) {
         method: 'GET',
         url: '/Provincia/GetPaises'
     }).then(function (response) {
-        //console.log(response);
         $scope.paises = response.data;
         $scope.currentPais = $scope.paises[0].pai_codigo;
         $scope.GetAllByPais($scope.paises[0].pai_codigo);
@@ -16,7 +15,6 @@ app.controller("myCtrl", function ($scope, $http) {
         alert("Ocurrió un error al intentar obtener los países.");
     })
 
-    //debugger;
     $scope.Add = function () {
         var isValid = $scope.Validate();
 
@@ -32,7 +30,6 @@ app.controller("myCtrl", function ($scope, $http) {
                     dataType: "json",
                     data: ({ codigoPais: pro_pai_codigo, codigoProvincia: pro_codigo }),
                     success: function (data) {
-                        //debugger;
                         if (data.existe == false) {
                             $scope.Provincia = {};
                             $scope.Provincia.pro_pai_codigo = $scope.CodigoPais.toUpperCase();
@@ -118,7 +115,6 @@ app.controller("myCtrl", function ($scope, $http) {
             method: "GET",
             url: "/Provincia/GetAll"
         }).then(function (response) {
-            //console.log(response);
             $scope.loading = false;
             $scope.provincias = response.data;
         }).catch(function (reason) {

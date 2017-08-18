@@ -6,7 +6,6 @@ app.controller("myCtrl", function ($scope, $http) {
         method: 'GET',
         url: '/Ciudad/GetPaises'
     }).then(function (response) {
-        //console.log(response);
         $scope.paises = response.data;
         $scope.currentPais = $scope.paises[0].pai_codigo;
         $scope.GetAllByPais($scope.paises[0].pai_codigo);
@@ -23,7 +22,6 @@ app.controller("myCtrl", function ($scope, $http) {
             url: '/Ciudad/GetProvincias',
             params: ({ codigoPais: pai_codigo })
         }).then(function (response) {
-            //console.log(response);
             $scope.provincias = response.data;
             $scope.currentProvincia = $scope.provincias[0].pro_codigo;
             $scope.GetAllByPaisAndProvincia($scope.provincias[0].pro_pai_codigo, $scope.provincias[0].pro_codigo);
@@ -34,7 +32,6 @@ app.controller("myCtrl", function ($scope, $http) {
         })
     }
 
-    //debugger;
     $scope.Add = function () {
         var isValid = $scope.Validate();
 
@@ -53,7 +50,6 @@ app.controller("myCtrl", function ($scope, $http) {
                     success: function (data) {
                         if (data.existe == false) {
                             $scope.Ciudad = {};
-                            //console.log($('#inputPais').val());
                             $scope.Ciudad.ciu_pro_pai_codigo = $scope.CodigoPais.toUpperCase();
                             $scope.Ciudad.ciu_pro_codigo = $scope.CodigoProvincia.toUpperCase();
                             $scope.Ciudad.ciu_codigo = $scope.CodigoCiudad.toUpperCase();
@@ -99,7 +95,6 @@ app.controller("myCtrl", function ($scope, $http) {
                     success: function (data) {
                         if (data.existe == true) {
                             $scope.Ciudad = {};
-                            //console.log($('#inputPais').val());
                             $scope.Ciudad.ciu_pro_pai_codigo = $scope.CodigoPais.toUpperCase();
                             $scope.Ciudad.ciu_pro_codigo = $scope.CodigoProvincia.toUpperCase();
                             $scope.Ciudad.ciu_codigo = $scope.CodigoCiudad.toUpperCase();
@@ -143,7 +138,6 @@ app.controller("myCtrl", function ($scope, $http) {
             method: "GET",
             url: "/Ciudad/GetAll"
         }).then(function (response) {
-            //console.log(response);
             $scope.ciudades = response.data;
             $scope.loading = false;
         }).catch(function (reason) {
@@ -161,7 +155,6 @@ app.controller("myCtrl", function ($scope, $http) {
             url: "/Ciudad/GetAllByPaisAndProvincia",
             params: ({ codigoPais: pai_codigo, codigoProvincia: pro_codigo, filterNombre: search })
         }).then(function (response) {
-            //console.log(response);
             $scope.ciudades = response.data;
             $scope.loading = false;
         }).catch(function (reason) {

@@ -16,9 +16,11 @@ namespace ABMCEmpleados.Controllers
         }
 
         /// <summary>
-        /// Obtiene todos los Países cargados en la BD
+        /// Obtiene todos los países cargados en la BD, si el parámetro no viene vacío se compara contra la 
+        /// columna pai_nombre.
         /// </summary>
-        /// <returns></returns>
+        /// <param name="filterNombre">Palabra o letra para comparar con la columna nombre dentro de la lista.</param>
+        /// <returns>JsonResult</returns>
         public JsonResult GetAll(string filterNombre)
         {
             using (EmpDBEntities obj = new EmpDBEntities())
@@ -33,12 +35,12 @@ namespace ABMCEmpleados.Controllers
         }
 
         /// <summary>
-        /// Obtiene un país por código.
+        /// Obtiene una país por clave primaria.
         /// </summary>
-        /// <returns></returns>
+        /// <param name="codigoPais">El código del país que se quiere obtener.</param>
+        /// <returns>JsonResult</returns>
         public JsonResult GetByKey(string codigoPais)
         {
-            //return Json(new { success = true }, JsonRequestBehavior.AllowGet);
             if (!string.IsNullOrWhiteSpace(codigoPais))
             {
                 using (EmpDBEntities obj = new EmpDBEntities())
@@ -57,10 +59,10 @@ namespace ABMCEmpleados.Controllers
         }
 
         /// <summary>  
-        /// Insert New Pais  
+        /// Crea un nuevo país  
         /// </summary>  
-        /// <param name="Pais"></param>  
-        /// <returns></returns>  
+        /// <param name="Pais">El objeto país a crear.</param>  
+        /// <returns>string</returns>  
         public string Insert(Pais Pais)
         {
             if (Pais != null)
@@ -75,10 +77,10 @@ namespace ABMCEmpleados.Controllers
         }
 
         /// <summary>  
-        /// Delete Pais
+        /// Elimina un nuevo país  
         /// </summary>  
-        /// <param name="Pais"></param>  
-        /// <returns></returns>  
+        /// <param name="Pais">El objeto país a eliminar.</param>  
+        /// <returns>string</returns>  
         public string Delete(Pais Pais)
         {
             if (Pais != null)
@@ -100,24 +102,11 @@ namespace ABMCEmpleados.Controllers
                 return "No se pudo eliminar el país, intente nuevamente.";
         }
 
-        private bool VerificaProvinciaXPais(Pais pais)
-        {
-            using (EmpDBEntities Obj = new EmpDBEntities())
-            {
-                List<Provincia> provincias = Obj.Provincias.Where(x => x.pro_pai_codigo == pais.pai_codigo).ToList();
-
-                if (provincias != null && provincias.Count > 0)
-                    return false;
-                else
-                    return true;
-            }
-        }
-
         /// <summary>  
-        /// Update Pais  
+        /// Edita un nuevo país  
         /// </summary>  
-        /// <param name="Pais"></param>  
-        /// <returns></returns>  
+        /// <param name="Pais">El objeto país a editar.</param>  
+        /// <returns>string</returns>  
         public string Update(Pais Pais)
         {
             if (Pais != null)
@@ -131,6 +120,18 @@ namespace ABMCEmpleados.Controllers
                 }
             else
                 return "No se pudo actualizar el país, intente nuevamente.";
+        }
+
+        private bool VerificaProvinciaXPais(Pais pais)
+        {
+            using (EmpDBEntities Obj = new EmpDBEntities())
+            {
+                List<Provincia> provincias = Obj.Provincias.Where(x => x.pro_pai_codigo == pais.pai_codigo).ToList();
+                if (provincias != null && provincias.Count > 0)
+                    return false;
+                else
+                    return true;
+            }
         }
     }
 }

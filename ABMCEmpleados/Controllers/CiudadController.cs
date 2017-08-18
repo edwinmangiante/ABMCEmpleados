@@ -18,7 +18,7 @@ namespace ABMCEmpleados.Controllers
         /// <summary>
         /// Obtiene todas las ciudades cargadas en la BD
         /// </summary>
-        /// <returns></returns>
+        /// <returns>JsonResult</returns>
         public JsonResult GetAll()
         {
             using (EmpDBEntities obj = new EmpDBEntities())
@@ -30,9 +30,9 @@ namespace ABMCEmpleados.Controllers
         }
 
         /// <summary>
-        /// Obtiene todos los países cargados en la BD
+        /// Obtiene todos los países cargados en la BD.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>JsonResultv</returns>
         public JsonResult GetPaises()
         {
             using (EmpDBEntities obj = new EmpDBEntities())
@@ -44,9 +44,10 @@ namespace ABMCEmpleados.Controllers
         }
 
         /// <summary>
-        /// Obtiene todos las provincias por paises cargadas en la BD
+        /// Obtiene todas las provincias por país cargadas en la BD
         /// </summary>
-        /// <returns></returns>
+        /// <param name="codigoPais">El código de país.</param>
+        /// <returns>JsonResult</returns>
         public JsonResult GetProvincias(string codigoPais)
         {
             if (!string.IsNullOrEmpty(codigoPais))
@@ -61,9 +62,13 @@ namespace ABMCEmpleados.Controllers
         }
 
         /// <summary>
-        /// Obtiene todas las Provincias por País
+        /// Obtiene todas las ciudades por provincias y por país cargadas en la BD,
+        /// si el parámetro no viene vacío se compara contra la columna ciu_nombre.
         /// </summary>
-        /// <returns></returns>
+        /// <param name="codigoPais">El código de país.</param>
+        /// <param name="codigoProvincia">El código de provincia.</param>
+        /// <param name="filterNombre">Palabra o letra para comparar con la columna nombre dentro de la lista.</param>
+        /// <returns>JsonResult</returns>
         public JsonResult GetAllByPaisAndProvincia(string codigoPais, string codigoProvincia, string filterNombre)
         {
             if (!string.IsNullOrEmpty(codigoPais) && !string.IsNullOrEmpty(codigoProvincia))
@@ -82,7 +87,10 @@ namespace ABMCEmpleados.Controllers
         /// <summary>
         /// Obtiene una ciudad por clave primaria.
         /// </summary>
-        /// <returns></returns>
+        /// <param name="codigoPais">El código del país que se quiere obtener.</param>
+        /// <param name="codigoProvincia">El código de la provincia que se quiere obtener.</param>
+        /// <param name="codigoCiudad">El código de la ciudad que se quiere obtener.</param>
+        /// <returns>JsonResult</returns>
         public JsonResult GetByKey(string codigoPais, string codigoProvincia, string codigoCiudad)
         {
             if (!string.IsNullOrWhiteSpace(codigoPais) && !string.IsNullOrWhiteSpace(codigoProvincia) && !string.IsNullOrWhiteSpace(codigoCiudad))
@@ -103,10 +111,10 @@ namespace ABMCEmpleados.Controllers
         }
 
         /// <summary>  
-        /// Insert New Ciudad  
+        /// Crea una Ciudad  
         /// </summary>  
-        /// <param name="Ciudad"></param>  
-        /// <returns></returns>  
+        /// <param name="Ciudad">El objeto ciudad a crear.</param>  
+        /// <returns>string</returns>  
         public string Insert(Ciudad Ciudad)
         {
             if (Ciudad != null)
@@ -121,10 +129,10 @@ namespace ABMCEmpleados.Controllers
         }
 
         /// <summary>  
-        /// Delete Ciudad
+        /// Elimina una Ciudad  
         /// </summary>  
-        /// <param name="Ciudad"></param>  
-        /// <returns></returns>  
+        /// <param name="Ciudad">El objeto ciudad a eliminar.</param>  
+        /// <returns>string</returns> 
         public string Delete(Ciudad Ciudad)
         {
             if (Ciudad != null)
@@ -144,10 +152,10 @@ namespace ABMCEmpleados.Controllers
         }
 
         /// <summary>  
-        /// Update Ciudad  
+        /// Edita una Ciudad  
         /// </summary>  
-        /// <param name="Ciudad"></param>  
-        /// <returns></returns>  
+        /// <param name="Ciudad">El objeto ciudad a editar.</param>  
+        /// <returns>string</returns> 
         public string Update(Ciudad Ciudad)
         {
             if (Ciudad != null)
