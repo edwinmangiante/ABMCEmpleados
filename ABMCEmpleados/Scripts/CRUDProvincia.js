@@ -171,7 +171,20 @@ app.controller("myCtrl", function ($scope, $http) {
     //exporta los elemetos que se estan mostrando en la grilla a excel.
     $scope.Export = function () {
         if ($scope.provincias != null && $scope.provincias.length > 0) {
-            alasql('SELECT * INTO XLSX("provincias.xlsx",{headers:true}) FROM ?', [$scope.provincias]);
+            //exporta directamente desde angular, funciona. (No se le puede dar ningún formato, por eso voy al C#)
+            //alasql('SELECT * INTO XLSX("provincias.xlsx",{headers:true}) FROM ?', [$scope.provincias]);
+            $http({
+                method: "POST",
+                url: "/Provincia/ExportToExcel",
+                datatype: "json",
+                data: JSON.stringify($scope.provincias)
+            }).then(function (response) {
+                alert(response.data);
+                $scope.GetAllByPais($scope.currentPais);
+            }).catch(function (reason) {
+                console.log(reason);
+                alert("Ocurrió un error al intentar exportar a excel los países.");
+            })
         } else {
             alert('No hay registros para exportar a excel');
         }

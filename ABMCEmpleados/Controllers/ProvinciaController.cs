@@ -1,6 +1,8 @@
 ﻿using ABMCEmpleados.Models;
+using OfficeOpenXml;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -152,6 +154,74 @@ namespace ABMCEmpleados.Controllers
                 }
             else
                 return "No se pudo actualizar la provincia, intente nuevamente.";
+        }
+
+        /// <summary>
+        /// Exporta la lista de provincias a excel.
+        /// </summary>
+        /// <param name="provincias">Las provincias a exportar</param>
+        /// <returns>El resultado de la acción.</returns>
+        public string ExportToExcel(List<Provincia> provincias)
+        {
+            try
+            {
+                string codigoPais = provincias.First().pro_pai_codigo;
+                Pais pais = null;
+                using (EmpDBEntities db = new EmpDBEntities())
+                    pais = db.Paises.Find(codigoPais);
+
+                string sFileName = @"D:\Dedwin\Downloads\provincias.xlsx";
+                FileInfo file = new FileInfo(sFileName);
+                if (file.Exists)
+                {
+                    file.Delete();
+                    file = new FileInfo(sFileName);
+                }
+
+                using (ExcelPackage package = new ExcelPackage(file))
+                {
+                    ExcelWorksheet workSheet = package.Workbook.Worksheets.Add("Provincias");
+                    workSheet.Cells[1, 1].Value = "Código País";
+                    workSheet.Cells[1, 1].Style.Font.Bold = true;
+                    workSheet.Cells[1, 1].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
+                    workSheet.Cells[1, 2].Value = "Nombre País";
+                    workSheet.Cells[1, 2].Style.Font.Bold = true;
+                    workSheet.Cells[1, 2].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
+                    workSheet.Cells[1, 3].Value = "Código";
+                    workSheet.Cells[1, 3].Style.Font.Bold = true;
+                    workSheet.Cells[1, 3].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
+                    workSheet.Cells[1, 4].Value = "Nombre";
+                    workSheet.Cells[1, 4].Style.Font.Bold = true;
+                    workSheet.Cells[1, 4].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
+
+                    int c = 1;
+                    foreach (Provincia item in provincias)
+                    {
+                        c++;
+                        workSheet.Cells[c, 1].Value = pais.pai_codigo;
+                        workSheet.Cells[c, 1].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
+                        workSheet.Cells[c, 2].Value = pais.pai_nombre;
+                        workSheet.Cells[c, 2].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
+                        workSheet.Cells[c, 3].Value = item.pro_codigo;
+                        workSheet.Cells[c, 3].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
+                        workSheet.Cells[c, 4].Value = item.pro_nombre;
+                        workSheet.Cells[c, 4].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
+                    }
+
+                    workSheet.Column(1).AutoFit();
+                    workSheet.Column(2).AutoFit();
+                    workSheet.Column(3).AutoFit();
+                    workSheet.Column(4).AutoFit();
+
+                    package.Save();
+
+                    return "Se creó el excel correctamente en el directorio " + sFileName + ".";
+                }
+            }
+            catch (Exception ex)
+            {
+                return "Ocurrió un error al intentar crear el excel, intente nuevamente. (" + ex.Message + ")";
+            }
         }
 
         private bool VerificaCiudadXProvincia(Provincia provincia)

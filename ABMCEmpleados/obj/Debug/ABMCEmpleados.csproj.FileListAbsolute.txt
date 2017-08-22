@@ -76,3 +76,5 @@ D:\Dedwin\Proyectos\Angular\ABMCEmpleados\ABMCEmpleados\bin\es\System.Web.WebPag
 D:\Dedwin\Proyectos\Angular\ABMCEmpleados\ABMCEmpleados\obj\Debug\ABMCEmpleados.dll
 D:\Dedwin\Proyectos\Angular\ABMCEmpleados\ABMCEmpleados\obj\Debug\ABMCEmpleados.pdb
 D:\Dedwin\Proyectos\Angular\ABMCEmpleados\ABMCEmpleados\obj\Debug\ABMCEmpleados.csprojResolveAssemblyReference.cache
+D:\Dedwin\Proyectos\Angular\ABMCEmpleados\ABMCEmpleados\bin\EPPlus.Core.dll
+D:\Dedwin\Proyectos\Angular\ABMCEmpleados\ABMCEmpleados\bin\EPPlus.Core.xml

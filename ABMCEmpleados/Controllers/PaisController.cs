@@ -1,6 +1,8 @@
 ﻿using ABMCEmpleados.Models;
+using OfficeOpenXml;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -120,6 +122,57 @@ namespace ABMCEmpleados.Controllers
                 }
             else
                 return "No se pudo actualizar el país, intente nuevamente.";
+        }
+
+        /// <summary>
+        /// Exporta la lista de países a excel.
+        /// </summary>
+        /// <param name="paises">Los países a exportar</param>
+        /// <returns>El resultado de la acción.</returns>
+        public string ExportToExcel(List<Pais> paises)
+        {
+            try
+            {
+                string sFileName = @"D:\Dedwin\Downloads\paises.xlsx";
+                FileInfo file = new FileInfo(sFileName);
+                if (file.Exists)
+                {
+                    file.Delete();
+                    file = new FileInfo(sFileName);
+                }
+
+                using (ExcelPackage package = new ExcelPackage(file))
+                {
+                    ExcelWorksheet workSheet = package.Workbook.Worksheets.Add("Países");
+                    workSheet.Cells[1, 1].Value = "Código";
+                    workSheet.Cells[1, 1].Style.Font.Bold = true;
+                    workSheet.Cells[1, 1].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
+                    workSheet.Cells[1, 2].Value = "Nombre";
+                    workSheet.Cells[1, 2].Style.Font.Bold = true;
+                    workSheet.Cells[1, 2].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
+
+                    int c = 1;
+                    foreach (Pais item in paises)
+                    {
+                        c++;
+                        workSheet.Cells[c, 1].Value = item.pai_codigo;
+                        workSheet.Cells[c, 1].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
+                        workSheet.Cells[c, 2].Value = item.pai_nombre;
+                        workSheet.Cells[c, 2].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
+                    }
+
+                    workSheet.Column(1).AutoFit();
+                    workSheet.Column(2).AutoFit();
+
+                    package.Save();
+
+                    return "Se creó el excel correctamente en el directorio " + sFileName + ".";
+                }
+            }
+            catch (Exception ex)
+            {
+                return "Ocurrió un error al intentar crear el excel, intente nuevamente. (" + ex.Message + ")";
+            }
         }
 
         private bool VerificaProvinciaXPais(Pais pais)
