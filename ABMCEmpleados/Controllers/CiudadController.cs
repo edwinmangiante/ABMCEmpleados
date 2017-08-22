@@ -192,7 +192,6 @@ namespace ABMCEmpleados.Controllers
                     provincia = db.Provincias.Where(x => x.pro_codigo == codigoProvincia).First();
                 }
 
-
                 string sFileName = @"D:\Dedwin\Downloads\ciudades.xlsx";
                 FileInfo file = new FileInfo(sFileName);
                 if (file.Exists)
