@@ -1,0 +1,92 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="UsrDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Usuario">
+          <Key>
+            <PropertyRef Name="usu_user_name" />
+            <PropertyRef Name="usu_user_domain" />
+            <PropertyRef Name="usu_user_email" />
+          </Key>
+          <Property Name="usu_user_name" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="usu_user_domain" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="usu_user_email" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="usu_password" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="usu_nom_ape" Type="nvarchar" MaxLength="250" Nullable="false" />
+          <Property Name="usu_fecha_alta" Type="datetime" Nullable="false" />
+          <Property Name="usu_ult_login" Type="datetime" />
+          <Property Name="usu_ult_logout" Type="datetime" />
+        </EntityType>
+        <EntityContainer Name="UsrDBModelStoreContainer">
+          <EntitySet Name="Usuario" EntityType="Self.Usuario" Schema="dbo" store:Type="Tables" />
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="UsrDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Usuario">
+          <Key>
+            <PropertyRef Name="usu_user_name" />
+            <PropertyRef Name="usu_user_domain" />
+            <PropertyRef Name="usu_user_email" />
+          </Key>
+          <Property Name="usu_user_name" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="usu_user_domain" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="usu_user_email" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="usu_password" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="usu_nom_ape" Type="String" MaxLength="250" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="usu_fecha_alta" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="usu_ult_login" Type="DateTime" Precision="3" />
+          <Property Name="usu_ult_logout" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityContainer Name="UsrDBEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Usuario" EntityType="Self.Usuario" />
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="UsrDBModelStoreContainer" CdmEntityContainer="UsrDBEntities">
+          <EntitySetMapping Name="Usuario">
+            <EntityTypeMapping TypeName="UsrDBModel.Usuario">
+              <MappingFragment StoreEntitySet="Usuario">
+                <ScalarProperty Name="usu_user_name" ColumnName="usu_user_name" />
+                <ScalarProperty Name="usu_user_domain" ColumnName="usu_user_domain" />
+                <ScalarProperty Name="usu_user_email" ColumnName="usu_user_email" />
+                <ScalarProperty Name="usu_password" ColumnName="usu_password" />
+                <ScalarProperty Name="usu_nom_ape" ColumnName="usu_nom_ape" />
+                <ScalarProperty Name="usu_fecha_alta" ColumnName="usu_fecha_alta" />
+                <ScalarProperty Name="usu_ult_login" ColumnName="usu_ult_login" />
+                <ScalarProperty Name="usu_ult_logout" ColumnName="usu_ult_logout" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Ninguno" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

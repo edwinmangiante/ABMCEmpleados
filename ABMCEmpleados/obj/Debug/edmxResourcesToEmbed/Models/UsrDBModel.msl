@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="UsrDBModelStoreContainer" CdmEntityContainer="UsrDBEntities">
+    <EntitySetMapping Name="Usuario">
+      <EntityTypeMapping TypeName="UsrDBModel.Usuario">
+        <MappingFragment StoreEntitySet="Usuario">
+          <ScalarProperty Name="usu_user_name" ColumnName="usu_user_name" />
+          <ScalarProperty Name="usu_user_domain" ColumnName="usu_user_domain" />
+          <ScalarProperty Name="usu_user_email" ColumnName="usu_user_email" />
+          <ScalarProperty Name="usu_password" ColumnName="usu_password" />
+          <ScalarProperty Name="usu_nom_ape" ColumnName="usu_nom_ape" />
+          <ScalarProperty Name="usu_fecha_alta" ColumnName="usu_fecha_alta" />
+          <ScalarProperty Name="usu_ult_login" ColumnName="usu_ult_login" />
+          <ScalarProperty Name="usu_ult_logout" ColumnName="usu_ult_logout" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>

@@ -23,6 +23,19 @@ textarea {
     max-width: 300px;
 }*/
 
+.buttonLogin a {
+    float: right;
+    color: #999999;
+    padding-top: 15px;
+    padding-bottom: 15px;
+    text-decoration: none;
+}
+
+.buttonLogin a:hover {
+    color: #ffffff;
+    background-color: transparent;
+}
+
 #searchButton {
     background: white url(/Content/Images/search.png) left no-repeat;
     padding-left: 17px;
@@ -66,7 +79,7 @@ textarea {
 }
 
 .codigo {
-    width:200px;
+    width: 200px;
 }
 
 .pagination-container {
@@ -144,8 +157,16 @@ textarea {
     }
 }
 
+@media (max-width: 768px) {
+    .buttonLogin a {
+        float: left;
+    }
+}
+
 @media (max-width: 600px) {
-    .codigo { width: 65px; }
+    .codigo {
+        width: 65px;
+    }
 }
 
 @media (max-width: 520px) {
@@ -156,7 +177,7 @@ textarea {
     }
 
     .botonesSC {
-        text-align:center;
+        text-align: center;
     }
 
     #ddlPais {

@@ -14,7 +14,10 @@ namespace ABMCEmpleados.Controllers
         // GET: Ciudad
         public ActionResult Index()
         {
-            return View();
+            if (Usuario.IsUserLog(Session["usuario"].ToString(), Session["password"].ToString()))
+                return View();
+            else
+                return RedirectToAction("Index", "Ingresar");
         }
 
         /// <summary>

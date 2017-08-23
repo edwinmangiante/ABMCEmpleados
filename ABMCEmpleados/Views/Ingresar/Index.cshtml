@@ -1,0 +1,62 @@
+﻿<script type="text/javascript" src="~/Scripts/Login.js"></script>
+
+@{
+    ViewBag.Title = "Ingresar";
+}
+
+<h2>Ingresar:</h2>
+
+<div ng-app="myApp">
+    <div ng-controller="myCtrl" class="divList">
+        <div id="alertModal" class="modal fade">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <!-- dialog body -->
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dissmiss="modal" ng-click="HideModal()">x</button>
+                        <h4 class="modal-title" id="myModalLabel">Error</h4>
+                    </div>
+                    <div class="modal-body">
+                        {{msg}}
+                    </div>
+                    <!-- dialog buttons -->
+                    <div class="modal-footer">
+                        <button type="button" ng-click="HideModal()" class="btn btn-primary">OK</button>
+                    </div>
+                </div>
+            </div>
+        </div> 
+
+        <div class="form-horizontal" role="form" style="text-align:center;">
+            <div class="form-group">
+                <label class="control-label col-md-2">Usuario:</label>
+                <div class="col-md-6">
+                    <input type="text" class="form-control" placeholder="Usuario"
+                           ng-model="UserName" ng-required="true" >
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label col-md-2">E-Mail:</label>
+                <div class="col-md-6">
+                    <input type="text" class="form-control" placeholder="E-Mail"
+                           ng-model="Email" ng-required="true" >
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label col-md-2">Password:</label>
+                <div class="col-md-6">
+                    <input type="password" class="form-control" placeholder="Password"
+                           ng-model="Password" ng-required="true" >
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-3">
+                    <input class="btn btn-primary" type="button" title="Ingresar" value="Ingresar" placeholder="Password" ng-click="LogIn()">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
