@@ -67,26 +67,26 @@ namespace ABMCEmpleados.Controllers
         /// Crea un nuevo país  
         /// </summary>  
         /// <param name="Pais">El objeto país a crear.</param>  
-        /// <returns>string</returns>  
-        public string Insert(Pais Pais)
+        /// <returns>JsonResult</returns>  
+        public JsonResult Insert(Pais Pais)
         {
             if (Pais != null)
                 using (EmpDBEntities Obj = new EmpDBEntities())
                 {
                     Obj.Paises.Add(Pais);
                     Obj.SaveChanges();
-                    return "Se agregó el país satisfactoriamente.";
+                    return Json(new { rta = 0 }, JsonRequestBehavior.AllowGet);
                 }
             else
-                return "No se pudo agregar el país, intente nuevamente.";
+                return Json(new { rta = 1 }, JsonRequestBehavior.AllowGet);
         }
 
         /// <summary>  
         /// Elimina un nuevo país  
         /// </summary>  
         /// <param name="Pais">El objeto país a eliminar.</param>  
-        /// <returns>string</returns>  
-        public string Delete(Pais Pais)
+        /// <returns>JsonResult</returns>  
+        public JsonResult Delete(Pais Pais)
         {
             if (Pais != null)
                 if (VerificaProvinciaXPais(Pais))
@@ -99,20 +99,20 @@ namespace ABMCEmpleados.Controllers
                             Obj.Paises.Remove(Pais);
                         }
                         Obj.SaveChanges();
-                        return "Se eliminó el país satisfactoriamente.";
+                        return Json(new { rta = 0 }, JsonRequestBehavior.AllowGet);
                     }
                 else
-                    return "El país que quiere eliminar posee al menos una provincia cargada. Elimine la/s provincia/s y luego elimine el país.";
+                    return Json(new { rta = 1 }, JsonRequestBehavior.AllowGet);
             else
-                return "No se pudo eliminar el país, intente nuevamente.";
+                return Json(new { rta = 2 }, JsonRequestBehavior.AllowGet);
         }
 
         /// <summary>  
         /// Edita un nuevo país  
         /// </summary>  
         /// <param name="Pais">El objeto país a editar.</param>  
-        /// <returns>string</returns>  
-        public string Update(Pais Pais)
+        /// <returns>JsonResult</returns>  
+        public JsonResult Update(Pais Pais)
         {
             if (Pais != null)
                 using (EmpDBEntities Obj = new EmpDBEntities())
@@ -121,10 +121,10 @@ namespace ABMCEmpleados.Controllers
                     Pais PaisObj = Obj.Paises.Where(x => x.pai_codigo == Pais.pai_codigo).FirstOrDefault();
                     PaisObj.pai_nombre = Pais.pai_nombre;
                     Obj.SaveChanges();
-                    return "Se actualizó el país satisfactoriamente.";
+                    return Json(new { rta = 0 }, JsonRequestBehavior.AllowGet);
                 }
             else
-                return "No se pudo actualizar el país, intente nuevamente.";
+                return Json(new { rta = 1 }, JsonRequestBehavior.AllowGet);
         }
 
         /// <summary>
@@ -132,7 +132,7 @@ namespace ABMCEmpleados.Controllers
         /// </summary>
         /// <param name="paises">Los países a exportar</param>
         /// <returns>El resultado de la acción.</returns>
-        public string ExportToExcel(List<Pais> paises)
+        public JsonResult ExportToExcel(List<Pais> paises)
         {
             try
             {
@@ -169,12 +169,12 @@ namespace ABMCEmpleados.Controllers
 
                     package.Save();
 
-                    return "Se creó el excel correctamente en el directorio " + sFileName + ".";
+                    return Json(new { rta = 0, dir = sFileName }, JsonRequestBehavior.AllowGet);
                 }
             }
             catch (Exception ex)
             {
-                return "Ocurrió un error al intentar crear el excel, intente nuevamente. (" + ex.Message + ")";
+                return Json(new { rta = 0, exMsg = ex.Message }, JsonRequestBehavior.AllowGet);
             }
         }
 

@@ -12,7 +12,10 @@ app.controller("myCtrl", function ($scope, $http) {
     }).catch(function (reason) {
         $scope.loading = false;
         console.log(reason);
-        alert("Ocurrió un error al intentar obtener los países.");
+        //alert("Ocurrió un error al intentar obtener los países.");
+        $("#alertModal").modal('show');
+        $scope.title = "Error!";
+        $scope.msg = "Ocurrió un error al intentar obtener los países.";
     })
 
     $scope.GetAllByPais = function (pai_codigo) {
@@ -28,7 +31,10 @@ app.controller("myCtrl", function ($scope, $http) {
         }).catch(function (reason) {
             $scope.loading = false;
             console.log(reason);
-            alert("Ocurrió un error al intentar obtener las provincias.");
+            //alert("Ocurrió un error al intentar obtener las provincias.");
+            $("#alertModal").modal('show');
+            $scope.title = "Error!";
+            $scope.msg = "Ocurrió un error al intentar obtener las provincias por país.";
         })
     }
 
@@ -60,7 +66,15 @@ app.controller("myCtrl", function ($scope, $http) {
                                 datatype: "json",
                                 data: JSON.stringify($scope.Ciudad)
                             }).then(function (response) {
-                                alert(response.data);
+                                //alert(response.data);
+                                $("#alertModal").modal('show');
+                                if (response.data.rta == 0) {
+                                    $scope.title = "Agregada!";
+                                    $scope.msg = "Se agregó la ciudad satisfactoriamente.";
+                                } else if (response.data.rta == 1) {
+                                    $scope.title = "Error!";
+                                    $scope.msg = "No se pudo agregar la ciudad, intente nuevamente.";
+                                }
                                 $scope.GetAllByPaisAndProvincia($scope.currentPais, $scope.currentProvincia);
                                 $scope.Ciudad.ciu_pro_pai_codigo = "";
                                 $scope.Ciudad.ciu_pro_codigo = "";
@@ -70,7 +84,10 @@ app.controller("myCtrl", function ($scope, $http) {
                             })
                         } else {
                             $scope.loading = false;
-                            alert("El código de la ciudad ingresado ya existe.");
+                            //alert("El código de la ciudad ingresado ya existe.");
+                            $("#alertModal").modal('show');
+                            $scope.title = "Verifique!";
+                            $scope.msg = "El código de ciudad ingresado ya existe.";
                         }
                     },
                     error: function (xhr, status, error) {
@@ -79,7 +96,10 @@ app.controller("myCtrl", function ($scope, $http) {
                         console.log(error);
                         a = xhr.responseText;
                         $scope.loading = false;
-                        alert("Ocurrió un error al intentar verificar el código de ciudad.");
+                        //alert("Ocurrió un error al intentar verificar el código de ciudad.");
+                        $("#alertModal").modal('show');
+                        $scope.title = "Error!";
+                        $scope.msg = "Ocurrió un error al intentar verificar el código de ciudad.";
                     }
                 })
             } else {
@@ -105,7 +125,15 @@ app.controller("myCtrl", function ($scope, $http) {
                                 datatype: "json",
                                 data: JSON.stringify($scope.Ciudad)
                             }).then(function (response) {
-                                alert(response.data);
+                                //alert(response.data);
+                                $("#alertModal").modal('show');
+                                if (response.data.rta == 0) {
+                                    $scope.title = "Actualizado!";
+                                    $scope.msg = "Se actualizó la ciudad satisfactoriamente.";
+                                } else if (response.data.rta == 1) {
+                                    $scope.title = "Error!";
+                                    $scope.msg = "No se pudo actualizar la ciudad, intente nuevamente.";
+                                }
                                 $scope.GetAllByPaisAndProvincia($scope.currentPais, $scope.currentProvincia);
                                 $scope.Ciudad.ciu_pro_pai_codigo = "";
                                 $scope.Ciudad.ciu_pro_codigo = "";
@@ -116,7 +144,10 @@ app.controller("myCtrl", function ($scope, $http) {
                             })
                         } else {
                             $scope.loading = false;
-                            alert("El código de ciudad ingresado no existe.");
+                            //alert("El código de ciudad ingresado no existe.");
+                            $("#alertModal").modal('show');
+                            $scope.title = "Verifique!";
+                            $scope.msg = "El código de ciudad ingresado no existe.";
                         }
                     },
                     error: function (xhr, status, error) {
@@ -125,7 +156,10 @@ app.controller("myCtrl", function ($scope, $http) {
                         console.log(error);
                         a = xhr.responseText;
                         $scope.loading = false;
-                        alert("Ocurrió un error al intentar verificar el código de ciudad.");
+                        //alert("Ocurrió un error al intentar verificar el código de ciudad.");
+                        $("#alertModal").modal('show');
+                        $scope.title = "Error!";
+                        $scope.msg = "Ocurrió un error al intentar verificar el código de ciudad.";
                     }
                 })
             }
@@ -143,7 +177,10 @@ app.controller("myCtrl", function ($scope, $http) {
         }).catch(function (reason) {
             console.log(reason);
             $scope.loading = false;
-            alert("Ocurrió un error al intentar obtener las ciudades.");
+            //alert("Ocurrió un error al intentar obtener las ciudades.");
+            $("#alertModal").modal('show');
+            $scope.title = "Error!";
+            $scope.msg = "Ocurrió un error al intentar obtener las ciudades.";
         })
     };
 
@@ -160,20 +197,33 @@ app.controller("myCtrl", function ($scope, $http) {
         }).catch(function (reason) {
             console.log(reason);
             $scope.loading = false;
-            alert("Ocurrió un error al intentar obtener las ciudades por país y provincia.");
+            //alert("Ocurrió un error al intentar obtener las ciudades por país y provincia.");
+            $("#alertModal").modal('show');
+            $scope.title = "Error!";
+            $scope.msg = "Ocurrió un error al intentar obtener las ciudades por país y provincia.";
         })
     };
 
-    $scope.Delete = function (Ciudad) {
-        var ans = confirm('¿Está seguro de qué quiere eliminar la ciudad?');
-        if (ans) {
+    $scope.Delete = function () {
+        //debugger;
+        var Action = $("#btnYesNo").val();
+        if (Action == "Si") {
             $http({
                 method: "POST",
                 url: "/Ciudad/Delete",
                 datatype: "json",
-                data: JSON.stringify(Ciudad)
+                data: JSON.stringify($scope.CiudadSeleccionada)
             }).then(function (response) {
-                alert(response.data);
+                //alert(response.data);
+                $('#modalConfirmYesNo').modal('hide');
+                $("#alertModal").modal('show');
+                if (response.data.rta == 0) {
+                    $scope.title = "Eliminado!";
+                    $scope.msg = "Se eliminó la ciudad satisfactoriamente.";
+                } else if (response.data.rta == 1) {
+                    $scope.title = "Error!";
+                    $scope.msg = "No se pudo eliminar la ciudad, intente nuevamente.";
+                }
                 $scope.GetAllByPaisAndProvincia($scope.currentPais, $scope.currentProvincia);
             })
         }
@@ -203,35 +253,64 @@ app.controller("myCtrl", function ($scope, $http) {
                 datatype: "json",
                 data: JSON.stringify($scope.ciudades)
             }).then(function (response) {
-                alert(response.data);
+                //alert(response.data);
+                $("#alertModal").modal('show');
+                if (response.data.rta == 0) {
+                    $scope.title = "Exportado!";
+                    $scope.msg = "Se creó el excel correctamente en el directorio " + response.data.dir + ".";
+                } else if (response.data.rta == 1) {
+                    $scope.title = "Error!";
+                    $scope.msg = "Ocurrió un error al intentar crear el excel, intente nuevamente. (" + response.data.exMsg + ")";
+                }
                 $scope.GetAllByPaisAndProvincia($scope.currentPais, $scope.currentProvincia);
             }).catch(function (reason) {
                 console.log(reason);
-                alert("Ocurrió un error al intentar exportar a excel los países.");
+                $("#alertModal").modal('show');
+                $scope.title = "Error!";
+                $scope.msg = "Ocurrió un error al intentar exportar a excel las ciudades.";
             })
         } else {
-            alert('No hay registros para exportar a excel');
+            //alert('No hay registros para exportar a excel');
+            $("#alertModal").modal('show');
+            $scope.title = "Error!";
+            $scope.msg = "No hay registros para exportar a excel.";
         }
     };
 
     //función para validar que los campos esten completos
     $scope.Validate = function () {
         var isValid = true;
-        if ($('#inputPais').val().trim() == "" || $scope.CodigoPais == "") {
+        /*if ($('#inputPais').val().trim() == "" || $scope.CodigoPais == "") {
             alert("Debe completar el código del país al que pertenece la ciudad.");
             isValid = false;
         }
         if ($('#inputProvincia').val().trim() == "" || $scope.CodigoProvincia == "") {
             alert("Debe completar el código de la provincia a la que pertenece la ciudad.");
             isValid = false;
-        }
+        }*/
+
         if ($('#inputCodigo').val().trim() == "" || $scope.CodigoCiudad == "") {
-            alert("Debe completar el código de la ciudad.");
+            //alert("Debe completar el código de la ciudad.");
             isValid = false;
         }
-        if ($('#inputNombre').val().trim() == "" || $scope.NombreCiudad == "") {
-            alert("Debe completar el nombre de la ciudad.");
-            isValid = false;
+        if (isValid) {
+            if ($('#inputNombre').val().trim() == "" || $scope.NombreCiudad == "") {
+                //alert("Debe completar el nombre de la ciudad.");
+                $("#alertModal").modal('show');
+                $scope.title = "Error!";
+                $scope.msg = "Debe completar el nombre de la ciudad.";
+                isValid = false;
+            }
+        } else {
+            if ($('#inputNombre').val().trim() == "" || $scope.NombreCiudad == '') {
+                $("#alertModal").modal('show');
+                $scope.title = "Error!";
+                $scope.msg = "Debe completar el código y el nombre de la ciudad.";
+            } else {
+                $("#alertModal").modal('show');
+                $scope.title = "Error!";
+                $scope.msg = "Debe completar el código de la ciudad.";
+            }
         }
 
         return isValid;
@@ -266,5 +345,18 @@ app.controller("myCtrl", function ($scope, $http) {
     //esconde el modal cuando se hace click en el botón cerrar o en la cruz.
     $scope.DismissModal = function () {
         $('#myModal').modal('hide');
+    };
+
+    $scope.HideAlertModal = function () {
+        $('#alertModal').modal('hide');
+    };
+
+    $scope.HideYesNoModal = function () {
+        $('#modalConfirmYesNo').modal('hide');
+    };
+
+    $scope.ShowYesNoModal = function (Ciudad) {
+        $scope.CiudadSeleccionada = Ciudad;
+        $('#modalConfirmYesNo').modal('show');
     };
 })

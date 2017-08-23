@@ -100,17 +100,17 @@ namespace ABMCEmpleados.Controllers
         /// </summary>  
         /// <param name="Provincia">El objeto provincia a crear.</param>  
         /// <returns>string</returns>  
-        public string Insert(Provincia Provincia)
+        public JsonResult Insert(Provincia Provincia)
         {
             if (Provincia != null)
                 using (EmpDBEntities Obj = new EmpDBEntities())
                 {
                     Obj.Provincias.Add(Provincia);
                     Obj.SaveChanges();
-                    return "Se agregó la provincia satisfactoriamente.";
+                    return Json(new { rta = 0 }, JsonRequestBehavior.AllowGet);
                 }
             else
-                return "No se pudo agregar la provincia, intente nuevamente.";
+                return Json(new { rta = 1 }, JsonRequestBehavior.AllowGet);
         }
 
         /// <summary>  
@@ -118,7 +118,7 @@ namespace ABMCEmpleados.Controllers
         /// </summary>  
         /// <param name="Provincia">El objeto provincia a eliminar.</param>  
         /// <returns>string</returns>  
-        public string Delete(Provincia Provincia)
+        public JsonResult Delete(Provincia Provincia)
         {
             if (Provincia != null)
                 if (VerificaCiudadXProvincia(Provincia))
@@ -131,12 +131,12 @@ namespace ABMCEmpleados.Controllers
                             Obj.Provincias.Remove(Provincia);
                         }
                         Obj.SaveChanges();
-                        return "Se eliminó la provincia satisfactoriamente.";
+                        return Json(new { rta = 0 }, JsonRequestBehavior.AllowGet);
                     }
                 else
-                    return "La provincia que quiere eliminar posee al menos una ciudad cargada. Elimine la/s ciudad/es y luego elimine la provincia.";
+                    return Json(new { rta = 1 }, JsonRequestBehavior.AllowGet);
             else
-                return "No se pudo eliminar la provincia, intente nuevamente.";
+                return Json(new { rta = 2 }, JsonRequestBehavior.AllowGet);
         }
 
         /// <summary>  
@@ -144,7 +144,7 @@ namespace ABMCEmpleados.Controllers
         /// </summary>  
         /// <param name="Provincia">El objeto provincia a editar.</param>  
         /// <returns>string</returns>  
-        public string Update(Provincia Provincia)
+        public JsonResult Update(Provincia Provincia)
         {
             if (Provincia != null)
                 using (EmpDBEntities Obj = new EmpDBEntities())
@@ -153,10 +153,10 @@ namespace ABMCEmpleados.Controllers
                     Provincia ProvinciaObj = Obj.Provincias.Where(x => x.pro_pai_codigo == Provincia.pro_pai_codigo && x.pro_codigo == Provincia.pro_codigo).FirstOrDefault();
                     ProvinciaObj.pro_nombre = Provincia.pro_nombre;
                     Obj.SaveChanges();
-                    return "Se actualizó la provincia satisfactoriamente.";
+                    return Json(new { rta = 0 }, JsonRequestBehavior.AllowGet);
                 }
             else
-                return "No se pudo actualizar la provincia, intente nuevamente.";
+                return Json(new { rta = 1 }, JsonRequestBehavior.AllowGet);
         }
 
         /// <summary>
@@ -164,7 +164,7 @@ namespace ABMCEmpleados.Controllers
         /// </summary>
         /// <param name="provincias">Las provincias a exportar</param>
         /// <returns>El resultado de la acción.</returns>
-        public string ExportToExcel(List<Provincia> provincias)
+        public JsonResult ExportToExcel(List<Provincia> provincias)
         {
             try
             {
@@ -218,12 +218,12 @@ namespace ABMCEmpleados.Controllers
 
                     package.Save();
 
-                    return "Se creó el excel correctamente en el directorio " + sFileName + ".";
+                    return Json(new { rta = 0, dir = sFileName }, JsonRequestBehavior.AllowGet);
                 }
             }
             catch (Exception ex)
             {
-                return "Ocurrió un error al intentar crear el excel, intente nuevamente. (" + ex.Message + ")";
+                return Json(new { rta = 1, exMsg = ex.Message }, JsonRequestBehavior.AllowGet);
             }
         }
 

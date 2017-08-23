@@ -53,6 +53,10 @@ textarea {
     width: 300px;
 }
 
+#alertModal {
+    z-index:10000;
+}
+
 #ddlPais {
     float: right;
     margin-right: 20px;

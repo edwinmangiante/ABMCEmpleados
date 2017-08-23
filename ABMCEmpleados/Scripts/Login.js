@@ -15,7 +15,7 @@ app.controller("myCtrl", function ($scope, $http) {
                 window.location.href = "/Empleado/Index";
             } else {
                 $("#alertModal").modal('show'); 
-                $scope.msg = "El usuario, e-mail o contraseña son incorrectos."
+                $scope.msg = "El usuario, e-mail o contraseña son incorrectos.";
             }
         })
     };

@@ -8,6 +8,44 @@
 
 <div ng-app="myApp">
     <div ng-controller="myCtrl" class="divList">
+        <div id="alertModal" class="modal fade">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <!-- dialog header -->
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dissmiss="modal" ng-click="HideAlertModal()">x</button>
+                        <h4 class="modal-title" id="myModalLabel">{{title}}</h4>
+                    </div>
+                    <!-- dialog body -->
+                    <div class="modal-body">
+                        {{msg}}
+                    </div>
+                    <!-- dialog buttons -->
+                    <div class="modal-footer">
+                        <button type="button" ng-click="HideAlertModal()" class="btn btn-primary">OK</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="modalConfirmYesNo" class="modal fade">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dissmiss="modal" ng-click="HideYesNoModal()">x</button>
+                        <h4 class="modal-title" id="myModalLabel">Confirme</h4>
+                    </div>
+                    <div class="modal-body">
+                        ¿Está seguro que quiere eliminar la ciudad seleccionada?
+                    </div>
+                    <div class="modal-footer">
+                        <input type="button" id="btnYesNo" class="btn btn-primary" value="Si" ng-click="Delete()" />
+                        <input type="button" id="btnYesNo" class="btn btn-primary" value="No" ng-click="HideYesNoModal()" />
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <input ng-model="searchNombre" type="text" class="form-control searchInput" placeholder="Nombre" />
         <div class="botonesSC">
             <button type="button" class="btn buttons" title="Buscar" ng-click="GetAllByPaisAndProvincia(currentPais,currentProvincia)">
@@ -64,7 +102,7 @@
                                 <img src='@Url.Content("~/Content/Images/edit.svg")' style="width:24px;height:24px;" />
                             </a>
                             |
-                            <a href='#' ng-click="Delete(Ciudad)">
+                            <a href='#' ng-click="ShowYesNoModal(Ciudad)">
                                 <img src='@Url.Content("~/Content/Images/delete.svg")' style="width:24px;height:24px;" />
                             </a>
                         </td>

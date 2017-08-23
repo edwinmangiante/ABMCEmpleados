@@ -120,17 +120,17 @@ namespace ABMCEmpleados.Controllers
         /// </summary>  
         /// <param name="Ciudad">El objeto ciudad a crear.</param>  
         /// <returns>string</returns>  
-        public string Insert(Ciudad Ciudad)
+        public JsonResult Insert(Ciudad Ciudad)
         {
             if (Ciudad != null)
                 using (EmpDBEntities Obj = new EmpDBEntities())
                 {
                     Obj.Ciudades.Add(Ciudad);
                     Obj.SaveChanges();
-                    return "Se agregó la ciudad satisfactoriamente.";
+                    return Json(new { rta = 0 }, JsonRequestBehavior.AllowGet);
                 }
             else
-                return "No se pudo agregar la ciudad, intente nuevamente.";
+                return Json(new { rta = 1 }, JsonRequestBehavior.AllowGet);
         }
 
         /// <summary>  
@@ -138,7 +138,7 @@ namespace ABMCEmpleados.Controllers
         /// </summary>  
         /// <param name="Ciudad">El objeto ciudad a eliminar.</param>  
         /// <returns>string</returns> 
-        public string Delete(Ciudad Ciudad)
+        public JsonResult Delete(Ciudad Ciudad)
         {
             if (Ciudad != null)
                 using (EmpDBEntities Obj = new EmpDBEntities())
@@ -150,10 +150,10 @@ namespace ABMCEmpleados.Controllers
                         Obj.Ciudades.Remove(Ciudad);
                     }
                     Obj.SaveChanges();
-                    return "Se eliminó la ciudad satisfactoriamente.";
+                    return Json(new { rta = 0 }, JsonRequestBehavior.AllowGet);
                 }
             else
-                return "No se pudo eliminar la ciudad, intente nuevamente.";
+                return Json(new { rta = 1 }, JsonRequestBehavior.AllowGet);
         }
 
         /// <summary>  
@@ -161,7 +161,7 @@ namespace ABMCEmpleados.Controllers
         /// </summary>  
         /// <param name="Ciudad">El objeto ciudad a editar.</param>  
         /// <returns>string</returns> 
-        public string Update(Ciudad Ciudad)
+        public JsonResult Update(Ciudad Ciudad)
         {
             if (Ciudad != null)
                 using (EmpDBEntities Obj = new EmpDBEntities())
@@ -170,10 +170,10 @@ namespace ABMCEmpleados.Controllers
                     Ciudad CiudadObj = Obj.Ciudades.Where(x => x.ciu_pro_pai_codigo == Ciudad.ciu_pro_pai_codigo && x.ciu_pro_codigo == Ciudad.ciu_pro_codigo && x.ciu_codigo == Ciudad.ciu_codigo).FirstOrDefault();
                     CiudadObj.ciu_nombre = Ciudad.ciu_nombre;
                     Obj.SaveChanges();
-                    return "Se actualizó la ciudad satisfactoriamente.";
+                    return Json(new { rta = 0 }, JsonRequestBehavior.AllowGet);
                 }
             else
-                return "No se pudo actualizar la ciudad, intente nuevamente.";
+                return Json(new { rta = 1 }, JsonRequestBehavior.AllowGet);
         }
 
         /// <summary>
@@ -181,7 +181,7 @@ namespace ABMCEmpleados.Controllers
         /// </summary>
         /// <param name="ciudades">Las ciudades a exportar</param>
         /// <returns>El resultado de la acción.</returns>
-        public string ExportToExcel(List<Ciudad> ciudades)
+        public JsonResult ExportToExcel(List<Ciudad> ciudades)
         {
             try
             {
@@ -252,12 +252,12 @@ namespace ABMCEmpleados.Controllers
 
                     package.Save();
 
-                    return "Se creó el excel correctamente en el directorio " + sFileName + ".";
+                    return Json(new { rta = 0, dir = sFileName }, JsonRequestBehavior.AllowGet);
                 }
             }
             catch (Exception ex)
             {
-                return "Ocurrió un error al intentar crear el excel, intente nuevamente. (" + ex.Message + ")";
+                return Json(new { rta = 1, exMsg = ex.Message }, JsonRequestBehavior.AllowGet);
             }
         }
     }
