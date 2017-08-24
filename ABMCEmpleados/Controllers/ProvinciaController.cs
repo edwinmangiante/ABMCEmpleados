@@ -14,7 +14,7 @@ namespace ABMCEmpleados.Controllers
         // GET: Provincia
         public ActionResult Index()
         {
-            if (Usuario.IsUserLog(Session["usuario"].ToString(), Session["password"].ToString()))
+            if (Usuario.IsUserLog(Session["usuario"].ToString(), Session["email"].ToString(), Session["password"].ToString()))
                 return View();
             else
                 return RedirectToAction("Index", "Ingresar");
@@ -26,12 +26,15 @@ namespace ABMCEmpleados.Controllers
         /// <returns>JsonResult</returns>
         public JsonResult GetAll()
         {
-            using (EmpDBEntities obj = new EmpDBEntities())
-            {
-                obj.Configuration.LazyLoadingEnabled = false;
-                List<Provincia> provincias = obj.Provincias.OrderBy(x => x.pro_pai_codigo).ThenBy(x => x.pro_codigo).ToList();
-                return Json(provincias, JsonRequestBehavior.AllowGet);
-            }
+            if (Usuario.IsUserLog(Session["usuario"].ToString(), Session["email"].ToString(), Session["password"].ToString()))
+                using (EmpDBEntities obj = new EmpDBEntities())
+                {
+                    obj.Configuration.LazyLoadingEnabled = false;
+                    List<Provincia> provincias = obj.Provincias.OrderBy(x => x.pro_pai_codigo).ThenBy(x => x.pro_codigo).ToList();
+                    return Json(provincias, JsonRequestBehavior.AllowGet);
+                }
+            else
+                return Json(null, JsonRequestBehavior.AllowGet);
         }
 
         /// <summary>
@@ -40,12 +43,15 @@ namespace ABMCEmpleados.Controllers
         /// <returns>JsonResultv</returns>
         public JsonResult GetPaises()
         {
-            using (EmpDBEntities obj = new EmpDBEntities())
-            {
-                obj.Configuration.LazyLoadingEnabled = false;
-                List<Pais> paises = obj.Paises.OrderBy(x => x.pai_codigo).ToList();
-                return Json(paises, JsonRequestBehavior.AllowGet);
-            }
+            if (Usuario.IsUserLog(Session["usuario"].ToString(), Session["email"].ToString(), Session["password"].ToString()))
+                using (EmpDBEntities obj = new EmpDBEntities())
+                {
+                    obj.Configuration.LazyLoadingEnabled = false;
+                    List<Pais> paises = obj.Paises.OrderBy(x => x.pai_codigo).ToList();
+                    return Json(paises, JsonRequestBehavior.AllowGet);
+                }
+            else
+                return Json(null, JsonRequestBehavior.AllowGet);
         }
 
         /// <summary>

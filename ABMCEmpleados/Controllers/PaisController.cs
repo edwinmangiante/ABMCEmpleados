@@ -14,7 +14,7 @@ namespace ABMCEmpleados.Controllers
         // GET: Pais
         public ActionResult Index()
         {
-            if (Usuario.IsUserLog(Session["usuario"].ToString(), Session["password"].ToString()))
+            if (Usuario.IsUserLog(Session["usuario"].ToString(), Session["email"].ToString(), Session["password"].ToString()))
                 return View();
             else
                 return RedirectToAction("Index", "Ingresar");
@@ -28,15 +28,18 @@ namespace ABMCEmpleados.Controllers
         /// <returns>JsonResult</returns>
         public JsonResult GetAll(string filterNombre)
         {
-            using (EmpDBEntities obj = new EmpDBEntities())
-            {
-                obj.Configuration.LazyLoadingEnabled = false;
-                IQueryable<Pais> paises = obj.Paises.AsQueryable();
-                if (!string.IsNullOrWhiteSpace(filterNombre))
-                    paises = paises.Where(x => x.pai_nombre.Contains(filterNombre));
+            if (Usuario.IsUserLog(Session["usuario"].ToString(), Session["email"].ToString(), Session["password"].ToString()))
+                using (EmpDBEntities obj = new EmpDBEntities())
+                {
+                    obj.Configuration.LazyLoadingEnabled = false;
+                    IQueryable<Pais> paises = obj.Paises.AsQueryable();
+                    if (!string.IsNullOrWhiteSpace(filterNombre))
+                        paises = paises.Where(x => x.pai_nombre.Contains(filterNombre));
 
-                return Json(paises.ToList(), JsonRequestBehavior.AllowGet);
-            }
+                    return Json(paises.ToList(), JsonRequestBehavior.AllowGet);
+                }
+            else
+                return Json(null, JsonRequestBehavior.AllowGet);
         }
 
         /// <summary>
@@ -46,21 +49,24 @@ namespace ABMCEmpleados.Controllers
         /// <returns>JsonResult</returns>
         public JsonResult GetByKey(string codigoPais)
         {
-            if (!string.IsNullOrWhiteSpace(codigoPais))
-            {
-                using (EmpDBEntities obj = new EmpDBEntities())
+            if (Usuario.IsUserLog(Session["usuario"].ToString(), Session["email"].ToString(), Session["password"].ToString()))
+                if (!string.IsNullOrWhiteSpace(codigoPais))
                 {
-                    obj.Configuration.LazyLoadingEnabled = false;
-                    IQueryable<Pais> paises = obj.Paises.AsQueryable();
-                    Pais pais = paises.Where(x => x.pai_codigo == codigoPais).FirstOrDefault();
-                    if (pais != null && !string.IsNullOrWhiteSpace(pais.pai_codigo))
-                        return Json(new { existe = true }, JsonRequestBehavior.AllowGet);
-                    else
-                        return Json(new { existe = false }, JsonRequestBehavior.AllowGet);
+                    using (EmpDBEntities obj = new EmpDBEntities())
+                    {
+                        obj.Configuration.LazyLoadingEnabled = false;
+                        IQueryable<Pais> paises = obj.Paises.AsQueryable();
+                        Pais pais = paises.Where(x => x.pai_codigo == codigoPais).FirstOrDefault();
+                        if (pais != null && !string.IsNullOrWhiteSpace(pais.pai_codigo))
+                            return Json(new { existe = 0 }, JsonRequestBehavior.AllowGet);
+                        else
+                            return Json(new { existe = 1 }, JsonRequestBehavior.AllowGet);
+                    }
                 }
-            }
+                else
+                    return Json(new { existe = 2 }, JsonRequestBehavior.AllowGet);
             else
-                return Json(new { existe = false }, JsonRequestBehavior.AllowGet);
+                return Json(new { existe = -1 }, JsonRequestBehavior.AllowGet);
         }
 
         /// <summary>  
@@ -70,15 +76,18 @@ namespace ABMCEmpleados.Controllers
         /// <returns>JsonResult</returns>  
         public JsonResult Insert(Pais Pais)
         {
-            if (Pais != null)
-                using (EmpDBEntities Obj = new EmpDBEntities())
-                {
-                    Obj.Paises.Add(Pais);
-                    Obj.SaveChanges();
-                    return Json(new { rta = 0 }, JsonRequestBehavior.AllowGet);
-                }
+            if (Usuario.IsUserLog(Session["usuario"].ToString(), Session["email"].ToString(), Session["password"].ToString()))
+                if (Pais != null)
+                    using (EmpDBEntities Obj = new EmpDBEntities())
+                    {
+                        Obj.Paises.Add(Pais);
+                        Obj.SaveChanges();
+                        return Json(new { rta = 0 }, JsonRequestBehavior.AllowGet);
+                    }
+                else
+                    return Json(new { rta = 1 }, JsonRequestBehavior.AllowGet);
             else
-                return Json(new { rta = 1 }, JsonRequestBehavior.AllowGet);
+                return Json(new { rta = -1 }, JsonRequestBehavior.AllowGet);
         }
 
         /// <summary>  
@@ -88,23 +97,26 @@ namespace ABMCEmpleados.Controllers
         /// <returns>JsonResult</returns>  
         public JsonResult Delete(Pais Pais)
         {
-            if (Pais != null)
-                if (VerificaProvinciaXPais(Pais))
-                    using (EmpDBEntities Obj = new EmpDBEntities())
-                    {
-                        var Pais_ = Obj.Entry(Pais);
-                        if (Pais_.State == System.Data.Entity.EntityState.Detached)
+            if (Usuario.IsUserLog(Session["usuario"].ToString(), Session["email"].ToString(), Session["password"].ToString()))
+                if (Pais != null)
+                    if (VerificaProvinciaXPais(Pais))
+                        using (EmpDBEntities Obj = new EmpDBEntities())
                         {
-                            Obj.Paises.Attach(Pais);
-                            Obj.Paises.Remove(Pais);
+                            var Pais_ = Obj.Entry(Pais);
+                            if (Pais_.State == System.Data.Entity.EntityState.Detached)
+                            {
+                                Obj.Paises.Attach(Pais);
+                                Obj.Paises.Remove(Pais);
+                            }
+                            Obj.SaveChanges();
+                            return Json(new { rta = 0 }, JsonRequestBehavior.AllowGet);
                         }
-                        Obj.SaveChanges();
-                        return Json(new { rta = 0 }, JsonRequestBehavior.AllowGet);
-                    }
+                    else
+                        return Json(new { rta = 1 }, JsonRequestBehavior.AllowGet);
                 else
-                    return Json(new { rta = 1 }, JsonRequestBehavior.AllowGet);
+                    return Json(new { rta = 2 }, JsonRequestBehavior.AllowGet);
             else
-                return Json(new { rta = 2 }, JsonRequestBehavior.AllowGet);
+                return Json(new { rta = -1 }, JsonRequestBehavior.AllowGet);
         }
 
         /// <summary>  
@@ -114,17 +126,20 @@ namespace ABMCEmpleados.Controllers
         /// <returns>JsonResult</returns>  
         public JsonResult Update(Pais Pais)
         {
-            if (Pais != null)
-                using (EmpDBEntities Obj = new EmpDBEntities())
-                {
-                    var Pais_ = Obj.Entry(Pais);
-                    Pais PaisObj = Obj.Paises.Where(x => x.pai_codigo == Pais.pai_codigo).FirstOrDefault();
-                    PaisObj.pai_nombre = Pais.pai_nombre;
-                    Obj.SaveChanges();
-                    return Json(new { rta = 0 }, JsonRequestBehavior.AllowGet);
-                }
+            if (Usuario.IsUserLog(Session["usuario"].ToString(), Session["email"].ToString(), Session["password"].ToString()))
+                if (Pais != null)
+                    using (EmpDBEntities Obj = new EmpDBEntities())
+                    {
+                        var Pais_ = Obj.Entry(Pais);
+                        Pais PaisObj = Obj.Paises.Where(x => x.pai_codigo == Pais.pai_codigo).FirstOrDefault();
+                        PaisObj.pai_nombre = Pais.pai_nombre;
+                        Obj.SaveChanges();
+                        return Json(new { rta = 0 }, JsonRequestBehavior.AllowGet);
+                    }
+                else
+                    return Json(new { rta = 1 }, JsonRequestBehavior.AllowGet);
             else
-                return Json(new { rta = 1 }, JsonRequestBehavior.AllowGet);
+                return Json(new { rta = -1 }, JsonRequestBehavior.AllowGet);
         }
 
         /// <summary>
@@ -134,48 +149,51 @@ namespace ABMCEmpleados.Controllers
         /// <returns>El resultado de la acción.</returns>
         public JsonResult ExportToExcel(List<Pais> paises)
         {
-            try
-            {
-                string sFileName = @"D:\Dedwin\Downloads\paises.xlsx";
-                FileInfo file = new FileInfo(sFileName);
-                if (file.Exists)
+            if (Usuario.IsUserLog(Session["usuario"].ToString(), Session["email"].ToString(), Session["password"].ToString()))
+                try
                 {
-                    file.Delete();
-                    file = new FileInfo(sFileName);
-                }
-
-                using (ExcelPackage package = new ExcelPackage(file))
-                {
-                    ExcelWorksheet workSheet = package.Workbook.Worksheets.Add("Países");
-                    workSheet.Cells[1, 1].Value = "Código";
-                    workSheet.Cells[1, 1].Style.Font.Bold = true;
-                    workSheet.Cells[1, 1].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
-                    workSheet.Cells[1, 2].Value = "Nombre";
-                    workSheet.Cells[1, 2].Style.Font.Bold = true;
-                    workSheet.Cells[1, 2].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
-
-                    int c = 1;
-                    foreach (Pais item in paises)
+                    string sFileName = @"D:\Dedwin\Downloads\paises.xlsx";
+                    FileInfo file = new FileInfo(sFileName);
+                    if (file.Exists)
                     {
-                        c++;
-                        workSheet.Cells[c, 1].Value = item.pai_codigo;
-                        workSheet.Cells[c, 1].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
-                        workSheet.Cells[c, 2].Value = item.pai_nombre;
-                        workSheet.Cells[c, 2].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
+                        file.Delete();
+                        file = new FileInfo(sFileName);
                     }
 
-                    workSheet.Column(1).AutoFit();
-                    workSheet.Column(2).AutoFit();
+                    using (ExcelPackage package = new ExcelPackage(file))
+                    {
+                        ExcelWorksheet workSheet = package.Workbook.Worksheets.Add("Países");
+                        workSheet.Cells[1, 1].Value = "Código";
+                        workSheet.Cells[1, 1].Style.Font.Bold = true;
+                        workSheet.Cells[1, 1].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
+                        workSheet.Cells[1, 2].Value = "Nombre";
+                        workSheet.Cells[1, 2].Style.Font.Bold = true;
+                        workSheet.Cells[1, 2].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
 
-                    package.Save();
+                        int c = 1;
+                        foreach (Pais item in paises)
+                        {
+                            c++;
+                            workSheet.Cells[c, 1].Value = item.pai_codigo;
+                            workSheet.Cells[c, 1].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
+                            workSheet.Cells[c, 2].Value = item.pai_nombre;
+                            workSheet.Cells[c, 2].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
+                        }
 
-                    return Json(new { rta = 0, dir = sFileName }, JsonRequestBehavior.AllowGet);
+                        workSheet.Column(1).AutoFit();
+                        workSheet.Column(2).AutoFit();
+
+                        package.Save();
+
+                        return Json(new { rta = 0, dir = sFileName }, JsonRequestBehavior.AllowGet);
+                    }
                 }
-            }
-            catch (Exception ex)
-            {
-                return Json(new { rta = 0, exMsg = ex.Message }, JsonRequestBehavior.AllowGet);
-            }
+                catch (Exception ex)
+                {
+                    return Json(new { rta = 0, exMsg = ex.Message }, JsonRequestBehavior.AllowGet);
+                }
+            else
+                return Json(new { rta = -1 }, JsonRequestBehavior.AllowGet);
         }
 
         private bool VerificaProvinciaXPais(Pais pais)

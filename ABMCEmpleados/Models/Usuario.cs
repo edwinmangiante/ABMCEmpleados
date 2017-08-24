@@ -12,6 +12,8 @@ namespace ABMCEmpleados.Models
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Security.Cryptography;
+    using System.Text;
 
     public partial class Usuario
     {
@@ -31,6 +33,7 @@ namespace ABMCEmpleados.Models
             {
                 using (UsrDBEntities db = new UsrDBEntities())
                 {
+                    usuario.usu_password = Encryption(usuario.usu_password);
                     Usuario user = null;
                     IQueryable<Usuario> users = db.Usuarios.AsQueryable();
                     if (users != null && users.Count() > 0)
@@ -56,7 +59,7 @@ namespace ABMCEmpleados.Models
                 return null;
         }
 
-        internal static bool IsUserLog(string usuario, string contraseña)
+        internal static bool IsUserLog(string usuario, string email, string contraseña)
         {
             if (!string.IsNullOrWhiteSpace(usuario) && !string.IsNullOrWhiteSpace(contraseña))
             {
@@ -66,9 +69,8 @@ namespace ABMCEmpleados.Models
                     IQueryable<Usuario> users = db.Usuarios.AsQueryable();
                     if (users != null && users.Count() > 0)
                         user = users.Where(x => x.usu_user_name.Equals(usuario) &&
-                                                x.usu_password.Equals(contraseña) &&
-                                                x.usu_ult_login < DateTime.Now &&
-                                                x.usu_ult_logout == null).First();
+                                                x.usu_user_email.Equals(email) &&
+                                                x.usu_password.Equals(contraseña)).First();
 
                     if (user != null && !string.IsNullOrEmpty(user.usu_user_name))
                         return true;
@@ -106,6 +108,21 @@ namespace ABMCEmpleados.Models
             }
             else
                 return null;
+        }
+
+        private static string Encryption(String password)
+        {
+            MD5CryptoServiceProvider md5 = new MD5CryptoServiceProvider();
+            byte[] encrypt;
+            UTF8Encoding encode = new UTF8Encoding();
+            //encrypt the given password string into Encrypted data  
+            encrypt = md5.ComputeHash(encode.GetBytes(password));
+            StringBuilder encryptdata = new StringBuilder();
+            //Create a new string by using the encrypted data  
+            for (int i = 0; i < encrypt.Length; i++)
+                encryptdata.Append(encrypt[i].ToString());
+
+            return encryptdata.ToString();
         }
     }
 }

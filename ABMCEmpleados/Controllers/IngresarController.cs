@@ -31,6 +31,8 @@ namespace ABMCEmpleados.Controllers
             {
                 Session["usuario"] = "";
                 Session["password"] = "";
+                Session["email"] = "";
+                Session["nombre"] = "";
                 return Json(new { existe = false }, JsonRequestBehavior.AllowGet);
             }
         }

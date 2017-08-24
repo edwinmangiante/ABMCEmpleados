@@ -16,7 +16,7 @@ app.controller("myCtrl", function ($scope, $http) {
                     dataType: "json",
                     data: ({ codigoPais: pai_codigo }),
                     success: function (data) {
-                        if (data.existe == false) {
+                        if (data.existe == 1) {
                             $scope.Pais = {};
                             $scope.Pais.pai_codigo = $scope.CodigoPais.toUpperCase();
                             $scope.Pais.pai_nombre = $scope.NombrePais;
@@ -27,25 +27,39 @@ app.controller("myCtrl", function ($scope, $http) {
                                 data: JSON.stringify($scope.Pais)
                             }).then(function (response) {
                                 //alert(response.data);
-                                $("#alertModal").modal('show');
-                                if (response.data.rta == 0) {
-                                    $scope.title = "Agregado!";
-                                    $scope.msg = "Se agregó el país satisfactoriamente.";
-                                } else if (response.data.rta == 1) {
-                                    $scope.title = "Error!";
-                                    $scope.msg = "No se pudo agregar el país, intente nuevamente.";
-                                }
-                                $scope.GetAll();
-                                $scope.CodigoPais = "";
-                                $scope.NombrePais = "";
                                 $('#myModal').modal('hide');
+                                $("#alertModal").modal('show');
+                                if (response.data.rta == -1) {
+                                    $scope.loading = false;
+                                    $scope.title = "Error!";
+                                    $scope.msg = "El usuario, e-mail o contraseña son incorrectos.";
+                                    window.location.href = "/Ingresar/Index";
+                                } else {
+                                    if (response.data.rta == 0) {
+                                        $scope.title = "Agregado!";
+                                        $scope.msg = "Se agregó el país satisfactoriamente.";
+                                    } else if (response.data.rta == 1) {
+                                        $scope.title = "Error!";
+                                        $scope.msg = "No se pudo agregar el país, intente nuevamente.";
+                                    }
+                                    $scope.GetAll();
+                                    $scope.CodigoPais = "";
+                                    $scope.NombrePais = "";
+                                }
                             })
                         } else {
                             $scope.loading = false;
                             //alert("El código de país ingresado ya existe.");
                             $("#alertModal").modal('show');
                             $scope.title = "Verifique!";
-                            $scope.msg = "El código de país ingresado ya existe.";
+                            if (data.existe == 0) {
+                                $scope.msg = "El código de país ingresado ya existe.";
+                            } else if (data.existe == 2) {
+                                $scope.msg = "El código de país es nulo.";
+                            } else if (data.existe == -1) {
+                                $scope.msg = "El usuario, e-mail o contraseña son incorrectos.";
+                                window.location.href = "/Ingresar/Index";
+                            }
                         }
                     },
                     error: function (xhr, status, error) {
@@ -69,7 +83,7 @@ app.controller("myCtrl", function ($scope, $http) {
                     dataType: "json",
                     data: ({ codigoPais: pai_codigo }),
                     success: function (data) {
-                        if (data.existe == true) {
+                        if (data.existe == 0) {
                             $scope.Pais = {};
                             $scope.Pais.pai_codigo = $scope.CodigoPais.toUpperCase();
                             $scope.Pais.pai_nombre = $scope.NombrePais;
@@ -80,26 +94,41 @@ app.controller("myCtrl", function ($scope, $http) {
                                 data: JSON.stringify($scope.Pais)
                             }).then(function (response) {
                                 //alert(response.data);
-                                $("#alertModal").modal('show');
-                                if (response.data.rta == 0) {
-                                    $scope.title = "Actualizado!";
-                                    $scope.msg = "Se actualizó el país satisfactoriamente.";
-                                } else if (response.data.rta == 1) {
-                                    $scope.title = "Error!";
-                                    $scope.msg = "No se pudo actualizar el país, intente nuevamente.";
-                                }
-                                $scope.GetAll();
-                                $scope.CodigoPais = "";
-                                $scope.NombrePais = "";
-                                $("#btnSave").attr("value", "Agregar");
                                 $('#myModal').modal('hide');
+                                $("#alertModal").modal('show');
+                                if (response.data.rta == -1) {
+                                    $scope.loading = false;
+                                    $scope.title = "Error!";
+                                    $scope.msg = "El usuario, e-mail o contraseña son incorrectos.";
+                                    window.location.href = "/Ingresar/Index";
+                                } else {
+                                    if (response.data.rta == 0) {
+                                        $scope.title = "Actualizado!";
+                                        $scope.msg = "Se actualizó el país satisfactoriamente.";
+                                    } else if (response.data.rta == 1) {
+                                        $scope.title = "Error!";
+                                        $scope.msg = "No se pudo actualizar el país, intente nuevamente.";
+                                    }
+                                    $scope.GetAll();
+                                    $scope.CodigoPais = "";
+                                    $scope.NombrePais = "";
+                                    $("#btnSave").attr("value", "Agregar");
+                                    $('#myModal').modal('hide');
+                                }
                             })
                         } else {
                             $scope.loading = false;
                             //alert("El código de país ingresado no existe.");
                             $("#alertModal").modal('show');
                             $scope.title = "Verifique!";
-                            $scope.msg = "El código de país ingresado no existe.";
+                            if (data.existe == 1) {
+                                $scope.msg = "El código de país ingresado no existe.";
+                            } else if (data.existe == 2) {
+                                $scope.msg = "El código de país es nulo.";
+                            } else if (data.existe == -1) {
+                                $scope.msg = "El usuario, e-mail o contraseña son incorrectos.";
+                                window.location.href = "/Ingresar/Index";
+                            }
                         }
                     },
                     error: function (xhr, status, error) {
@@ -127,8 +156,15 @@ app.controller("myCtrl", function ($scope, $http) {
             params: ({ filterNombre: search })
         }).then(function (response) {
             //console.log(response);
-            $scope.paises = response.data;
             $scope.loading = false;
+            if (response.data != null) {
+                $scope.paises = response.data;
+            } else {
+                $("#alertModal").modal('show');
+                $scope.title = "Error!";
+                $scope.msg = "El usuario, e-mail o contraseña son incorrectos.";
+                window.location.href = "/Ingresar/Index";
+            }
         }).catch(function (reason) {
             $scope.loading = false;
             console.log(reason);
@@ -152,17 +188,24 @@ app.controller("myCtrl", function ($scope, $http) {
                 //alert(response.data);
                 $('#modalConfirmYesNo').modal('hide');
                 $("#alertModal").modal('show');
-                if (response.data.rta == 0) {
-                    $scope.title = "Eliminado!";
-                    $scope.msg = "Se eliminó el país satisfactoriamente.";
-                } else if (response.data.rta == 1) {
+                if (response.data.rta == -1) {
+                    $scope.loading = false;
                     $scope.title = "Error!";
-                    $scope.msg = "El país que quiere eliminar posee al menos una provincia cargada. Elimine la/s provincia/s y luego elimine el país.";
-                } else if (response.data.rta == 2) {
-                    $scope.title = "Error!";
-                    $scope.msg = "No se pudo eliminar el país, intente nuevamente.";
+                    $scope.msg = "El usuario, e-mail o contraseña son incorrectos.";
+                    window.location.href = "/Ingresar/Index";
+                } else {
+                    if (response.data.rta == 0) {
+                        $scope.title = "Eliminado!";
+                        $scope.msg = "Se eliminó el país satisfactoriamente.";
+                    } else if (response.data.rta == 1) {
+                        $scope.title = "Error!";
+                        $scope.msg = "El país que quiere eliminar posee al menos una provincia cargada. Elimine la/s provincia/s y luego elimine el país.";
+                    } else if (response.data.rta == 2) {
+                        $scope.title = "Error!";
+                        $scope.msg = "No se pudo eliminar el país, intente nuevamente.";
+                    }
+                    $scope.GetAll();
                 }
-                $scope.GetAll();
             })
         }
     };
@@ -188,14 +231,21 @@ app.controller("myCtrl", function ($scope, $http) {
                 data: JSON.stringify($scope.paises)
             }).then(function (response) {
                 $("#alertModal").modal('show');
-                if (response.data.rta == 0) {
-                    $scope.title = "Exportado!";
-                    $scope.msg = "Se creó el excel correctamente en el directorio " + response.data.dir + ".";
-                } else if (response.data.rta == 1) {
+                if (response.data.rta == -1) {
+                    $scope.loading = false;
                     $scope.title = "Error!";
-                    $scope.msg = "Ocurrió un error al intentar crear el excel, intente nuevamente. (" + response.data.exMsg + ")";
+                    $scope.msg = "El usuario, e-mail o contraseña son incorrectos.";
+                    window.location.href = "/Ingresar/Index";
+                } else {
+                    if (response.data.rta == 0) {
+                        $scope.title = "Exportado!";
+                        $scope.msg = "Se creó el excel correctamente en el directorio " + response.data.dir + ".";
+                    } else if (response.data.rta == 1) {
+                        $scope.title = "Error!";
+                        $scope.msg = "Ocurrió un error al intentar crear el excel, intente nuevamente. (" + response.data.exMsg + ")";
+                    }
+                    $scope.GetAll();
                 }
-                $scope.GetAll();
             }).catch(function (reason) {
                 console.log(reason);
                 //alert("Ocurrió un error al intentar exportar a excel los países.");
@@ -215,7 +265,6 @@ app.controller("myCtrl", function ($scope, $http) {
     $scope.Validate = function () {
         //debugger;
         var isValid = true;
-        var a = "";
         if ($('#inputCodigo').val().trim() == "" || $scope.CodigoPais == '') {
             //alert("Debe completar el código de país.");
             isValid = false;
