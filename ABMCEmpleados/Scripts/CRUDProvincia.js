@@ -11,6 +11,7 @@ app.controller("myCtrl", function ($scope, $http) {
             $scope.currentPais = $scope.paises[0].pai_codigo;
             $scope.GetAllByPais($scope.paises[0].pai_codigo);
         } else {
+            $scope.loading = false;
             $("#alertModal").modal('show');
             $scope.title = "Error!";
             $scope.msg = "El usuario, e-mail o contraseña son incorrectos.";
@@ -52,19 +53,26 @@ app.controller("myCtrl", function ($scope, $http) {
                                 data: JSON.stringify($scope.Provincia)
                             }).then(function (response) {
                                 //alert(response.data);
-                                $("#alertModal").modal('show');
-                                if (response.data.rta == 0) {
-                                    $scope.title = "Agregada!";
-                                    $scope.msg = "Se agregó la provincia satisfactoriamente.";
-                                } else if (response.data.rta == 1) {
-                                    $scope.title = "Error!";
-                                    $scope.msg = "No se pudo agregar la provincia, intente nuevamente.";
-                                }
-                                $scope.GetAllByPais($scope.currentPais);
-                                $scope.Provincia.pro_pai_codigo = "";
-                                $scope.Provincia.pro_codigo = "";
-                                $scope.Provincia.pro_nombre = "";
                                 $('#myModal').modal('hide');
+                                $("#alertModal").modal('show');
+                                if (response.data.rta == -1) {
+                                    $scope.loading = false;
+                                    $scope.title = "Error!";
+                                    $scope.msg = "El usuario, e-mail o contraseña son incorrectos.";
+                                    window.location.href = "/Ingresar/Index";
+                                } else {
+                                    if (response.data.rta == 0) {
+                                        $scope.title = "Agregada!";
+                                        $scope.msg = "Se agregó la provincia satisfactoriamente.";
+                                    } else if (response.data.rta == 1) {
+                                        $scope.title = "Error!";
+                                        $scope.msg = "No se pudo agregar la provincia, intente nuevamente.";
+                                    }
+                                    $scope.GetAllByPais($scope.currentPais);
+                                    $scope.Provincia.pro_pai_codigo = "";
+                                    $scope.Provincia.pro_codigo = "";
+                                    $scope.Provincia.pro_nombre = "";
+                                }
                             })
                         } else {
                             $scope.loading = false;
@@ -115,20 +123,27 @@ app.controller("myCtrl", function ($scope, $http) {
                                 data: JSON.stringify($scope.Provincia)
                             }).then(function (response) {
                                 //alert(response.data);
-                                $("#alertModal").modal('show');
-                                if (response.data.rta == 0) {
-                                    $scope.title = "Actualizado!";
-                                    $scope.msg = "Se actualizó la provincia satisfactoriamente.";
-                                } else if (response.data.rta == 1) {
-                                    $scope.title = "Error!";
-                                    $scope.msg = "No se pudo actualizar la provincia, intente nuevamente.";
-                                }
-                                $scope.GetAllByPais($scope.currentPais);
-                                $scope.Provincia.pro_pai_codigo = "";
-                                $scope.Provincia.pro_codigo = "";
-                                $scope.Provincia.pro_nombre = "";
-                                $("#btnSave").attr("value", "Agregar");
                                 $('#myModal').modal('hide');
+                                $("#alertModal").modal('show');
+                                if (response.data.rta == -1) {
+                                    $scope.loading = false;
+                                    $scope.title = "Error!";
+                                    $scope.msg = "El usuario, e-mail o contraseña son incorrectos.";
+                                    window.location.href = "/Ingresar/Index";
+                                } else {
+                                    if (response.data.rta == 0) {
+                                        $scope.title = "Actualizado!";
+                                        $scope.msg = "Se actualizó la provincia satisfactoriamente.";
+                                    } else if (response.data.rta == 1) {
+                                        $scope.title = "Error!";
+                                        $scope.msg = "No se pudo actualizar la provincia, intente nuevamente.";
+                                    }
+                                    $scope.GetAllByPais($scope.currentPais);
+                                    $scope.Provincia.pro_pai_codigo = "";
+                                    $scope.Provincia.pro_codigo = "";
+                                    $scope.Provincia.pro_nombre = "";
+                                    $("#btnSave").attr("value", "Agregar");
+                                }
                             })
                         } else {
                             $scope.loading = false;
