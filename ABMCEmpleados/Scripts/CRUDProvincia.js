@@ -6,12 +6,19 @@ app.controller("myCtrl", function ($scope, $http) {
         method: 'GET',
         url: '/Provincia/GetPaises'
     }).then(function (response) {
-        $scope.paises = response.data;
-        $scope.currentPais = $scope.paises[0].pai_codigo;
-        $scope.GetAllByPais($scope.paises[0].pai_codigo);
+        if (response.data != null) {
+            $scope.paises = response.data;
+            $scope.currentPais = $scope.paises[0].pai_codigo;
+            $scope.GetAllByPais($scope.paises[0].pai_codigo);
+        } else {
+            $("#alertModal").modal('show');
+            $scope.title = "Error!";
+            $scope.msg = "El usuario, e-mail o contraseña son incorrectos.";
+            window.location.href = "/Ingresar/Index";
+        }
     }).catch(function (reason) {
         $scope.loading = false;
-        console.log(reason);
+        //console.log(reason);
         //alert("Ocurrió un error al intentar obtener los países.");
         $("#alertModal").modal('show');
         $scope.title = "Error!";
@@ -33,7 +40,7 @@ app.controller("myCtrl", function ($scope, $http) {
                     dataType: "json",
                     data: ({ codigoPais: pro_pai_codigo, codigoProvincia: pro_codigo }),
                     success: function (data) {
-                        if (data.existe == false) {
+                        if (data.existe == 1) {
                             $scope.Provincia = {};
                             $scope.Provincia.pro_pai_codigo = $scope.CodigoPais.toUpperCase();
                             $scope.Provincia.pro_codigo = $scope.CodigoProvincia.toUpperCase();
@@ -64,7 +71,14 @@ app.controller("myCtrl", function ($scope, $http) {
                             //alert("El código de provincia ingresado ya existe.");
                             $("#alertModal").modal('show');
                             $scope.title = "Verifique!";
-                            $scope.msg = "El código de provincia ingresado ya existe.";
+                            if (data.existe == 0) {
+                                $scope.msg = "El código de provincia ingresado ya existe.";
+                            } else if (data.existe == 2) {
+                                $scope.msg = "El código de provincia es nulo.";
+                            } else if (data.existe == -1) {
+                                $scope.msg = "El usuario, e-mail o contraseña son incorrectos.";
+                                window.location.href = "/Ingresar/Index";
+                            }
                         }
                     },
                     error: function (xhr, status, error) {
@@ -89,7 +103,7 @@ app.controller("myCtrl", function ($scope, $http) {
                     dataType: "json",
                     data: ({ codigoPais: pro_pai_codigo, codigoProvincia: pro_codigo }),
                     success: function (data) {
-                        if (data.existe == true) {
+                        if (data.existe == 0) {
                             $scope.Provincia = {};
                             $scope.Provincia.pro_pai_codigo = $scope.CodigoPais.toUpperCase();
                             $scope.Provincia.pro_codigo = $scope.CodigoProvincia.toUpperCase();
@@ -121,7 +135,14 @@ app.controller("myCtrl", function ($scope, $http) {
                             //alert("El código de provincia ingresado no existe.");
                             $("#alertModal").modal('show');
                             $scope.title = "Verifique!";
-                            $scope.msg = "El código de provincia ingresado no existe.";
+                            if (data.existe == 1) {
+                                $scope.msg = "El código de provincia ingresado no existe.";
+                            } else if (data.existe == 2) {
+                                $scope.msg = "El código de provincia es nulo.";
+                            } else if (data.existe == -1) {
+                                $scope.msg = "El usuario, e-mail o contraseña son incorrectos.";
+                                window.location.href = "/Ingresar/Index";
+                            }
                         }
                     },
                     error: function (xhr, status, error) {
@@ -167,8 +188,15 @@ app.controller("myCtrl", function ($scope, $http) {
             params: ({ codigoPais: pai_codigo.toUpperCase(), filterNombre: search })
         }).then(function (response) {
             //console.log(response);
-            $scope.provincias = response.data;
             $scope.loading = false;
+            if (response.data != null) {
+                $scope.provincias = response.data;
+            } else {
+                $("#alertModal").modal('show');
+                $scope.title = "Error!";
+                $scope.msg = "El usuario, e-mail o contraseña son incorrectos.";
+                window.location.href = "/Ingresar/Index";
+            }
         }).catch(function (reason) {
             console.log(reason);
             $scope.loading = false;
@@ -191,17 +219,24 @@ app.controller("myCtrl", function ($scope, $http) {
                 //alert(response.data);
                 $('#modalConfirmYesNo').modal('hide');
                 $("#alertModal").modal('show');
-                if (response.data.rta == 0) {
-                    $scope.title = "Eliminado!";
-                    $scope.msg = "Se eliminó la provincia satisfactoriamente.";
-                } else if (response.data.rta == 1) {
+                if (response.data.rta == -1) {
+                    $scope.loading = false;
                     $scope.title = "Error!";
-                    $scope.msg = "La provincia que quiere eliminar posee al menos una ciudad cargada. Elimine la/s ciudad/es y luego elimine la provincia.";
-                } else if (response.data.rta == 2) {
-                    $scope.title = "Error!";
-                    $scope.msg = "No se pudo eliminar la provincia, intente nuevamente.";
+                    $scope.msg = "El usuario, e-mail o contraseña son incorrectos.";
+                    window.location.href = "/Ingresar/Index";
+                } else {
+                    if (response.data.rta == 0) {
+                        $scope.title = "Eliminado!";
+                        $scope.msg = "Se eliminó la provincia satisfactoriamente.";
+                    } else if (response.data.rta == 1) {
+                        $scope.title = "Error!";
+                        $scope.msg = "La provincia que quiere eliminar posee al menos una ciudad cargada. Elimine la/s ciudad/es y luego elimine la provincia.";
+                    } else if (response.data.rta == 2) {
+                        $scope.title = "Error!";
+                        $scope.msg = "No se pudo eliminar la provincia, intente nuevamente.";
+                    }
+                    $scope.GetAllByPais($scope.currentPais);
                 }
-                $scope.GetAllByPais($scope.currentPais);
             })
         }
     };
@@ -230,14 +265,21 @@ app.controller("myCtrl", function ($scope, $http) {
             }).then(function (response) {
                 //alert(response.data);
                 $("#alertModal").modal('show');
-                if (response.data.rta == 0) {
-                    $scope.title = "Exportado!";
-                    $scope.msg = "Se creó el excel correctamente en el directorio " + response.data.dir + ".";
-                } else if (response.data.rta == 1) {
+                if (response.data.rta == -1) {
+                    $scope.loading = false;
                     $scope.title = "Error!";
-                    $scope.msg = "Ocurrió un error al intentar crear el excel, intente nuevamente. (" + response.data.exMsg + ")";
+                    $scope.msg = "El usuario, e-mail o contraseña son incorrectos.";
+                    window.location.href = "/Ingresar/Index";
+                } else {
+                    if (response.data.rta == 0) {
+                        $scope.title = "Exportado!";
+                        $scope.msg = "Se creó el excel correctamente en el directorio " + response.data.dir + ".";
+                    } else if (response.data.rta == 1) {
+                        $scope.title = "Error!";
+                        $scope.msg = "Ocurrió un error al intentar crear el excel, intente nuevamente. (" + response.data.exMsg + ")";
+                    }
+                    $scope.GetAllByPais($scope.currentPais);
                 }
-                $scope.GetAllByPais($scope.currentPais);
             }).catch(function (reason) {
                 console.log(reason);
                 //alert("Ocurrió un error al intentar exportar a excel los países.");

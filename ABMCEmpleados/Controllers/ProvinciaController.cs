@@ -63,15 +63,18 @@ namespace ABMCEmpleados.Controllers
         /// <returns>JsonResult</returns>
         public JsonResult GetAllByPais(string codigoPais, string filterNombre)
         {
-            if (!string.IsNullOrEmpty(codigoPais))
-                using (EmpDBEntities obj = new EmpDBEntities())
-                {
-                    obj.Configuration.LazyLoadingEnabled = false;
-                    IQueryable<Provincia> provincias = obj.Provincias.Where(x => x.pro_pai_codigo == codigoPais).AsQueryable();
-                    if (!string.IsNullOrWhiteSpace(filterNombre))
-                        provincias = provincias.Where(x => x.pro_nombre.Contains(filterNombre));
-                    return Json(provincias.OrderBy(x => x.pro_pai_codigo).ThenBy(x => x.pro_codigo).ToList(), JsonRequestBehavior.AllowGet);
-                }
+            if (Usuario.IsUserLog(Session["usuario"].ToString(), Session["email"].ToString(), Session["password"].ToString()))
+                if (!string.IsNullOrEmpty(codigoPais))
+                    using (EmpDBEntities obj = new EmpDBEntities())
+                    {
+                        obj.Configuration.LazyLoadingEnabled = false;
+                        IQueryable<Provincia> provincias = obj.Provincias.Where(x => x.pro_pai_codigo == codigoPais).AsQueryable();
+                        if (!string.IsNullOrWhiteSpace(filterNombre))
+                            provincias = provincias.Where(x => x.pro_nombre.Contains(filterNombre));
+                        return Json(provincias.OrderBy(x => x.pro_pai_codigo).ThenBy(x => x.pro_codigo).ToList(), JsonRequestBehavior.AllowGet);
+                    }
+                else
+                    return Json(null, JsonRequestBehavior.AllowGet);
             else
                 return Json(null, JsonRequestBehavior.AllowGet);
         }
@@ -84,21 +87,24 @@ namespace ABMCEmpleados.Controllers
         /// <returns>JsonResult</returns>
         public JsonResult GetByKey(string codigoPais, string codigoProvincia)
         {
-            if (!string.IsNullOrWhiteSpace(codigoPais) && !string.IsNullOrWhiteSpace(codigoProvincia))
-            {
-                using (EmpDBEntities obj = new EmpDBEntities())
+            if (Usuario.IsUserLog(Session["usuario"].ToString(), Session["email"].ToString(), Session["password"].ToString()))
+                if (!string.IsNullOrWhiteSpace(codigoPais) && !string.IsNullOrWhiteSpace(codigoProvincia))
                 {
-                    obj.Configuration.LazyLoadingEnabled = false;
-                    IQueryable<Provincia> provincias = obj.Provincias.AsQueryable();
-                    Provincia provincia = provincias.Where(x => x.pro_pai_codigo == codigoPais && x.pro_codigo == codigoProvincia).FirstOrDefault();
-                    if (provincia != null && !string.IsNullOrWhiteSpace(provincia.pro_pai_codigo) && !string.IsNullOrWhiteSpace(provincia.pro_codigo))
-                        return Json(new { existe = true }, JsonRequestBehavior.AllowGet);
-                    else
-                        return Json(new { existe = false }, JsonRequestBehavior.AllowGet);
+                    using (EmpDBEntities obj = new EmpDBEntities())
+                    {
+                        obj.Configuration.LazyLoadingEnabled = false;
+                        IQueryable<Provincia> provincias = obj.Provincias.AsQueryable();
+                        Provincia provincia = provincias.Where(x => x.pro_pai_codigo == codigoPais && x.pro_codigo == codigoProvincia).FirstOrDefault();
+                        if (provincia != null && !string.IsNullOrWhiteSpace(provincia.pro_pai_codigo) && !string.IsNullOrWhiteSpace(provincia.pro_codigo))
+                            return Json(new { existe = 0 }, JsonRequestBehavior.AllowGet);
+                        else
+                            return Json(new { existe = 1 }, JsonRequestBehavior.AllowGet);
+                    }
                 }
-            }
+                else
+                    return Json(new { existe = 2 }, JsonRequestBehavior.AllowGet);
             else
-                return Json(new { existe = false }, JsonRequestBehavior.AllowGet);
+                return Json(new { existe = -1 }, JsonRequestBehavior.AllowGet);
         }
 
         /// <summary>  
@@ -108,15 +114,18 @@ namespace ABMCEmpleados.Controllers
         /// <returns>string</returns>  
         public JsonResult Insert(Provincia Provincia)
         {
-            if (Provincia != null)
-                using (EmpDBEntities Obj = new EmpDBEntities())
-                {
-                    Obj.Provincias.Add(Provincia);
-                    Obj.SaveChanges();
-                    return Json(new { rta = 0 }, JsonRequestBehavior.AllowGet);
-                }
+            if (Usuario.IsUserLog(Session["usuario"].ToString(), Session["email"].ToString(), Session["password"].ToString()))
+                if (Provincia != null)
+                    using (EmpDBEntities Obj = new EmpDBEntities())
+                    {
+                        Obj.Provincias.Add(Provincia);
+                        Obj.SaveChanges();
+                        return Json(new { rta = 0 }, JsonRequestBehavior.AllowGet);
+                    }
+                else
+                    return Json(new { rta = 1 }, JsonRequestBehavior.AllowGet);
             else
-                return Json(new { rta = 1 }, JsonRequestBehavior.AllowGet);
+                return Json(new { rta = -1 }, JsonRequestBehavior.AllowGet);
         }
 
         /// <summary>  
@@ -126,23 +135,26 @@ namespace ABMCEmpleados.Controllers
         /// <returns>string</returns>  
         public JsonResult Delete(Provincia Provincia)
         {
-            if (Provincia != null)
-                if (VerificaCiudadXProvincia(Provincia))
-                    using (EmpDBEntities Obj = new EmpDBEntities())
-                    {
-                        var Provincia_ = Obj.Entry(Provincia);
-                        if (Provincia_.State == System.Data.Entity.EntityState.Detached)
+            if (Usuario.IsUserLog(Session["usuario"].ToString(), Session["email"].ToString(), Session["password"].ToString()))
+                if (Provincia != null)
+                    if (VerificaCiudadXProvincia(Provincia))
+                        using (EmpDBEntities Obj = new EmpDBEntities())
                         {
-                            Obj.Provincias.Attach(Provincia);
-                            Obj.Provincias.Remove(Provincia);
+                            var Provincia_ = Obj.Entry(Provincia);
+                            if (Provincia_.State == System.Data.Entity.EntityState.Detached)
+                            {
+                                Obj.Provincias.Attach(Provincia);
+                                Obj.Provincias.Remove(Provincia);
+                            }
+                            Obj.SaveChanges();
+                            return Json(new { rta = 0 }, JsonRequestBehavior.AllowGet);
                         }
-                        Obj.SaveChanges();
-                        return Json(new { rta = 0 }, JsonRequestBehavior.AllowGet);
-                    }
+                    else
+                        return Json(new { rta = 1 }, JsonRequestBehavior.AllowGet);
                 else
-                    return Json(new { rta = 1 }, JsonRequestBehavior.AllowGet);
+                    return Json(new { rta = 2 }, JsonRequestBehavior.AllowGet);
             else
-                return Json(new { rta = 2 }, JsonRequestBehavior.AllowGet);
+                return Json(new { rta = -1 }, JsonRequestBehavior.AllowGet);
         }
 
         /// <summary>  
@@ -152,17 +164,20 @@ namespace ABMCEmpleados.Controllers
         /// <returns>string</returns>  
         public JsonResult Update(Provincia Provincia)
         {
-            if (Provincia != null)
-                using (EmpDBEntities Obj = new EmpDBEntities())
-                {
-                    var Provincia_ = Obj.Entry(Provincia);
-                    Provincia ProvinciaObj = Obj.Provincias.Where(x => x.pro_pai_codigo == Provincia.pro_pai_codigo && x.pro_codigo == Provincia.pro_codigo).FirstOrDefault();
-                    ProvinciaObj.pro_nombre = Provincia.pro_nombre;
-                    Obj.SaveChanges();
-                    return Json(new { rta = 0 }, JsonRequestBehavior.AllowGet);
-                }
+            if (Usuario.IsUserLog(Session["usuario"].ToString(), Session["email"].ToString(), Session["password"].ToString()))
+                if (Provincia != null)
+                    using (EmpDBEntities Obj = new EmpDBEntities())
+                    {
+                        var Provincia_ = Obj.Entry(Provincia);
+                        Provincia ProvinciaObj = Obj.Provincias.Where(x => x.pro_pai_codigo == Provincia.pro_pai_codigo && x.pro_codigo == Provincia.pro_codigo).FirstOrDefault();
+                        ProvinciaObj.pro_nombre = Provincia.pro_nombre;
+                        Obj.SaveChanges();
+                        return Json(new { rta = 0 }, JsonRequestBehavior.AllowGet);
+                    }
+                else
+                    return Json(new { rta = 1 }, JsonRequestBehavior.AllowGet);
             else
-                return Json(new { rta = 1 }, JsonRequestBehavior.AllowGet);
+                return Json(new { rta = -1 }, JsonRequestBehavior.AllowGet);
         }
 
         /// <summary>
@@ -172,65 +187,68 @@ namespace ABMCEmpleados.Controllers
         /// <returns>El resultado de la acción.</returns>
         public JsonResult ExportToExcel(List<Provincia> provincias)
         {
-            try
-            {
-                string codigoPais = provincias.First().pro_pai_codigo;
-                Pais pais = null;
-                using (EmpDBEntities db = new EmpDBEntities())
-                    pais = db.Paises.Find(codigoPais);
-
-                string sFileName = @"D:\Dedwin\Downloads\provincias.xlsx";
-                FileInfo file = new FileInfo(sFileName);
-                if (file.Exists)
+            if (Usuario.IsUserLog(Session["usuario"].ToString(), Session["email"].ToString(), Session["password"].ToString()))
+                try
                 {
-                    file.Delete();
-                    file = new FileInfo(sFileName);
-                }
+                    string codigoPais = provincias.First().pro_pai_codigo;
+                    Pais pais = null;
+                    using (EmpDBEntities db = new EmpDBEntities())
+                        pais = db.Paises.Find(codigoPais);
 
-                using (ExcelPackage package = new ExcelPackage(file))
-                {
-                    ExcelWorksheet workSheet = package.Workbook.Worksheets.Add("Provincias");
-                    workSheet.Cells[1, 1].Value = "Código País";
-                    workSheet.Cells[1, 1].Style.Font.Bold = true;
-                    workSheet.Cells[1, 1].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
-                    workSheet.Cells[1, 2].Value = "Nombre País";
-                    workSheet.Cells[1, 2].Style.Font.Bold = true;
-                    workSheet.Cells[1, 2].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
-                    workSheet.Cells[1, 3].Value = "Código";
-                    workSheet.Cells[1, 3].Style.Font.Bold = true;
-                    workSheet.Cells[1, 3].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
-                    workSheet.Cells[1, 4].Value = "Nombre";
-                    workSheet.Cells[1, 4].Style.Font.Bold = true;
-                    workSheet.Cells[1, 4].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
-
-                    int c = 1;
-                    foreach (Provincia item in provincias)
+                    string sFileName = @"D:\Dedwin\Downloads\provincias.xlsx";
+                    FileInfo file = new FileInfo(sFileName);
+                    if (file.Exists)
                     {
-                        c++;
-                        workSheet.Cells[c, 1].Value = pais.pai_codigo;
-                        workSheet.Cells[c, 1].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
-                        workSheet.Cells[c, 2].Value = pais.pai_nombre;
-                        workSheet.Cells[c, 2].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
-                        workSheet.Cells[c, 3].Value = item.pro_codigo;
-                        workSheet.Cells[c, 3].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
-                        workSheet.Cells[c, 4].Value = item.pro_nombre;
-                        workSheet.Cells[c, 4].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
+                        file.Delete();
+                        file = new FileInfo(sFileName);
                     }
 
-                    workSheet.Column(1).AutoFit();
-                    workSheet.Column(2).AutoFit();
-                    workSheet.Column(3).AutoFit();
-                    workSheet.Column(4).AutoFit();
+                    using (ExcelPackage package = new ExcelPackage(file))
+                    {
+                        ExcelWorksheet workSheet = package.Workbook.Worksheets.Add("Provincias");
+                        workSheet.Cells[1, 1].Value = "Código País";
+                        workSheet.Cells[1, 1].Style.Font.Bold = true;
+                        workSheet.Cells[1, 1].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
+                        workSheet.Cells[1, 2].Value = "Nombre País";
+                        workSheet.Cells[1, 2].Style.Font.Bold = true;
+                        workSheet.Cells[1, 2].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
+                        workSheet.Cells[1, 3].Value = "Código";
+                        workSheet.Cells[1, 3].Style.Font.Bold = true;
+                        workSheet.Cells[1, 3].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
+                        workSheet.Cells[1, 4].Value = "Nombre";
+                        workSheet.Cells[1, 4].Style.Font.Bold = true;
+                        workSheet.Cells[1, 4].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
 
-                    package.Save();
+                        int c = 1;
+                        foreach (Provincia item in provincias)
+                        {
+                            c++;
+                            workSheet.Cells[c, 1].Value = pais.pai_codigo;
+                            workSheet.Cells[c, 1].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
+                            workSheet.Cells[c, 2].Value = pais.pai_nombre;
+                            workSheet.Cells[c, 2].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
+                            workSheet.Cells[c, 3].Value = item.pro_codigo;
+                            workSheet.Cells[c, 3].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
+                            workSheet.Cells[c, 4].Value = item.pro_nombre;
+                            workSheet.Cells[c, 4].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
+                        }
 
-                    return Json(new { rta = 0, dir = sFileName }, JsonRequestBehavior.AllowGet);
+                        workSheet.Column(1).AutoFit();
+                        workSheet.Column(2).AutoFit();
+                        workSheet.Column(3).AutoFit();
+                        workSheet.Column(4).AutoFit();
+
+                        package.Save();
+
+                        return Json(new { rta = 0, dir = sFileName }, JsonRequestBehavior.AllowGet);
+                    }
                 }
-            }
-            catch (Exception ex)
-            {
-                return Json(new { rta = 1, exMsg = ex.Message }, JsonRequestBehavior.AllowGet);
-            }
+                catch (Exception ex)
+                {
+                    return Json(new { rta = 1, exMsg = ex.Message }, JsonRequestBehavior.AllowGet);
+                }
+            else
+                return Json(new { rta = -1 }, JsonRequestBehavior.AllowGet);
         }
 
         private bool VerificaCiudadXProvincia(Provincia provincia)
